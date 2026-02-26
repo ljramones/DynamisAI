@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.dynamisai</groupId>
+  <artifactId>dynamis-ai</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <modules>
+    <module>dynamis-ai-core</module>
+    <module>dynamis-ai-cognition</module>
+    <module>dynamis-ai-perception</module>
+    <module>dynamis-ai-memory</module>
+    <module>dynamis-ai-planning</module>
+    <module>dynamis-ai-navigation</module>
+    <module>dynamis-ai-voice</module>
+    <module>dynamis-ai-social</module>
+    <module>dynamis-ai-crowd</module>
+    <module>dynamis-ai-tools</module>
+    <module>dynamis-ai-demo</module>
+    <module>dynamis-ai-lod</module>
+    <module>dynamis-ai-test-kit</module>
+    <module>dynamisai-extensions</module>
+  </modules>
+</project>
