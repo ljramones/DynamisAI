@@ -28,8 +28,7 @@ public final class DefaultWorldStateStore implements WorldStateStore {
             0L,
             HashMap.empty(),
             new GlobalFacts(new java.util.HashMap<>()),
-            new EnvironmentState("clear", 12.0f, 1.0f),
-            Long.hashCode(0L)
+            new EnvironmentState("clear", 12.0f, 1.0f)
         );
         storeInBuffer(this.current);
     }
@@ -90,7 +89,7 @@ public final class DefaultWorldStateStore implements WorldStateStore {
 
         long newTick = prev.tick() + 1;
         WorldSnapshot next = new WorldSnapshot(
-            newTick, entities, globalFacts, environment, Long.hashCode(newTick)
+            newTick, entities, globalFacts, environment
         );
         current = next;
         storeInBuffer(next);

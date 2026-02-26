@@ -1,41 +1,52 @@
 package org.dynamisai.demo;
 
+import io.dynamis.audio.api.AcousticConstants;
+import io.dynamis.audio.core.AcousticEventQueueImpl;
+import io.dynamis.audio.core.AcousticSnapshotManager;
+import io.dynamis.audio.designer.MixSnapshotManager;
+import io.dynamis.audio.dsp.SoftwareMixer;
+import io.dynamis.audio.dsp.device.AudioDeviceException;
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DefaultCognitionService;
 import org.dynamisai.cognition.DialogueRequest;
 import org.dynamisai.cognition.DialogueResponse;
+import org.dynamisai.cognition.InferenceBackend;
+import org.dynamisai.cognition.JlamaInferenceBackend;
 import org.dynamisai.cognition.MockInferenceBackend;
+import org.dynamisai.cognition.ResponseParser;
 import org.dynamisai.core.AITaskNode;
 import org.dynamisai.core.DefaultBudgetGovernor;
 import org.dynamisai.core.DefaultWorldStateStore;
 import org.dynamisai.core.DegradeMode;
 import org.dynamisai.core.EntityId;
-import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.Priority;
 import org.dynamisai.core.ThreatLevel;
-import org.dynamisai.core.WorldChange;
 import org.dynamisai.core.WorldFacts;
 import org.dynamisai.crowd.CrowdSnapshot;
 import org.dynamisai.crowd.DefaultCrowdSystem;
 import org.dynamisai.crowd.FormationType;
 import org.dynamisai.crowd.GroupId;
 import org.dynamisai.memory.DefaultMemoryLifecycleManager;
+import org.dynamisai.memory.InHeapVectorMemoryStore;
 import org.dynamisai.memory.MemoryBudget;
 import org.dynamisai.memory.MemoryRecord;
 import org.dynamisai.memory.MemoryStats;
+import org.dynamisai.memory.MiniLmSentenceEncoder;
+import org.dynamisai.memory.MockSentenceEncoder;
+import org.dynamisai.memory.SentenceEncoder;
 import org.dynamisai.navigation.DefaultNavigationSystem;
 import org.dynamisai.navigation.MovementIntegrator;
 import org.dynamisai.navigation.NavMesh;
 import org.dynamisai.navigation.NavMeshBuilder;
 import org.dynamisai.navigation.PathRequest;
-import org.dynamisai.navigation.SteeringOutput;
 import org.dynamisai.perception.DefaultPerceptionSystem;
 import org.dynamisai.perception.PerceptionSnapshot;
 import org.dynamisai.social.DefaultSocialSystem;
 import org.dynamisai.social.Relationship;
 import org.dynamisai.social.RelationshipTag;
 import org.dynamisai.social.SocialDialogueShaper;
+import org.dynamisai.tools.JavaSoundOutputNode;
 import org.dynamisai.voice.DefaultAnimisBridge;
 import org.dynamisai.voice.MockTTSPipeline;
 import org.dynamisai.voice.PhysicalVoiceContext;
@@ -45,6 +56,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -63,13 +76,21 @@ public final class DemoWorld {
     private final DefaultBudgetGovernor governor;
     private final DefaultPerceptionSystem perception;
     private final DefaultCognitionService cognition;
+    private final InferenceBackend inferenceBackend;
+    private final int inferenceDeadlineMs;
     private final DefaultMemoryLifecycleManager memory;
     private final DefaultNavigationSystem navigation;
     private final MovementIntegrator movementIntegrator;
     final DefaultSocialSystem social;
     final DefaultCrowdSystem crowd;
+    private final AcousticSnapshotManager snapshotManager;
+    private final AcousticEventQueueImpl eventQueue;
+    private final MixSnapshotManager mixSnapshotManager;
     private final MockTTSPipeline tts;
     private final DefaultAnimisBridge animisBridge;
+    private JavaSoundOutputNode audioOutputNode;
+    private SoftwareMixer softwareMixer;
+    private Thread dspRenderThread;
 
     final DemoNpc guard1;
     final DemoNpc guard2;
@@ -79,7 +100,7 @@ public final class DemoWorld {
     private final DemoReport report;
     private final AtomicLong currentTick = new AtomicLong(0L);
 
-    private static final Location[] WAYPOINTS = {
+    static final Location[] WAYPOINTS = {
         new Location(2, 0, 2),
         new Location(14, 0, 2),
         new Location(14, 0, 14),
@@ -108,8 +129,13 @@ public final class DemoWorld {
         navigation = new DefaultNavigationSystem(mesh);
 
         perception = new DefaultPerceptionSystem();
-        cognition = new DefaultCognitionService(new MockInferenceBackend());
-        memory = new DefaultMemoryLifecycleManager(MemoryBudget.tier1(), new DemoVectorMemoryStore());
+        inferenceBackend = createBestAvailableBackend();
+        ResponseParser parser = new ResponseParser();
+        inferenceDeadlineMs = (inferenceBackend instanceof JlamaInferenceBackend) ? 8000 : 300;
+        cognition = new DefaultCognitionService(inferenceBackend, parser, inferenceDeadlineMs);
+        SentenceEncoder encoder = createBestAvailableEncoder();
+        InHeapVectorMemoryStore vectorStore = new InHeapVectorMemoryStore(encoder);
+        memory = new DefaultMemoryLifecycleManager(MemoryBudget.tier1(), vectorStore);
         social = new DefaultSocialSystem();
 
         crowd = new DefaultCrowdSystem();
@@ -121,6 +147,10 @@ public final class DemoWorld {
 
         tts = new MockTTSPipeline();
         animisBridge = new DefaultAnimisBridge();
+        snapshotManager = new AcousticSnapshotManager();
+        eventQueue = new AcousticEventQueueImpl();
+        mixSnapshotManager = new MixSnapshotManager();
+        wireAudioHardware();
 
         governor.register(new AITaskNode(
             "crowd-tick", 3, Priority.NORMAL, DegradeMode.DEFER,
@@ -246,7 +276,8 @@ public final class DemoWorld {
             systems.add("SocialDialogueShaper");
 
             try {
-                DialogueResponse response = cognition.requestDialogue(shaped).get(2, TimeUnit.SECONDS);
+                DialogueResponse response = cognition.requestDialogue(shaped)
+                    .get(inferenceDeadlineMs + 1000L, TimeUnit.MILLISECONDS);
                 guard1Speech = response.text();
                 guard1.affect = response.affect();
 
@@ -338,8 +369,85 @@ public final class DemoWorld {
      * Shuts down all active AI systems and releases resources.
      */
     public void shutdown() {
+        if (dspRenderThread != null) {
+            dspRenderThread.interrupt();
+            try {
+                dspRenderThread.join(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        if (softwareMixer != null) {
+            softwareMixer.shutdown();
+        }
+        if (audioOutputNode != null) {
+            audioOutputNode.close();
+        }
         cognition.shutdown();
+        if (inferenceBackend instanceof JlamaInferenceBackend jlama) {
+            jlama.close();
+        }
         navigation.shutdown();
+    }
+
+    private static InferenceBackend createBestAvailableBackend() {
+        Path modelCache = Path.of(System.getProperty("user.home"), ".jlama", "models");
+        Path modelDir = modelCache.resolve("meta-llama_Llama-3.2-3B-Instruct");
+
+        if (Files.exists(modelDir)) {
+            try {
+                log.info("Jlama model found at {} - using live inference", modelDir);
+                JlamaInferenceBackend jlama = new JlamaInferenceBackend(modelDir.toString());
+                jlama.initialize();
+                return jlama;
+            } catch (Exception e) {
+                log.warn("Jlama init failed ({}), falling back to Mock", e.getMessage());
+            }
+        } else {
+            log.info("No Jlama model found at {} - using MockInferenceBackend", modelDir);
+            log.info("Run scripts/setup-models.sh to enable live inference");
+        }
+        return new MockInferenceBackend();
+    }
+
+    private static SentenceEncoder createBestAvailableEncoder() {
+        MiniLmSentenceEncoder encoder = new MiniLmSentenceEncoder();
+        encoder.initialize();
+        if (encoder.isLive()) {
+            log.info("Semantic memory: MiniLM-L6-v2 live (384-dim)");
+            return encoder;
+        }
+        log.info("Semantic memory: MockSentenceEncoder (384-dim hash). " +
+            "Run scripts/download-encoder.sh for semantic similarity.");
+        return new MockSentenceEncoder();
+    }
+
+    private void wireAudioHardware() {
+        try {
+            audioOutputNode = new JavaSoundOutputNode();
+            audioOutputNode.open(
+                AcousticConstants.SAMPLE_RATE,
+                2,
+                AcousticConstants.DSP_BLOCK_SIZE
+            );
+            softwareMixer = new SoftwareMixer(
+                snapshotManager,
+                eventQueue,
+                audioOutputNode,
+                mixSnapshotManager
+            );
+            dspRenderThread = Thread.ofVirtual().name("dsp-render").start(() -> {
+                while (!Thread.currentThread().isInterrupted()) {
+                    softwareMixer.renderBlock();
+                }
+            });
+            log.info("Audio hardware wired: 48kHz stereo -> JavaSoundOutputNode");
+        } catch (AudioDeviceException e) {
+            log.warn("Audio hardware unavailable ({}), running silent", e.getMessage());
+            audioOutputNode = null;
+            softwareMixer = null;
+            dspRenderThread = null;
+        }
     }
 
     private void applyPlayerAction(PlayerAction action, String speech) {

@@ -20,6 +20,24 @@ public record PerceptionSnapshot(
     Location ownerLocation,
     int totalEntitiesInRange
 ) {
+    /** Convenience factory used by sense simulation pipelines. */
+    public static PerceptionSnapshot of(EntityId owner, List<Percept> percepts, long tick) {
+        Optional<Percept> mostSalient = percepts.stream()
+            .max((a, b) -> Float.compare(a.salienceScore(), b.salienceScore()));
+        ThreatLevel aggregate = percepts.stream()
+            .map(Percept::perceivedThreat)
+            .max(Enum::compareTo)
+            .orElse(ThreatLevel.NONE);
+        return new PerceptionSnapshot(
+            owner,
+            tick,
+            List.copyOf(percepts),
+            mostSalient,
+            aggregate,
+            new Location(0f, 0f, 0f),
+            percepts.size());
+    }
+
     /** Empty snapshot — no perceptions this frame. */
     public static PerceptionSnapshot empty(EntityId owner, long tick, Location location) {
         return new PerceptionSnapshot(owner, tick, List.of(),

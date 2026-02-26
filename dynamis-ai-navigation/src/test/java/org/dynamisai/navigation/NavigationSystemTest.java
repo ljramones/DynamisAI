@@ -4,11 +4,7 @@ import org.dynamisai.core.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.DefaultWorldStateStore;
-import org.dynamisai.crowd.CrowdSnapshot;
-import org.dynamisai.crowd.DefaultCrowdSystem;
-import org.dynamisai.crowd.FormationType;
-import org.dynamisai.crowd.GroupId;
-import org.dynamisai.crowd.LodController;
+import org.dynamisai.core.SteeringOutput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -155,7 +151,7 @@ class NavigationSystemTest {
     @Test
     void steerWithNoPathReturnsIdle() {
         SteeringOutput output = nav.steer(npc, new Location(1, 0, 1), 4f);
-        assertTrue(output.isAtGoal());
+        assertFalse(output.isAtGoal());
         assertEquals(0f, output.speed());
     }
 
@@ -168,7 +164,7 @@ class NavigationSystemTest {
         SteeringOutput output = nav.steer(npc, new Location(1, 0, 1), 4f);
         // Should have a non-zero velocity toward goal
         assertTrue(output.speed() >= 0f);
-        assertNotNull(output.nextWaypoint());
+        assertNotNull(output.lookDirection());
     }
 
     @Test
@@ -179,7 +175,7 @@ class NavigationSystemTest {
         nav.requestPath(req).get(3, TimeUnit.SECONDS);
         nav.removeAgent(npc);
         SteeringOutput output = nav.steer(npc, new Location(1, 0, 1), 4f);
-        assertTrue(output.isAtGoal(), "After removeAgent, steer must return idle");
+        assertFalse(output.isAtGoal(), "After removeAgent, steer must return stopped");
     }
 
     // ── RVO2 ────────────────────────────────────────────────────────────────
@@ -240,9 +236,9 @@ class NavigationSystemTest {
 
     @Test
     void steeringOutputIdleHasZeroSpeed() {
-        SteeringOutput idle = SteeringOutput.idle(npc, NavPoint.of(0, 0, 0));
+        SteeringOutput idle = SteeringOutput.stopped();
         assertEquals(0f, idle.speed());
-        assertTrue(idle.isAtGoal());
+        assertFalse(idle.isAtGoal());
     }
 
     // ── MovementIntegrator ──────────────────────────────────────────────────
@@ -251,11 +247,8 @@ class NavigationSystemTest {
     void integrateCommitsCrowdPositionsToWorldStore() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
-        GroupId gid = crowd.createGroup(FormationType.LINE);
-        crowd.addToGroup(gid, EntityId.of(10L), new Location(5, 0, 7));
-        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+        Object snap = fakeSnapshot("FULL",
+            fakeAgent(EntityId.of(10L), 5f, 0f, 7f, 0f, 0f, 0));
 
         integrator.integrate(snap, 1L);
 
@@ -268,26 +261,16 @@ class NavigationSystemTest {
     void integrateReflectsMovedPositions() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
-        GroupId gid = crowd.createGroup(FormationType.LINE);
         EntityId agent = EntityId.of(20L);
-        EntityId wing = EntityId.of(21L);
-        crowd.addToGroup(gid, agent, new Location(0, 0, 0));
-        crowd.addToGroup(gid, wing, new Location(4, 0, 0));
-        crowd.setGroupGoal(gid, new Location(20, 0, 20));
-
-        CrowdSnapshot snap = null;
-        for (int i = 1; i <= 10; i++) {
-            snap = crowd.tick(i, 0.1f);
-        }
+        Object snap = fakeSnapshot("FULL",
+            fakeAgent(agent, 6f, 0f, 8f, 0.5f, 0.3f, 0));
         integrator.integrate(snap, 10L);
 
-        var agentSnap = snap.findAgent(agent);
-        assertTrue(agentSnap.isPresent());
+        var state = store.getCurrentSnapshot().entities().get(agent).getOrNull();
+        assertNotNull(state);
         float movedDist = (float) Math.sqrt(
-            agentSnap.get().position().x() * agentSnap.get().position().x() +
-                agentSnap.get().position().z() * agentSnap.get().position().z());
+            state.position().x() * state.position().x() +
+                state.position().z() * state.position().z());
         assertTrue(movedDist > 0.01f,
             "Agent must have moved from origin after 10 ticks");
     }
@@ -296,14 +279,10 @@ class NavigationSystemTest {
     void integrateWithExternalEntityCommitsBoth() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
-        GroupId gid = crowd.createGroup(FormationType.LINE);
         EntityId guardId = EntityId.of(1L);
         EntityId playerId = EntityId.of(99L);
-        crowd.addToGroup(gid, guardId, new Location(2, 0, 2));
-
-        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+        Object snap = fakeSnapshot("FULL",
+            fakeAgent(guardId, 2f, 0f, 2f, 0f, 0f, 0));
         EntityState player = MovementIntegrator.externalEntity(
             playerId, new Location(28, 0, 28), Map.of("role", "player"));
 
@@ -317,7 +296,7 @@ class NavigationSystemTest {
     void integrateEmptySnapshotIsNoOp() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-        CrowdSnapshot empty = CrowdSnapshot.empty(1L);
+        Object empty = fakeSnapshot("FULL");
 
         assertDoesNotThrow(() -> integrator.integrate(empty, 1L));
         assertEquals(1L, store.getCurrentTick());
@@ -336,14 +315,9 @@ class NavigationSystemTest {
     void velocityMetadataStoredInWorldState() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
-        GroupId gid = crowd.createGroup(FormationType.LINE);
         EntityId agent = EntityId.of(30L);
-        crowd.addToGroup(gid, agent, new Location(0, 0, 0));
-        crowd.setGroupGoal(gid, new Location(10, 0, 0));
-
-        CrowdSnapshot snap = crowd.tick(1L, 0.1f);
+        Object snap = fakeSnapshot("FULL",
+            fakeAgent(agent, 1f, 0f, 0f, 0.8f, 0.2f, 0));
         integrator.integrate(snap, 1L);
 
         var agentState = store.getCurrentSnapshot().entities().get(agent).getOrNull();
@@ -355,13 +329,10 @@ class NavigationSystemTest {
     @Test
     void lodMetadataReflectsCrowdLod() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem(new LodController(1f, 2f, 3f));
         MovementIntegrator integrator = new MovementIntegrator(store);
-
-        GroupId gid = crowd.createGroup(FormationType.LINE);
         EntityId agent = EntityId.of(40L);
-        crowd.addToGroup(gid, agent, new Location(100, 0, 100));
-        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+        Object snap = fakeSnapshot("CULLED",
+            fakeAgent(agent, 100f, 0f, 100f, 0f, 0f, 0));
         integrator.integrate(snap, 1L);
 
         var agentState = store.getCurrentSnapshot().entities().get(agent).getOrNull();
@@ -374,15 +345,37 @@ class NavigationSystemTest {
     void multipleIntegrateCallsAdvanceTick() {
         DefaultWorldStateStore store = new DefaultWorldStateStore();
         MovementIntegrator integrator = new MovementIntegrator(store);
-        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
-        GroupId gid = crowd.createGroup(FormationType.LINE);
-        crowd.addToGroup(gid, EntityId.of(50L), new Location(0, 0, 0));
+        EntityId agent = EntityId.of(50L);
 
         for (int i = 1; i <= 5; i++) {
-            CrowdSnapshot snap = crowd.tick(i, 0.016f);
+            Object snap = fakeSnapshot("FULL",
+                fakeAgent(agent, i, 0f, i, 0.1f, 0.1f, 0));
             integrator.integrate(snap, i);
         }
 
         assertEquals(5L, store.getCurrentTick());
+    }
+
+    private static Object fakeSnapshot(String lod, FakeAgent... agents) {
+        return new FakeSnapshot(Map.of("g", new FakeGroup(lod, List.of(agents))));
+    }
+
+    private static FakeAgent fakeAgent(EntityId id, float px, float py, float pz,
+                                       float vx, float vz, int slot) {
+        return new FakeAgent(id, new FakeNavPoint(px, py, pz),
+            new FakeNavPoint(vx, 0f, vz), slot);
+    }
+
+    private record FakeSnapshot(Map<String, FakeGroup> groups) {}
+
+    private record FakeGroup(String lod, List<FakeAgent> agents) {}
+
+    private record FakeAgent(EntityId id, FakeNavPoint position,
+                             FakeNavPoint velocity, int slotIndex) {}
+
+    private record FakeNavPoint(float x, float y, float z) {
+        public Location toLocation() {
+            return new Location(x, y, z);
+        }
     }
 }

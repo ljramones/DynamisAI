@@ -12,22 +12,25 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Legacy adapter — delegates to OffHeapVectorMemoryStore.
  *
- * Retained so DefaultMemoryLifecycleManager can construct it without changes.
- * Uses a compact 32-dimensional embedding space.
+ * Retained so DefaultMemoryLifecycleManager and legacy tests can construct it
+ * with no call-site changes.
  */
 public final class InHeapVectorMemoryStore implements VectorMemoryStore {
 
     private static final Logger log = LoggerFactory.getLogger(InHeapVectorMemoryStore.class);
 
-    /** Fixed dim for legacy keyword-hash embeddings. */
-    private static final int LEGACY_DIM = 32;
-
+    private final SentenceEncoder encoder;
     private final OffHeapVectorMemoryStore delegate;
 
     public InHeapVectorMemoryStore() {
-        this.delegate = new OffHeapVectorMemoryStore(LEGACY_DIM, 64);
-        log.info("InHeapVectorMemoryStore: delegating to OffHeapVectorMemoryStore " +
-            "(dim={}, capacity=64)", LEGACY_DIM);
+        this(new MockSentenceEncoder());
+    }
+
+    public InHeapVectorMemoryStore(SentenceEncoder encoder) {
+        this.encoder = encoder;
+        this.delegate = new OffHeapVectorMemoryStore(encoder.dim(), 64);
+        log.info("InHeapVectorMemoryStore: encoder={} dim={} capacity=64",
+            encoder.getClass().getSimpleName(), encoder.dim());
     }
 
     /**
@@ -35,7 +38,7 @@ public final class InHeapVectorMemoryStore implements VectorMemoryStore {
      */
     @Override
     public void store(MemoryRecord record) {
-        EmbeddingVector vec = keywordEmbedding(record.summary(), LEGACY_DIM);
+        EmbeddingVector vec = encoder.encode(record.summary());
         delegate.store(record, vec);
     }
 
@@ -58,7 +61,7 @@ public final class InHeapVectorMemoryStore implements VectorMemoryStore {
 
     @Override
     public List<MemoryRecord> findSimilar(EntityId owner, String query, int maxResults) {
-        EmbeddingVector q = keywordEmbedding(query, LEGACY_DIM);
+        EmbeddingVector q = encoder.encode(query);
         try {
             return delegate.findSimilar(q, owner, maxResults)
                 .get()
@@ -98,15 +101,8 @@ public final class InHeapVectorMemoryStore implements VectorMemoryStore {
     /**
      * Deterministic character-hash projection.
      */
+    @Deprecated
     static EmbeddingVector keywordEmbedding(String text, int dim) {
-        float[] vec = new float[dim];
-        if (text == null || text.isEmpty()) {
-            return new EmbeddingVector(vec);
-        }
-        for (int i = 0; i < text.length(); i++) {
-            int bucket = Math.abs(text.charAt(i) * 31 + i) % dim;
-            vec[bucket] += 1.0f;
-        }
-        return new EmbeddingVector(vec).normalize();
+        return MockSentenceEncoder.hashProject(text, dim);
     }
 }

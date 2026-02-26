@@ -9,9 +9,20 @@ public record WorldSnapshot(
     EnvironmentState environment,
     long deterministicSeed
 ) {
+    public WorldSnapshot {
+        deterministicSeed = DeterminismSeedManager.seedForSnapshot(tick);
+    }
+
+    public WorldSnapshot(long tick,
+                         HashMap<EntityId, EntityState> entities,
+                         GlobalFacts globalFacts,
+                         EnvironmentState environment) {
+        this(tick, entities, globalFacts, environment, 0L);
+    }
+
     /** Per-NPC deterministic seed — same EntityId + same tick = same seed, always. */
     public long seedFor(EntityId id) {
-        return Long.hashCode(tick) ^ id.value();
+        return DeterminismSeedManager.seedFor(id, tick);
     }
 
     /** Structural sharing — O(log N), never clones the full map. */
@@ -25,7 +36,6 @@ public record WorldSnapshot(
                                    GlobalFacts updatedFacts,
                                    EnvironmentState updatedEnvironment) {
         long newTick = tick + 1;
-        return new WorldSnapshot(newTick, updatedEntities,
-            updatedFacts, updatedEnvironment, Long.hashCode(newTick));
+        return new WorldSnapshot(newTick, updatedEntities, updatedFacts, updatedEnvironment);
     }
 }

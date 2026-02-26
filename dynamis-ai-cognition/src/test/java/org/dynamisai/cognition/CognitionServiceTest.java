@@ -129,4 +129,39 @@ class CognitionServiceTest {
     void shutdownCompletesCleanly() {
         assertDoesNotThrow(() -> service.shutdown());
     }
+
+    @Test
+    void inferDeterministicSameRequestSameSeedReturnsSameText() throws Exception {
+        DialogueRequest req = request(EntityId.of(10L), "Deterministic line");
+        DialogueResponse a = service.inferDeterministic(req, 12345L)
+            .get(2, TimeUnit.SECONDS);
+        DialogueResponse b = service.inferDeterministic(req, 12345L)
+            .get(2, TimeUnit.SECONDS);
+        assertEquals(a.text(), b.text());
+    }
+
+    @Test
+    void beliefsForReturnsNonNullModel() {
+        BeliefModel model = service.beliefsFor(EntityId.of(11L));
+        assertNotNull(model);
+    }
+
+    @Test
+    void beliefsForSameEntityReturnsSameInstance() {
+        EntityId id = EntityId.of(12L);
+        assertSame(service.beliefsFor(id), service.beliefsFor(id));
+    }
+
+    @Test
+    void beliefRegistryDecaysOnDeliberativeCadence() throws Exception {
+        EntityId id = EntityId.of(13L);
+        BeliefModel model = service.beliefsFor(id);
+        model.assertBelief("k", "v", 1.0f, 1L);
+
+        for (int i = 0; i < 60; i++) {
+            service.requestDialogue(request(id, "tick " + i)).get(2, TimeUnit.SECONDS);
+        }
+
+        assertTrue(model.getBelief("k").orElseThrow().confidence() < 1.0f);
+    }
 }

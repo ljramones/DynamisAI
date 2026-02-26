@@ -9,6 +9,16 @@ package org.dynamisai.cognition;
 public interface InferenceBackend {
 
     /**
+     * Generate a response for a structured inference request.
+     * Implementations that support deterministic seeding should prefer
+     * request.deterministicSeed() when request.seedingEnabled() is true.
+     */
+    default String generate(InferenceRequest request,
+                            GenerationConfig config) throws InferenceException {
+        return generate(request.dialogue().inputSpeech(), config);
+    }
+
+    /**
      * Generate a response for the given prompt.
      * Must be thread-safe — called from virtual threads concurrently.
      *

@@ -2,6 +2,7 @@ package org.dynamisai.navigation;
 
 import org.dynamisai.core.EntityId;
 import org.dynamisai.core.Location;
+import org.dynamisai.core.SteeringOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,13 +76,13 @@ public final class DefaultNavigationSystem implements NavigationSystem {
         NavPath path = activePaths.get(agent);
 
         if (path == null || !path.hasWaypoints()) {
-            return SteeringOutput.idle(agent, pos);
+            return SteeringOutput.stopped();
         }
 
         NavPoint target = path.nextWaypoint();
         if (target == null) {
             activePaths.remove(agent);
-            return SteeringOutput.idle(agent, pos);
+            return SteeringOutput.stopped();
         }
 
         float distToTarget = pos.distanceTo(target);
@@ -94,7 +95,7 @@ public final class DefaultNavigationSystem implements NavigationSystem {
             activePaths.put(agent, advanced);
             target = advanced.nextWaypoint();
             if (target == null) {
-                return SteeringOutput.idle(agent, pos);
+                return SteeringOutput.stopped();
             }
             path = advanced;
         }
@@ -127,9 +128,12 @@ public final class DefaultNavigationSystem implements NavigationSystem {
             ? NavPoint.of(steerVel.x() / actualSpeed, 0, steerVel.z() / actualSpeed)
             : NavPoint.of(0, 0, 1);
 
-        return new SteeringOutput(agent, steerVel, lookDir,
-            actualSpeed, target, distToGoal,
-            distToGoal < 0.5f);
+        return new SteeringOutput(
+            steerVel.toLocation(),
+            lookDir.toLocation(),
+            actualSpeed,
+            distToGoal < 0.5f
+        );
     }
 
     @Override

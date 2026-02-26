@@ -33,10 +33,10 @@ class DefaultWorldStateStoreTest {
     }
 
     @Test
-    void deterministicSeedMatchesHashOfTick() {
+    void deterministicSeedMatchesDerivedSnapshotSeed() {
         store.commitTick();
         WorldSnapshot snap = store.getCurrentSnapshot();
-        assertEquals(Long.hashCode(1L), snap.deterministicSeed());
+        assertEquals(DeterminismSeedManager.seedForSnapshot(1L), snap.deterministicSeed());
     }
 
     @Test

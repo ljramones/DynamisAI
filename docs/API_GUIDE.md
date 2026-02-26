@@ -271,3 +271,81 @@ for dir in dynamis-ai-core dynamis-ai-cognition dynamis-ai-perception \
   cd $dir && mvn clean test && cd ..
 done
 ```
+
+---
+
+## Game Engine Integration
+
+### The Tick Contract
+
+DynamisAI integrates into a game loop through `GameEngineAdapter` and `DynamisAiEngine`.
+
+```java
+GameEngineAdapter adapter = new MyGameEngineAdapter();
+DynamisAiEngine engine = DynamisAiEngine.builder()
+    .governor(new DefaultBudgetGovernor(12))
+    .build();
+
+adapter.initialize(engine);
+
+GameEngineContext ctx = GameEngineContext.builder(tick, deltaTime)
+    .observer(cameraPosition)
+    .positions(entityPositions)
+    .playerInput(playerInput)
+    .build();
+
+AIOutputFrame frame = adapter.tick(ctx);
+```
+
+### Implementing GameEngineAdapter
+
+Use `AbstractGameEngineAdapter` as the base type and override lifecycle hooks:
+
+- `onInitialize(engine)`
+- `onPreTick(context)`
+- `onPostTick(context, frame)`
+- `onShutdown()`
+
+### Thread Expectations
+
+- `initialize()` on engine main thread
+- `tick()` on the game loop thread (single-threaded contract)
+- `shutdown()` on engine main thread
+- `AIOutputFrame` is immutable and safe to read from any thread after tick returns
+
+### Validate Your Adapter
+
+Use `dynamis-ai-test-kit` contract tests:
+
+```java
+class MyAdapterTest extends GameEngineAdapterContractTest {
+    @Override
+    protected GameEngineAdapter createAdapter() {
+        return new MyGameEngineAdapter();
+    }
+}
+```
+
+---
+
+## Extension Points (SPI)
+
+Stable SPI interfaces:
+
+- `InferenceBackend` (`dynamis-ai-cognition`)
+- `VectorMemoryStore` (`dynamis-ai-memory`)
+- `SentenceEncoder` (`dynamis-ai-memory`)
+- `TTSPipeline` (`dynamis-ai-voice`)
+- `NavigationSystem` (`dynamis-ai-navigation`)
+- `SaliencyFilter` (`dynamis-ai-perception`)
+- `GameEngineAdapter` (`dynamis-ai-core`)
+
+`Default*` classes are implementations and may change more frequently. Prefer binding to interfaces.
+
+Stub examples for each SPI are provided in `dynamisai-extensions/` at repo root.
+
+## Example Implementations
+
+The `dynamisai-extensions` module contains a minimal stub for every SPI above.
+Clone the repo, open `dynamisai-extensions/src/main/java/org/dynamisai/extensions/`,
+and use any stub as a starting point for your own integration.

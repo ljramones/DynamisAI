@@ -75,9 +75,39 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>io.dynamis</groupId>
+            <artifactId>dynamis-audio-api</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dynamis</groupId>
+            <artifactId>dynamis-audio-core</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dynamis</groupId>
+            <artifactId>dynamis-audio-designer</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dynamis</groupId>
+            <artifactId>dynamis-audio-dsp</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>23.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>23.0.1</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -121,8 +151,9 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <mainClass>org.dynamisai.demo.DynamisAiDemo</mainClass>
+                    <mainClass>org.dynamisai.demo.DemoLauncher</mainClass>
                     <addResourcesToClasspath>true</addResourcesToClasspath>
+                    <commandlineArgs>${exec.args}</commandlineArgs>
                 </configuration>
             </plugin>
         </plugins>

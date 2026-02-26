@@ -6,7 +6,9 @@ import org.dynamisai.core.ThreatLevel;
 import org.dynamisai.memory.MemoryStats;
 import org.dynamisai.navigation.NavPoint;
 import org.dynamisai.perception.PerceptionSnapshot;
+import org.dynamisai.core.Location;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,5 +48,19 @@ public record WorldState(
 
     public boolean is(String key, Object value) {
         return value.equals(blackboard.get(key));
+    }
+
+    /** Merge propagated squad facts into a new immutable planning state. */
+    public WorldState withSquadFacts(SquadBlackboard squadBlackboard, EntityId reader,
+                                     Location readerPos, Location authorPos,
+                                     long currentTick) {
+        Map<String, Object> merged = new HashMap<>(blackboard);
+        for (BlackboardEntry entry : squadBlackboard.snapshotEntries().values()) {
+            if (entry.isAvailableTo(reader, readerPos, authorPos, currentTick)) {
+                merged.put(entry.key(), entry.value());
+            }
+        }
+        return new WorldState(owner, tick, affect, currentThreat, perception, memoryStats,
+            Map.copyOf(merged), agentPosition, goalPosition, distanceToGoal);
     }
 }

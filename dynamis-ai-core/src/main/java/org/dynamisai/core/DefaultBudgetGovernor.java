@@ -18,6 +18,7 @@ public final class DefaultBudgetGovernor implements BudgetGovernor {
 
     private final CopyOnWriteArrayList<AITaskNode> tasks = new CopyOnWriteArrayList<>();
     private volatile FrameBudgetReport lastReport;
+    private volatile AILODPolicy lodPolicy;
 
     public DefaultBudgetGovernor(int frameBudgetMs) {
         this.frameBudgetMs = frameBudgetMs;
@@ -40,6 +41,11 @@ public final class DefaultBudgetGovernor implements BudgetGovernor {
     }
 
     @Override
+    public void setLodPolicy(AILODPolicy policy) {
+        this.lodPolicy = policy;
+    }
+
+    @Override
     public void runFrame(long tick, WorldSnapshot snapshot) {
         long frameStart = System.nanoTime();
         List<TaskExecutionRecord> records = new ArrayList<>();
@@ -51,6 +57,13 @@ public final class DefaultBudgetGovernor implements BudgetGovernor {
             long elapsedMsSoFar = (taskStart - frameStart) / 1_000_000;
 
             boolean isCritical = node.priority() == Priority.CRITICAL;
+            if (!isCritical && lodPolicy != null && node.entityId() != null &&
+                !lodPolicy.shouldRunAi(node.entityId(), tick, snapshot)) {
+                long elapsed = System.nanoTime() - taskStart;
+                records.add(new TaskExecutionRecord(
+                    node.taskId(), node.priority(), QosLevel.SKIP, elapsed, false, true));
+                continue;
+            }
             boolean budgetExceeded = (elapsedMsSoFar + node.maxBudgetMs()) > frameBudgetMs;
 
             if (isCritical || !budgetExceeded || node.degradeMode() == DegradeMode.FULL) {

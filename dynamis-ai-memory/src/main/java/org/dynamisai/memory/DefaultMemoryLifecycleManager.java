@@ -87,7 +87,8 @@ public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManag
 
         for (MemoryRecord r : toArchive) {
             MemoryRecord archived = r.withStage(MemoryLifecycleStage.ARCHIVED);
-            archiveStore.store(archived, InHeapVectorMemoryStore.keywordEmbedding(archived.summary(), 32));
+            archiveStore.store(archived, InHeapVectorMemoryStore.keywordEmbedding(
+                archived.summary(), MockSentenceEncoder.DIM));
             records.remove(r.id());
             log.debug("Archived memory {} for owner {}", r.id(), owner);
         }

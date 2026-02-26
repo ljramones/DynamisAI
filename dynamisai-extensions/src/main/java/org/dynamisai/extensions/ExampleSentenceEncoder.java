@@ -21,6 +21,10 @@ public final class ExampleSentenceEncoder implements SentenceEncoder {
         for (int i = 0; i < values.length; i++) {
             values[i] = base;
         }
+        if (text != null && !text.isBlank()) {
+            int bucket = Math.floorMod(text.hashCode(), DIM);
+            values[bucket] = clamp01(base + 0.1f);
+        }
         return new EmbeddingVector(values);
     }
 

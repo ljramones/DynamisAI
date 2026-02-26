@@ -27,15 +27,24 @@ public final class DjlTtsPipeline implements TTSPipeline {
     private final BarkEngine bark;
     private final KokoroEngine kokoro;
     private final VisemeExtractor visemeExtractor;
+    private final BlendshapeMapper blendshapeMapper;
     private final ExecutorService executor;
 
     public DjlTtsPipeline(ChatterboxEngine chatterbox,
                           BarkEngine bark,
                           KokoroEngine kokoro) {
+        this(chatterbox, bark, kokoro, new RuleBasedVisemeExtractor());
+    }
+
+    public DjlTtsPipeline(ChatterboxEngine chatterbox,
+                          BarkEngine bark,
+                          KokoroEngine kokoro,
+                          VisemeExtractor visemeExtractor) {
         this.chatterbox = chatterbox;
         this.bark = bark;
         this.kokoro = kokoro;
-        this.visemeExtractor = new VisemeExtractor();
+        this.visemeExtractor = visemeExtractor;
+        this.blendshapeMapper = new BlendshapeMapper(BlendshapeTable.defaultHumanoid());
         this.executor = Executors.newThreadPerTaskExecutor(
             Thread.ofVirtual().name("tts-", 0).factory());
     }
@@ -65,13 +74,15 @@ public final class DjlTtsPipeline implements TTSPipeline {
         return CompletableFuture.supplyAsync(() -> {
             String text = response.text();
 
-            AudioStream primary = synthesizePrimary(text, response.affect());
+            SynthesisResult primary = synthesizePrimary(text, response.affect());
             AudioStream nonverbal = synthesizeNonverbal(response.nonverbalTags());
-            List<VisemeTimestamp> visemes = visemeExtractor.extract(text);
-            Duration duration = visemeExtractor.estimateDuration(text);
+            List<VisemeTimestamp> visemes = primary.visemes();
+            Duration duration = primary.audio().estimatedDuration().isZero()
+                ? Duration.ofMillis(500)
+                : primary.audio().estimatedDuration();
 
             return new VoiceRenderJob(
-                speaker, primary, nonverbal, visemes,
+                speaker, primary.audio(), nonverbal, visemes,
                 response.affect(), physical, duration);
         }, executor);
     }
@@ -79,13 +90,15 @@ public final class DjlTtsPipeline implements TTSPipeline {
     @Override
     public VoiceRenderJob getFallbackBark(EntityId speaker, BarkType type) {
         String barkText = type.name().toLowerCase().replace("_", " ");
-        AudioStream primary = synthesizePrimary(barkText, AffectVector.neutral());
+        SynthesisResult primary = synthesizePrimary(barkText, AffectVector.neutral());
         return new VoiceRenderJob(
-            speaker, primary, AudioStream.empty("nonverbal-empty"),
-            visemeExtractor.extract(barkText),
+            speaker, primary.audio(), AudioStream.empty("nonverbal-empty"),
+            primary.visemes(),
             AffectVector.neutral(),
             PhysicalVoiceContext.calm(),
-            Duration.ofMillis(500));
+            primary.audio().estimatedDuration().isZero()
+                ? Duration.ofMillis(500)
+                : primary.audio().estimatedDuration());
     }
 
     @Override
@@ -105,26 +118,38 @@ public final class DjlTtsPipeline implements TTSPipeline {
         kokoro.close();
     }
 
-    private AudioStream synthesizePrimary(String text, AffectVector affect) {
+    private SynthesisResult synthesizePrimary(String text, AffectVector affect) {
         if (chatterbox.isAvailable()) {
             try {
                 float[] pcm = chatterbox.synthesize(text);
-                return AudioStream.fromPcmFloats("primary-speech", pcm,
+                AudioStream audio = AudioStream.fromPcmFloats("primary-speech", pcm,
                     chatterbox.sampleRateHz());
+                List<VisemeTimestamp> visemes = visemeExtractor.extract(
+                    new AudioBuffer(pcm, chatterbox.sampleRateHz(), 1), text);
+                List<BlendshapeFrame> blendshapeFrames = blendshapeMapper.map(visemes, affect);
+                return new SynthesisResult(audio, visemes, blendshapeFrames);
             } catch (TtsEngineException e) {
                 log.warn("Chatterbox failed — falling back to Kokoro: {}", e.getMessage());
             }
         }
         if (kokoro.isAvailable()) {
             try {
-                float[] pcm = kokoro.synthesize(text);
-                return AudioStream.fromPcmFloats("primary-speech-kokoro", pcm,
+                float[] pcm = kokoro.synthesize(text, affect);
+                AudioStream audio = AudioStream.fromPcmFloats("primary-speech-kokoro", pcm,
                     kokoro.sampleRateHz());
+                List<VisemeTimestamp> visemes = visemeExtractor.extract(
+                    new AudioBuffer(pcm, kokoro.sampleRateHz(), 1), text);
+                List<BlendshapeFrame> blendshapeFrames = blendshapeMapper.map(visemes, affect);
+                return new SynthesisResult(audio, visemes, blendshapeFrames);
             } catch (TtsEngineException e) {
                 log.warn("Kokoro failed — returning empty stream: {}", e.getMessage());
             }
         }
-        return AudioStream.empty("primary-speech-fallback");
+        AudioStream audio = AudioStream.empty("primary-speech-fallback");
+        List<VisemeTimestamp> visemes = visemeExtractor.extract(
+            new AudioBuffer(new float[0], audio.sampleRateHz(), audio.channelCount()), text);
+        List<BlendshapeFrame> blendshapeFrames = blendshapeMapper.map(visemes, affect);
+        return new SynthesisResult(audio, visemes, blendshapeFrames);
     }
 
     private AudioStream synthesizeNonverbal(List<String> tags) {

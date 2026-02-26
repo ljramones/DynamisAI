@@ -5,6 +5,7 @@ import java.time.Duration;
 /**
  * A single phoneme keyframe in the lip-sync timeline.
  * Fed to Animis to drive blendshape weights.
+ * Weight is intended articulation/blend weight, not model confidence.
  */
 public record VisemeTimestamp(
     Duration offset,

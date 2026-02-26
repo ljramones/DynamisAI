@@ -9,6 +9,13 @@ module org.dynamisai.demo {
     requires org.dynamisai.social;
     requires org.dynamisai.crowd;
     requires org.dynamisai.tools;
+    requires dynamis.audio.api;
+    requires dynamis.audio.core;
+    requires dynamis.audio.designer;
+    requires dynamis.audio.dsp;
     requires org.slf4j;
     requires jdk.incubator.vector;
+    requires jlama.core;
+    requires javafx.controls;
+    requires javafx.graphics;
 }

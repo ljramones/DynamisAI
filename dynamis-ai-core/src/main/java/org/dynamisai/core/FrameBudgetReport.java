@@ -16,4 +16,9 @@ public record FrameBudgetReport(
     public long frameElapsedMs() {
         return (frameEndNanos - frameStartNanos) / 1_000_000;
     }
+
+    public static FrameBudgetReport empty(long tick) {
+        long now = System.nanoTime();
+        return new FrameBudgetReport(tick, now, now, List.of(), 0, 0);
+    }
 }

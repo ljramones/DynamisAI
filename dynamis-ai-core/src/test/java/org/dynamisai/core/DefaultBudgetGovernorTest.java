@@ -175,4 +175,27 @@ class DefaultBudgetGovernorTest {
         governor.unregister("a");
         assertEquals(1, governor.getRegisteredTaskCount());
     }
+
+    @Test
+    void lodPolicySkipsTier3TaskWithoutBudgetFailure() {
+        EntityId entity = EntityId.of(100L);
+        AtomicBoolean ran = new AtomicBoolean(false);
+        AtomicBoolean criticalRan = new AtomicBoolean(false);
+
+        governor.setLodPolicy((id, tick, snapshot) -> false);
+        governor.register(new AITaskNode(
+            "tier3-normal", 1, Priority.NORMAL, DegradeMode.FULL,
+            () -> ran.set(true), () -> {}, entity));
+        governor.register(new AITaskNode(
+            "critical", 1, Priority.CRITICAL, DegradeMode.FULL,
+            () -> criticalRan.set(true), () -> {}, entity));
+
+        governor.runFrame(1L, stubSnapshot);
+        FrameBudgetReport report = governor.getLastFrameReport();
+
+        assertFalse(ran.get());
+        assertTrue(criticalRan.get());
+        assertEquals(0, report.degradedTaskCount());
+        assertEquals(0, report.skippedTaskCount());
+    }
 }

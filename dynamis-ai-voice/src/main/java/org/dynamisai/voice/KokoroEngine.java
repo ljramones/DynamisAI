@@ -6,6 +6,7 @@ import ai.djl.ndarray.NDList;
 import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.DataType;
 import ai.djl.ndarray.types.Shape;
+import org.dynamisai.cognition.AffectVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +32,16 @@ public final class KokoroEngine {
     public boolean isAvailable() { return session.isInitialized(); }
 
     public float[] synthesize(String text) throws TtsEngineException {
+        return synthesize(text, null);
+    }
+
+    public float[] synthesize(String text, AffectVector affect) throws TtsEngineException {
         if (!isAvailable())
             throw new TtsEngineException("KokoroEngine not initialized");
 
         NDManager manager = session.getManager();
-        int[] tokens = tokenizer.tokenizeFixed(text, session.config().maxTokens());
+        String styledText = AffectToVoiceStyle.applyToText(text, affect);
+        int[] tokens = tokenizer.tokenizeFixed(styledText, session.config().maxTokens());
 
         try (Predictor<NDList, NDList> predictor = session.newPredictor()) {
             NDArray input = manager.create(tokens)

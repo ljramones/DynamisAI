@@ -124,6 +124,10 @@ public final class DynamisAiEngine {
         return worldStore.getCurrentTick();
     }
 
+    public long currentDeterministicSeed() {
+        return worldStore.getCurrentSnapshot().deterministicSeed();
+    }
+
     public BudgetGovernor governor() {
         return governor;
     }

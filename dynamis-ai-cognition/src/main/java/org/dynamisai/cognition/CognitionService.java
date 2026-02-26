@@ -14,6 +14,11 @@ public interface CognitionService {
     CompletableFuture<DialogueResponse> requestDialogue(DialogueRequest request);
 
     /**
+     * Deterministic variant of dialogue inference with explicit seed.
+     */
+    CompletableFuture<DialogueResponse> inferDeterministic(DialogueRequest request, long seed);
+
+    /**
      * Synchronous fallback — always returns instantly from cache or canned line.
      * Used by BudgetGovernor when CognitionService task is in CACHED degrade mode.
      */
@@ -24,6 +29,9 @@ public interface CognitionService {
 
     /** Current queue depth — fed to BudgetGovernor telemetry. */
     int getQueueDepth();
+
+    /** Returns the belief model for an entity, creating one if absent. */
+    BeliefModel beliefsFor(EntityId entityId);
 
     /** Shut down the virtual thread executor cleanly. */
     void shutdown();

@@ -41,6 +41,15 @@ public final class OllamaInferenceBackend implements InferenceBackend {
     }
 
     @Override
+    public String generate(InferenceRequest request, GenerationConfig config) throws InferenceException {
+        GenerationConfig effective = config;
+        if (request.seedingEnabled()) {
+            effective = GenerationConfig.deterministic(request.deterministicSeed());
+        }
+        return generate(buildPrompt(request.dialogue()), effective);
+    }
+
+    @Override
     public String generate(String prompt, GenerationConfig config) throws InferenceException {
         callCount.incrementAndGet();
         long start = System.currentTimeMillis();
@@ -126,5 +135,15 @@ public final class OllamaInferenceBackend implements InferenceBackend {
                        .replace("\"", "\\\"")
                        .replace("\n", "\\n")
                        .replace("\r", "\\r") + "\"";
+    }
+
+    private static String buildPrompt(DialogueRequest request) {
+        return String.format(
+            "You are an NPC. Player says: \"%s\". " +
+                "Respond as JSON: {\"text\":\"...\",\"affect\":{\"valence\":0.0," +
+                "\"arousal\":0.3,\"dominance\":0.5,\"sarcasm\":0.0,\"intensity\":0.3}," +
+                "\"tags\":[],\"hints\":[]}",
+            request.inputSpeech()
+        );
     }
 }

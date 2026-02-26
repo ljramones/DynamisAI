@@ -78,6 +78,16 @@ public final class JlamaInferenceBackend implements InferenceBackend {
     }
 
     @Override
+    public synchronized String generate(InferenceRequest request,
+                                        GenerationConfig config) throws InferenceException {
+        GenerationConfig effective = config;
+        if (request.seedingEnabled()) {
+            effective = GenerationConfig.deterministic(request.deterministicSeed());
+        }
+        return generate(buildPrompt(request.dialogue()), effective);
+    }
+
+    @Override
     public synchronized String generate(String prompt,
                                         GenerationConfig config) throws InferenceException {
         if (!initialized || model == null) {
@@ -172,5 +182,15 @@ public final class JlamaInferenceBackend implements InferenceBackend {
             return UUID.nameUUIDFromBytes(key.getBytes(StandardCharsets.UTF_8));
         }
         return new UUID(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
+    }
+
+    private static String buildPrompt(DialogueRequest request) {
+        return String.format(
+            "You are an NPC. Player says: \"%s\". " +
+                "Respond as JSON: {\"text\":\"...\",\"affect\":{\"valence\":0.0," +
+                "\"arousal\":0.3,\"dominance\":0.5,\"sarcasm\":0.0,\"intensity\":0.3}," +
+                "\"tags\":[],\"hints\":[]}",
+            request.inputSpeech()
+        );
     }
 }

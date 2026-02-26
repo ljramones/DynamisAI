@@ -12,8 +12,18 @@ public record AITaskNode(
     Priority priority,
     DegradeMode degradeMode,
     Runnable task,
-    Runnable fallback
+    Runnable fallback,
+    EntityId entityId
 ) {
+    public AITaskNode(String taskId,
+                      int maxBudgetMs,
+                      Priority priority,
+                      DegradeMode degradeMode,
+                      Runnable task,
+                      Runnable fallback) {
+        this(taskId, maxBudgetMs, priority, degradeMode, task, fallback, null);
+    }
+
     public AITaskNode {
         Objects.requireNonNull(taskId, "taskId must not be null");
         Objects.requireNonNull(task, "task must not be null");

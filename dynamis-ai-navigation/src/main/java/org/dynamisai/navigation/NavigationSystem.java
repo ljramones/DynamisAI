@@ -2,6 +2,7 @@ package org.dynamisai.navigation;
 
 import org.dynamisai.core.EntityId;
 import org.dynamisai.core.Location;
+import org.dynamisai.core.SteeringOutput;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public interface NavigationSystem {
     /**
      * Compute steering output for an agent given its current path.
      * Synchronous — called from HIGH priority BudgetGovernor task.
-     * Returns SteeringOutput.idle() if no path is available.
+     * Returns stopped output if no path is available.
      *
      * @param agent    The NPC
      * @param position Current world position
