@@ -1,6 +1,0 @@
---add-modules
-jdk.incubator.vector
---patch-module
-org.dynamisai.demo=_
---add-reads
-org.dynamisai.demo=ALL-UNNAMED

@@ -13,3 +13,6 @@
 
 # Demo runtime output
 /dynamis-ai-demo/demo-report.json
+
+# Module build outputs
+**/target/
