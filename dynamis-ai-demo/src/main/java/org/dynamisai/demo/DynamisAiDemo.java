@@ -9,8 +9,16 @@ import java.nio.file.Path;
  */
 public final class DynamisAiDemo {
 
+    /** Maximum number of simulation ticks before the demo terminates automatically. */
     private static final int MAX_TICKS = 20;
 
+    /**
+     * Entry point for the DynamisAI Guard Patrol Encounter demo.
+     * Manages the main simulation loop and coordinates between {@link DemoWorld} and {@link DemoCli}.
+     *
+     * @param args CLI arguments (unused).
+     * @throws Exception if a runtime error occurs during simulation.
+     */
     public static void main(String[] args) throws Exception {
         DemoCli cli = new DemoCli();
         DemoWorld world = new DemoWorld();

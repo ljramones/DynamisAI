@@ -7,21 +7,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Accumulates TickRecords and writes a JSON summary.
+ * Accumulates {@link TickRecord}s throughout the demo and writes a JSON summary to disk.
  */
 public final class DemoReport {
 
     private final List<TickRecord> ticks = new ArrayList<>();
     private String finalOutcome = "unknown";
 
+    /**
+     * Adds a tick record to the report.
+     *
+     * @param tick The record for a single simulation tick.
+     */
     public void add(TickRecord tick) {
         ticks.add(tick);
     }
 
+    /**
+     * Sets the final outcome of the scenario.
+     *
+     * @param outcome A description of how the scenario ended.
+     */
     public void setOutcome(String outcome) {
         this.finalOutcome = outcome;
     }
 
+    /**
+     * Serializes the accumulated report data to a JSON file.
+     *
+     * @param path The file path where the JSON should be written.
+     * @throws IOException If an I/O error occurs during writing.
+     */
     public void writeJson(Path path) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");

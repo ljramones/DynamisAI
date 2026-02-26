@@ -3,7 +3,8 @@ package org.dynamisai.demo;
 import java.util.Scanner;
 
 /**
- * Console I/O for the demo.
+ * Console I/O for the DynamisAI Guard Patrol demo.
+ * Handles rendering the world state to the console and prompting for player input.
  */
 public final class DemoCli {
 
@@ -14,11 +15,32 @@ public final class DemoCli {
 
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Clears the console screen using ANSI escape codes.
+     */
     public void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Renders a single simulation tick to the console.
+     * Displays positions, threat levels, mood, crowd status, perception, plans, speech, social, and memory lines.
+     *
+     * @param tick           The current simulation tick number.
+     * @param guard1         The first guard NPC.
+     * @param guard2         The second guard NPC.
+     * @param player         The player NPC.
+     * @param crowdLod       The current Level of Detail for the crowd.
+     * @param formationName  The name of the current crowd formation.
+     * @param perceptionLine A summary of what the NPCs perceive.
+     * @param guard1Plan     The current plan for guard 1.
+     * @param guard2Plan     The current plan for guard 2.
+     * @param guard1Speech   The current speech output for guard 1.
+     * @param guard2Speech   The current speech output for guard 2.
+     * @param socialLine     A summary of social interactions.
+     * @param memoryLine     A summary of relevant memories.
+     */
     public void renderTick(long tick,
                            DemoNpc guard1, DemoNpc guard2, DemoNpc player,
                            String crowdLod, String formationName,
@@ -68,6 +90,11 @@ public final class DemoCli {
         System.out.println(HEADER);
     }
 
+    /**
+     * Prompts the player to select an action from the available options.
+     *
+     * @return The {@link PlayerAction} chosen by the player.
+     */
     public PlayerAction promptAction() {
         System.out.println("  Your action:  [A]pproach   [H]ostile act   [F]lee   [W]ait   [S]peak");
         System.out.print("  > ");
@@ -75,21 +102,41 @@ public final class DemoCli {
         return PlayerAction.parse(line.isEmpty() ? "W" : line.substring(0, 1));
     }
 
+    /**
+     * Prompts the player to enter speech text.
+     *
+     * @return The speech string entered by the player, or an empty string if skipped.
+     */
     public String promptSpeech() {
         System.out.print("  Your speech (Enter to skip): ");
         return scanner.hasNextLine() ? scanner.nextLine().trim() : "";
     }
 
+    /**
+     * Prints a highlighted event message to the console.
+     *
+     * @param event The event description to print.
+     */
     public void printEvent(String event) {
         System.out.println("\033[33m  * " + event + "\033[0m");
     }
 
+    /**
+     * Prints the final outcome of the demo.
+     *
+     * @param outcome The outcome description.
+     */
     public void printOutcome(String outcome) {
         System.out.println(HEADER);
         System.out.println("  OUTCOME: " + outcome);
         System.out.println(HEADER);
     }
 
+    /**
+     * Prints a line of text to the console.
+     *
+     * @param s The string to print.
+     */
     public void println(String s) {
         System.out.println(s);
     }

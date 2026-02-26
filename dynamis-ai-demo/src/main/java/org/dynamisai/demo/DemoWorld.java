@@ -88,6 +88,10 @@ public final class DemoWorld {
     private int hostileCount = 0;
     private String outcome = "unresolved";
 
+    /**
+     * Initializes the demo world, creating entities (guards and player),
+     * setting up the navigation mesh, and configuring all DynamisAI systems.
+     */
     public DemoWorld() {
         guard1 = new DemoNpc(EntityId.of(1L), "Guard1", new Location(2, 0, 2));
         guard2 = new DemoNpc(EntityId.of(2L), "Guard2", new Location(4, 0, 2));
@@ -145,6 +149,16 @@ public final class DemoWorld {
         log.info("DemoWorld initialized - 3 entities, NavMesh 16x16, {} clusters", mesh.clusterCount());
     }
 
+    /**
+     * Advances the simulation by one tick.
+     * Processes player actions, updates NPC perception, runs AI logic (planning, cognition, social),
+     * and records the outcome.
+     *
+     * @param tickNum      The current tick index.
+     * @param action       The action chosen by the player.
+     * @param playerSpeech The speech input from the player, if any.
+     * @return A {@link TickRecord} summarizing the events of this tick.
+     */
     public TickRecord tick(long tickNum, PlayerAction action, String playerSpeech) {
         currentTick.set(tickNum);
         List<String> systems = new ArrayList<>();
@@ -276,18 +290,36 @@ public final class DemoWorld {
         return record;
     }
 
+    /**
+     * Returns the accumulated report for the entire simulation session.
+     *
+     * @return The {@link DemoReport} instance.
+     */
     public DemoReport report() {
         return report;
     }
 
+    /**
+     * Returns a string describing the final outcome of the demo.
+     *
+     * @return The outcome description.
+     */
     public String outcome() {
         return outcome;
     }
 
+    /**
+     * Checks if the scenario has reached a terminal state (e.g., player escaped, alliance formed).
+     *
+     * @return true if the scenario is resolved, false otherwise.
+     */
     public boolean isResolved() {
         return !outcome.equals("unresolved");
     }
 
+    /**
+     * Shuts down all active AI systems and releases resources.
+     */
     public void shutdown() {
         cognition.shutdown();
         navigation.shutdown();
