@@ -1,0 +1,584 @@
+=== Building dynamis-ai-core ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< org.dynamisai:dynamis-ai-core >--------------------
+[INFO] Building dynamis-ai-core 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-core ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-core ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-core ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-core ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-core ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/target/dynamis-ai-core-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-core >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-core <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-core ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/target/dynamis-ai-core-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-core ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-core/1.0.0-SNAPSHOT/dynamis-ai-core-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/target/dynamis-ai-core-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-core/1.0.0-SNAPSHOT/dynamis-ai-core-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-core/target/dynamis-ai-core-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-core/1.0.0-SNAPSHOT/dynamis-ai-core-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.586 s
+[INFO] Finished at: 2026-02-25T20:08:01-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-core
+=== Building dynamis-ai-lod ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< org.dynamisai:dynamis-ai-lod >--------------------
+[INFO] Building dynamis-ai-lod 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-lod ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-lod ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-lod ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-lod ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-lod ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-lod ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-lod ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/target/dynamis-ai-lod-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-lod >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-lod <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-lod ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/target/dynamis-ai-lod-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-lod ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-lod/1.0.0-SNAPSHOT/dynamis-ai-lod-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/target/dynamis-ai-lod-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-lod/1.0.0-SNAPSHOT/dynamis-ai-lod-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-lod/target/dynamis-ai-lod-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-lod/1.0.0-SNAPSHOT/dynamis-ai-lod-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.609 s
+[INFO] Finished at: 2026-02-25T20:08:02-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-lod
+=== Building dynamis-ai-perception ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< org.dynamisai:dynamis-ai-perception >-----------------
+[INFO] Building dynamis-ai-perception 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-perception ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-perception ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-perception ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-perception ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-perception ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-perception ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-perception ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/target/dynamis-ai-perception-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-perception >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-perception <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-perception ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/target/dynamis-ai-perception-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-perception ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-perception/1.0.0-SNAPSHOT/dynamis-ai-perception-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/target/dynamis-ai-perception-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-perception/1.0.0-SNAPSHOT/dynamis-ai-perception-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-perception/target/dynamis-ai-perception-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-perception/1.0.0-SNAPSHOT/dynamis-ai-perception-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.621 s
+[INFO] Finished at: 2026-02-25T20:08:03-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-perception
+=== Building dynamis-ai-cognition ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.dynamisai:dynamis-ai-cognition >-----------------
+[INFO] Building dynamis-ai-cognition 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-cognition ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-cognition ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-cognition ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-cognition ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-cognition ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-cognition ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-cognition ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/target/dynamis-ai-cognition-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-cognition >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-cognition <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-cognition ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/target/dynamis-ai-cognition-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-cognition ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-cognition/1.0.0-SNAPSHOT/dynamis-ai-cognition-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/target/dynamis-ai-cognition-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-cognition/1.0.0-SNAPSHOT/dynamis-ai-cognition-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-cognition/target/dynamis-ai-cognition-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-cognition/1.0.0-SNAPSHOT/dynamis-ai-cognition-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.675 s
+[INFO] Finished at: 2026-02-25T20:08:04-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-cognition
+=== Building dynamis-ai-navigation ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< org.dynamisai:dynamis-ai-navigation >-----------------
+[INFO] Building dynamis-ai-navigation 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-navigation ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-navigation ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-navigation ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-navigation ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-navigation ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-navigation ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-navigation ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/target/dynamis-ai-navigation-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-navigation >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-navigation <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-navigation ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/target/dynamis-ai-navigation-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-navigation ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-navigation/1.0.0-SNAPSHOT/dynamis-ai-navigation-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/target/dynamis-ai-navigation-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-navigation/1.0.0-SNAPSHOT/dynamis-ai-navigation-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-navigation/target/dynamis-ai-navigation-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-navigation/1.0.0-SNAPSHOT/dynamis-ai-navigation-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.602 s
+[INFO] Finished at: 2026-02-25T20:08:06-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-navigation
+=== Building dynamis-ai-memory ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< org.dynamisai:dynamis-ai-memory >-------------------
+[INFO] Building dynamis-ai-memory 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-memory ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-memory ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-memory ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-memory ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-memory ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-memory ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-memory ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/target/dynamis-ai-memory-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-memory >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-memory <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-memory ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/target/dynamis-ai-memory-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-memory ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-memory/1.0.0-SNAPSHOT/dynamis-ai-memory-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/target/dynamis-ai-memory-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-memory/1.0.0-SNAPSHOT/dynamis-ai-memory-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-memory/target/dynamis-ai-memory-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-memory/1.0.0-SNAPSHOT/dynamis-ai-memory-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.660 s
+[INFO] Finished at: 2026-02-25T20:08:07-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-memory
+=== Building dynamis-ai-voice ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< org.dynamisai:dynamis-ai-voice >-------------------
+[INFO] Building dynamis-ai-voice 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-voice ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-voice ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-voice ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-voice ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-voice ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-voice ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-voice ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/target/dynamis-ai-voice-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-voice >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-voice <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-voice ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/target/dynamis-ai-voice-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-voice ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-voice/1.0.0-SNAPSHOT/dynamis-ai-voice-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/target/dynamis-ai-voice-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-voice/1.0.0-SNAPSHOT/dynamis-ai-voice-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-voice/target/dynamis-ai-voice-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-voice/1.0.0-SNAPSHOT/dynamis-ai-voice-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.677 s
+[INFO] Finished at: 2026-02-25T20:08:08-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-voice
+=== Building dynamis-ai-planning ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< org.dynamisai:dynamis-ai-planning >------------------
+[INFO] Building dynamis-ai-planning 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-planning ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-planning ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-planning ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-planning ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-planning ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-planning ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-planning ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/target/dynamis-ai-planning-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-planning >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-planning <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-planning ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/target/dynamis-ai-planning-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-planning ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-planning/1.0.0-SNAPSHOT/dynamis-ai-planning-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/target/dynamis-ai-planning-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-planning/1.0.0-SNAPSHOT/dynamis-ai-planning-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-planning/target/dynamis-ai-planning-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-planning/1.0.0-SNAPSHOT/dynamis-ai-planning-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.665 s
+[INFO] Finished at: 2026-02-25T20:08:10-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-planning
+=== Building dynamis-ai-social ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< org.dynamisai:dynamis-ai-social >-------------------
+[INFO] Building dynamis-ai-social 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-social ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-social ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-social ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-social ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-social ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-social ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-social ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/target/dynamis-ai-social-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-social >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-social <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-social ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/target/dynamis-ai-social-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-social ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-social/1.0.0-SNAPSHOT/dynamis-ai-social-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/target/dynamis-ai-social-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-social/1.0.0-SNAPSHOT/dynamis-ai-social-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-social/target/dynamis-ai-social-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-social/1.0.0-SNAPSHOT/dynamis-ai-social-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.653 s
+[INFO] Finished at: 2026-02-25T20:08:11-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-social
+=== Building dynamis-ai-crowd ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< org.dynamisai:dynamis-ai-crowd >-------------------
+[INFO] Building dynamis-ai-crowd 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-crowd ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-crowd ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-crowd ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-crowd ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-crowd ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-crowd ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-crowd ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/target/dynamis-ai-crowd-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-crowd >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-crowd <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-crowd ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/target/dynamis-ai-crowd-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-crowd ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-crowd/1.0.0-SNAPSHOT/dynamis-ai-crowd-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/target/dynamis-ai-crowd-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-crowd/1.0.0-SNAPSHOT/dynamis-ai-crowd-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-crowd/target/dynamis-ai-crowd-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-crowd/1.0.0-SNAPSHOT/dynamis-ai-crowd-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.599 s
+[INFO] Finished at: 2026-02-25T20:08:12-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-crowd
+=== Building dynamis-ai-tools ===
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< org.dynamisai:dynamis-ai-tools >-------------------
+[INFO] Building dynamis-ai-tools 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dynamis-ai-tools ---
+[INFO] Deleting /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dynamis-ai-tools ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dynamis-ai-tools ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 3 source files with javac [debug preview release 25 module-path] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dynamis-ai-tools ---
+[INFO] skip non existing resourceDirectory /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dynamis-ai-tools ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ dynamis-ai-tools ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ dynamis-ai-tools ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/target/dynamis-ai-tools-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] >>> source:3.3.0:jar (attach-sources) > generate-sources @ dynamis-ai-tools >>>
+[INFO] 
+[INFO] <<< source:3.3.0:jar (attach-sources) < generate-sources @ dynamis-ai-tools <<<
+[INFO] 
+[INFO] 
+[INFO] --- source:3.3.0:jar (attach-sources) @ dynamis-ai-tools ---
+[INFO] Building jar: /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/target/dynamis-ai-tools-1.0.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- install:3.1.2:install (default-install) @ dynamis-ai-tools ---
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/pom.xml to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-tools/1.0.0-SNAPSHOT/dynamis-ai-tools-1.0.0-SNAPSHOT.pom
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/target/dynamis-ai-tools-1.0.0-SNAPSHOT.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-tools/1.0.0-SNAPSHOT/dynamis-ai-tools-1.0.0-SNAPSHOT.jar
+[INFO] Installing /Users/larrymitchell/Dynamis/DynamisAI/dynamis-ai-tools/target/dynamis-ai-tools-1.0.0-SNAPSHOT-sources.jar to /Users/larrymitchell/.m2/repository/org/dynamisai/dynamis-ai-tools/1.0.0-SNAPSHOT/dynamis-ai-tools-1.0.0-SNAPSHOT-sources.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.687 s
+[INFO] Finished at: 2026-02-25T20:08:14-05:00
+[INFO] ------------------------------------------------------------------------
+PASSED: dynamis-ai-tools
+=== ALL 11 REPOS BUILT SUCCESSFULLY ===
