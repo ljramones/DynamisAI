@@ -47,6 +47,19 @@ public final class DebugSnapshotHistory {
             .findFirst();
     }
 
+    public Map<EntityId, NpcDebugSnapshot> snapshotsAtTick(long tick) {
+        Map<EntityId, NpcDebugSnapshot> out = new ConcurrentHashMap<>();
+        history.forEach((id, deque) -> {
+            synchronized (deque) {
+                deque.stream()
+                    .filter(s -> s.tick() == tick)
+                    .findFirst()
+                    .ifPresent(s -> out.put(id, s));
+            }
+        });
+        return Map.copyOf(out);
+    }
+
     public void pruneOlderThan(long tick) {
         for (Deque<NpcDebugSnapshot> deque : history.values()) {
             synchronized (deque) {

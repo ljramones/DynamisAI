@@ -3,10 +3,12 @@ package org.dynamisai.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Unified facade for game-engine integration.
@@ -42,6 +44,7 @@ public final class DynamisAiEngine {
     private final Map<EntityId, SteeringOutput> steeringOutputs = new HashMap<>();
 
     private boolean initialized;
+    private volatile Object inspector;
 
     private DynamisAiEngine(Builder builder) {
         this.worldStore = builder.worldStore;
@@ -87,6 +90,8 @@ public final class DynamisAiEngine {
         if (report == null) {
             report = FrameBudgetReport.empty(context.tick());
         }
+        WorldSnapshot snapshot = worldStore.getCurrentSnapshot();
+        recordInspectorSnapshot(snapshot);
 
         long elapsedMs = (System.nanoTime() - startNanos) / 1_000_000L;
         return new AIOutputFrame(
@@ -95,7 +100,7 @@ public final class DynamisAiEngine {
             Map.copyOf(steeringOutputs),
             List.copyOf(dialogueEvents),
             List.copyOf(animationSignals),
-            worldStore.getCurrentSnapshot(),
+            snapshot,
             report
         );
     }
@@ -128,12 +133,37 @@ public final class DynamisAiEngine {
         return worldStore.getCurrentSnapshot().deterministicSeed();
     }
 
+    public void attachInspector(Object inspector) {
+        this.inspector = inspector;
+    }
+
+    public void detachInspector() {
+        this.inspector = null;
+    }
+
+    public Optional<Object> inspector() {
+        return Optional.ofNullable(inspector);
+    }
+
     public BudgetGovernor governor() {
         return governor;
     }
 
     public DefaultWorldStateStore worldStore() {
         return worldStore;
+    }
+
+    private void recordInspectorSnapshot(WorldSnapshot snapshot) {
+        Object activeInspector = inspector;
+        if (activeInspector == null) {
+            return;
+        }
+        try {
+            Method record = activeInspector.getClass().getMethod("record", WorldSnapshot.class, Map.class);
+            record.invoke(activeInspector, snapshot, Map.of());
+        } catch (Exception e) {
+            log.warn("Inspector record hook failed: {}", e.getMessage());
+        }
     }
 
     public static final class Builder {
