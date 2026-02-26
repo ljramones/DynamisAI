@@ -9,6 +9,7 @@ module org.dynamisai.tools {
     requires org.dynamisai.social;
     requires org.dynamisai.crowd;
     requires org.slf4j;
+    requires io.vavr;
     requires java.desktop;
     requires dynamis.audio.api;
     requires dynamis.audio.core;
