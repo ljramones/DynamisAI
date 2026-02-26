@@ -31,6 +31,7 @@ public final class DefaultSocialSystem implements SocialSystem {
     private final DialogueHistory dialogueHistory;
     private final ReputationEngine reputationEngine;
     private final RumorPropagator rumorPropagator;
+    private final ScheduleEngine scheduleEngine;
 
     public DefaultSocialSystem() {
         this(new SocialGraph(), new FactionRegistry(), new DialogueHistory());
@@ -44,6 +45,7 @@ public final class DefaultSocialSystem implements SocialSystem {
         this.dialogueHistory = dialogueHistory;
         this.reputationEngine = new ReputationEngine();
         this.rumorPropagator = new RumorPropagator(reputationEngine);
+        this.scheduleEngine = new ScheduleEngine();
     }
 
     @Override
@@ -149,4 +151,5 @@ public final class DefaultSocialSystem implements SocialSystem {
     @Override public DialogueHistory history() { return dialogueHistory; }
     @Override public ReputationEngine reputationEngine() { return reputationEngine; }
     @Override public RumorPropagator rumorPropagator() { return rumorPropagator; }
+    @Override public ScheduleEngine scheduleEngine() { return scheduleEngine; }
 }

@@ -63,4 +63,7 @@ public interface SocialSystem {
 
     /** Rumor propagation runtime for second-hand social updates. */
     RumorPropagator rumorPropagator();
+
+    /** Daily schedule and needs runtime. */
+    ScheduleEngine scheduleEngine();
 }
