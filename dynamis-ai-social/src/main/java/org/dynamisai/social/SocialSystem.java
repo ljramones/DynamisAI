@@ -57,4 +57,10 @@ public interface SocialSystem {
 
     /** Expose DialogueHistory — for diagnostics and tools. */
     DialogueHistory history();
+
+    /** Event-driven relationship delta engine. */
+    ReputationEngine reputationEngine();
+
+    /** Rumor propagation runtime for second-hand social updates. */
+    RumorPropagator rumorPropagator();
 }
