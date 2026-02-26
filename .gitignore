@@ -1,0 +1,15 @@
+# Root-level IDE/editor
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS / logs
+.DS_Store
+*.log
+
+# Maven/Java build outputs (root only)
+/target/
+
+# Demo runtime output
+/dynamis-ai-demo/demo-report.json
