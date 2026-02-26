@@ -25,6 +25,7 @@ import org.dynamisai.memory.MemoryBudget;
 import org.dynamisai.memory.MemoryRecord;
 import org.dynamisai.memory.MemoryStats;
 import org.dynamisai.navigation.DefaultNavigationSystem;
+import org.dynamisai.navigation.MovementIntegrator;
 import org.dynamisai.navigation.NavMesh;
 import org.dynamisai.navigation.NavMeshBuilder;
 import org.dynamisai.navigation.PathRequest;
@@ -64,6 +65,7 @@ public final class DemoWorld {
     private final DefaultCognitionService cognition;
     private final DefaultMemoryLifecycleManager memory;
     private final DefaultNavigationSystem navigation;
+    private final MovementIntegrator movementIntegrator;
     final DefaultSocialSystem social;
     final DefaultCrowdSystem crowd;
     private final MockTTSPipeline tts;
@@ -115,6 +117,7 @@ public final class DemoWorld {
         crowd.addToGroup(patrolGroup, guard1.id, guard1.position);
         crowd.addToGroup(patrolGroup, guard2.id, guard2.position);
         crowd.setGroupGoal(patrolGroup, WAYPOINTS[0]);
+        movementIntegrator = new MovementIntegrator(worldStore);
 
         tts = new MockTTSPipeline();
         animisBridge = new DefaultAnimisBridge();
@@ -122,6 +125,19 @@ public final class DemoWorld {
         governor.register(new AITaskNode(
             "crowd-tick", 3, Priority.NORMAL, DegradeMode.DEFER,
             () -> crowd.tick(currentTick.get(), 0.016f),
+            () -> {
+            }
+        ));
+        governor.register(new AITaskNode(
+            "movement-integrate", 2, Priority.HIGH, DegradeMode.CACHED,
+            () -> movementIntegrator.integrate(
+                crowd.latestSnapshot(),
+                currentTick.get(),
+                MovementIntegrator.externalEntity(
+                    player.id,
+                    player.position,
+                    Map.of("name", player.name))
+            ),
             () -> {
             }
         ));
@@ -144,7 +160,7 @@ public final class DemoWorld {
             }
         ));
 
-        pushWorldState();
+        pushWorldState(0L);
 
         log.info("DemoWorld initialized - 3 entities, NavMesh 16x16, {} clusters", mesh.clusterCount());
     }
@@ -166,17 +182,19 @@ public final class DemoWorld {
         applyPlayerAction(action, playerSpeech);
         systems.add("PlayerInput");
 
-        pushWorldState();
-        systems.add("WorldStateStore");
-
         advancePatrol();
 
         governor.runFrame(tickNum, worldStore.getCurrentSnapshot());
+        systems.add("WorldStateStore");
         systems.add("BudgetGovernor");
         systems.add("CrowdSystem");
 
         PerceptionSnapshot guardPerception = perception.tick(guard1.id, guard1.affect, worldStore);
-        float distG1ToPlayer = guard1.distanceTo(player.position);
+        var snapNow = worldStore.getCurrentSnapshot();
+        float distG1ToPlayer = snapNow.entities().get(guard1.id).toJavaOptional()
+            .flatMap(g1 -> snapNow.entities().get(player.id).toJavaOptional()
+                .map(p -> distance(g1.position(), p.position())))
+            .orElse((float) guard1.distanceTo(player.position));
         boolean playerVisible = distG1ToPlayer < PERCEPTION_RANGE;
         String perceptionLine;
         if (playerVisible) {
@@ -268,7 +286,6 @@ public final class DemoWorld {
             ? snap.groups().get(patrolGroup).lod().name()
             : "UNKNOWN";
 
-        syncPositionsFromSnapshot(snap);
         checkOutcome(tickNum, distG1ToPlayer);
 
         TickRecord record = new TickRecord(
@@ -445,14 +462,21 @@ public final class DemoWorld {
         }
     }
 
-    private void pushWorldState() {
-        worldStore.enqueueChange(new WorldChange.EntityStateChange(
-            guard1.id, new EntityState(guard1.id, guard1.position, Map.of("name", guard1.name))));
-        worldStore.enqueueChange(new WorldChange.EntityStateChange(
-            guard2.id, new EntityState(guard2.id, guard2.position, Map.of("name", guard2.name))));
-        worldStore.enqueueChange(new WorldChange.EntityStateChange(
-            player.id, new EntityState(player.id, player.position, Map.of("name", player.name))));
-        worldStore.enqueueChange(new WorldChange.FactChange("threatLevel", guard1.perceivedThreat));
-        worldStore.commitTick();
+    private static float distance(Location a, Location b) {
+        float dx = (float) (a.x() - b.x());
+        float dy = (float) (a.y() - b.y());
+        float dz = (float) (a.z() - b.z());
+        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
+    private void pushWorldState(long tick) {
+        movementIntegrator.integrate(
+            crowd.latestSnapshot(),
+            tick,
+            MovementIntegrator.externalEntity(
+                player.id,
+                player.position,
+                Map.of("name", player.name))
+        );
     }
 }

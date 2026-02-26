@@ -1,11 +1,19 @@
 package org.dynamisai.navigation;
 
 import org.dynamisai.core.EntityId;
+import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
+import org.dynamisai.core.DefaultWorldStateStore;
+import org.dynamisai.crowd.CrowdSnapshot;
+import org.dynamisai.crowd.DefaultCrowdSystem;
+import org.dynamisai.crowd.FormationType;
+import org.dynamisai.crowd.GroupId;
+import org.dynamisai.crowd.LodController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -235,5 +243,146 @@ class NavigationSystemTest {
         SteeringOutput idle = SteeringOutput.idle(npc, NavPoint.of(0, 0, 0));
         assertEquals(0f, idle.speed());
         assertTrue(idle.isAtGoal());
+    }
+
+    // ── MovementIntegrator ──────────────────────────────────────────────────
+
+    @Test
+    void integrateCommitsCrowdPositionsToWorldStore() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        crowd.addToGroup(gid, EntityId.of(10L), new Location(5, 0, 7));
+        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+
+        integrator.integrate(snap, 1L);
+
+        assertEquals(1L, store.getCurrentTick());
+        assertTrue(store.getCurrentSnapshot().entities().get(EntityId.of(10L)).isDefined(),
+            "WorldStateStore must contain crowd agent after integrate()");
+    }
+
+    @Test
+    void integrateReflectsMovedPositions() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        EntityId agent = EntityId.of(20L);
+        EntityId wing = EntityId.of(21L);
+        crowd.addToGroup(gid, agent, new Location(0, 0, 0));
+        crowd.addToGroup(gid, wing, new Location(4, 0, 0));
+        crowd.setGroupGoal(gid, new Location(20, 0, 20));
+
+        CrowdSnapshot snap = null;
+        for (int i = 1; i <= 10; i++) {
+            snap = crowd.tick(i, 0.1f);
+        }
+        integrator.integrate(snap, 10L);
+
+        var agentSnap = snap.findAgent(agent);
+        assertTrue(agentSnap.isPresent());
+        float movedDist = (float) Math.sqrt(
+            agentSnap.get().position().x() * agentSnap.get().position().x() +
+                agentSnap.get().position().z() * agentSnap.get().position().z());
+        assertTrue(movedDist > 0.01f,
+            "Agent must have moved from origin after 10 ticks");
+    }
+
+    @Test
+    void integrateWithExternalEntityCommitsBoth() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        EntityId guardId = EntityId.of(1L);
+        EntityId playerId = EntityId.of(99L);
+        crowd.addToGroup(gid, guardId, new Location(2, 0, 2));
+
+        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+        EntityState player = MovementIntegrator.externalEntity(
+            playerId, new Location(28, 0, 28), Map.of("role", "player"));
+
+        integrator.integrate(snap, 1L, player);
+
+        assertTrue(store.getCurrentSnapshot().entities().get(guardId).isDefined());
+        assertTrue(store.getCurrentSnapshot().entities().get(playerId).isDefined());
+    }
+
+    @Test
+    void integrateEmptySnapshotIsNoOp() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+        CrowdSnapshot empty = CrowdSnapshot.empty(1L);
+
+        assertDoesNotThrow(() -> integrator.integrate(empty, 1L));
+        assertEquals(1L, store.getCurrentTick());
+    }
+
+    @Test
+    void externalEntityFactoryProducesCorrectLocation() {
+        EntityId id = EntityId.of(5L);
+        Location loc = new Location(3, 0, 7);
+        EntityState state = MovementIntegrator.externalEntity(id, loc, Map.of());
+        assertEquals(loc.x(), state.position().x(), 0.001);
+        assertEquals(loc.z(), state.position().z(), 0.001);
+    }
+
+    @Test
+    void velocityMetadataStoredInWorldState() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        EntityId agent = EntityId.of(30L);
+        crowd.addToGroup(gid, agent, new Location(0, 0, 0));
+        crowd.setGroupGoal(gid, new Location(10, 0, 0));
+
+        CrowdSnapshot snap = crowd.tick(1L, 0.1f);
+        integrator.integrate(snap, 1L);
+
+        var agentState = store.getCurrentSnapshot().entities().get(agent).getOrNull();
+        assertNotNull(agentState);
+        assertTrue(agentState.properties().containsKey("velocity_x"),
+            "velocity_x must be present in committed EntityState properties");
+    }
+
+    @Test
+    void lodMetadataReflectsCrowdLod() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem(new LodController(1f, 2f, 3f));
+        MovementIntegrator integrator = new MovementIntegrator(store);
+
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        EntityId agent = EntityId.of(40L);
+        crowd.addToGroup(gid, agent, new Location(100, 0, 100));
+        CrowdSnapshot snap = crowd.tick(1L, 0.016f);
+        integrator.integrate(snap, 1L);
+
+        var agentState = store.getCurrentSnapshot().entities().get(agent).getOrNull();
+        assertNotNull(agentState);
+        assertTrue(agentState.properties().containsKey("lod"),
+            "LOD must be stored in EntityState properties");
+    }
+
+    @Test
+    void multipleIntegrateCallsAdvanceTick() {
+        DefaultWorldStateStore store = new DefaultWorldStateStore();
+        MovementIntegrator integrator = new MovementIntegrator(store);
+        DefaultCrowdSystem crowd = new DefaultCrowdSystem();
+        GroupId gid = crowd.createGroup(FormationType.LINE);
+        crowd.addToGroup(gid, EntityId.of(50L), new Location(0, 0, 0));
+
+        for (int i = 1; i <= 5; i++) {
+            CrowdSnapshot snap = crowd.tick(i, 0.016f);
+            integrator.integrate(snap, i);
+        }
+
+        assertEquals(5L, store.getCurrentTick());
     }
 }
