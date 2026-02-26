@@ -32,6 +32,8 @@ public final class DefaultSocialSystem implements SocialSystem {
     private final ReputationEngine reputationEngine;
     private final RumorPropagator rumorPropagator;
     private final ScheduleEngine scheduleEngine;
+    private final DramaManager dramaManager;
+    private final EngagementTracker engagementTracker;
 
     public DefaultSocialSystem() {
         this(new SocialGraph(), new FactionRegistry(), new DialogueHistory());
@@ -46,6 +48,8 @@ public final class DefaultSocialSystem implements SocialSystem {
         this.reputationEngine = new ReputationEngine();
         this.rumorPropagator = new RumorPropagator(reputationEngine);
         this.scheduleEngine = new ScheduleEngine();
+        this.dramaManager = new DramaManager(DramaManagerConfig.defaultConfig());
+        this.engagementTracker = new EngagementTracker();
     }
 
     @Override
@@ -152,4 +156,6 @@ public final class DefaultSocialSystem implements SocialSystem {
     @Override public ReputationEngine reputationEngine() { return reputationEngine; }
     @Override public RumorPropagator rumorPropagator() { return rumorPropagator; }
     @Override public ScheduleEngine scheduleEngine() { return scheduleEngine; }
+    @Override public DramaManager dramaManager() { return dramaManager; }
+    @Override public EngagementTracker engagementTracker() { return engagementTracker; }
 }

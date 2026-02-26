@@ -66,4 +66,10 @@ public interface SocialSystem {
 
     /** Daily schedule and needs runtime. */
     ScheduleEngine scheduleEngine();
+
+    /** Pacing-layer drama output manager. */
+    DramaManager dramaManager();
+
+    /** Engagement signal accumulator used by DramaManager. */
+    EngagementTracker engagementTracker();
 }
