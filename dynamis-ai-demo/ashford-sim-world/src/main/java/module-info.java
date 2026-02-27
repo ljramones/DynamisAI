@@ -26,4 +26,5 @@ module org.dynamisai.ashfordsimworld {
 
     exports org.dynamisai.ashford;
     exports org.dynamisai.ashford.model;
+    exports org.dynamisai.ashford.schedule;
 }
