@@ -1,110 +1,118 @@
+![Java](https://img.shields.io/badge/Java-25-blue) ![License](https://img.shields.io/badge/License-Apache%202.0-green) ![Modules](https://img.shields.io/badge/Modules-14-informational) ![Tests](https://img.shields.io/badge/Tests-800-brightgreen) ![Build](https://img.shields.io/badge/Build-Maven-orange)
+
 # DynamisAI
 
-DynamisAI is the cognitive architecture layer for a Java AAA engine stack. Its goal is to produce believable NPC behavior that is deterministic, auditable, and scalable, while keeping expressive dialogue and voice generation safely bounded behind strict runtime contracts.
+DynamisAI is a deterministic, multi-module AI stack for game simulation that combines perception, memory, planning, social reasoning, voice, and tooling under strict frame-budget and replayability constraints.
 
-## Vision
+## What Is DynamisAI
 
-The core behavior chain is:
+DynamisAI is structured around one authoritative simulation timeline (`WorldSnapshot` + deterministic seeds) and a modular AI architecture where each subsystem can be swapped, tested, and profiled independently. The project is designed for high-NPC-count simulation while preserving debugability and strict runtime contracts.
 
-`Perception -> Memory -> Belief -> Intent -> Action -> Voice/Animation`
+Core doctrine:
+- Authoritative AI is deterministic.
+- LLM services assist cognition but do not own world truth.
+- Every subsystem runs under explicit budget and degrade policy.
+- Tooling (inspection, replay, simulation baking) ships with runtime.
 
-Every link is grounded in a single authoritative world snapshot so AI decisions stay coherent across systems.
+## Architecture
 
-## Non-Negotiable Rules
+### Three-Plane Model
 
-1. Deterministic simulation logic is authoritative.
-2. LLM is a service, not the decision core.
-3. Every subsystem has a budget, degradation policy, and fallback.
-4. Generative output is schema-constrained (typed JSON), never raw game logic.
-5. Tooling (inspection, traceability, replay) ships with runtime.
-6. Snapshot storage uses structural sharing (no deep-copy snapshots).
-7. LLM output is never executed as runtime behavior logic.
+| Plane | Responsibility | Typical Modules |
+|---|---|---|
+| Simulation Plane | Deterministic world state updates, scheduling, steering, gameplay-facing outputs. | `dynamis-ai-core`, `dynamis-ai-navigation`, `dynamis-ai-crowd`, `dynamis-ai-lod`, `dynamis-ai-planning` |
+| Cognition Plane | Asynchronous inference, memory retrieval, dialogue generation, affect modeling. | `dynamis-ai-cognition`, `dynamis-ai-memory`, `dynamis-ai-voice`, `dynamis-ai-social` |
+| Performance/Tools Plane | Debug tracing, replay, assertions, offline bake validation, extension contracts. | `dynamis-ai-tools`, `dynamis-ai-test-kit`, `dynamisai-extensions` |
 
-## Architecture at a Glance
+### Cognitive Stack
 
-### Three Planes
+| Layer | Input | Output | Key Module |
+|---|---|---|---|
+| Perception | `WorldSnapshot`, sound events, sensor profiles | `PerceptionSnapshot` | `dynamis-ai-perception` |
+| Belief/Memory | Percepts + memory retrieval | `BeliefModel`, memory evidence | `dynamis-ai-cognition`, `dynamis-ai-memory` |
+| Planning | `WorldState`, squad facts, influence maps | `Plan`, selected actions | `dynamis-ai-planning` |
+| Social/Pacing | events, relationships, schedules, engagement metrics | modifiers, reputation deltas, rumor propagation | `dynamis-ai-social` |
+| Execution/Output | plans + movement + voice/animation outputs | `AIOutputFrame` | `dynamis-ai-core`, `dynamis-ai-navigation`, `dynamis-ai-voice` |
 
-- **Simulation Plane**: deterministic gameplay AI (perception, planning, navigation, behavior).
-- **Cognition Plane**: async inference and TTS work via bounded virtual-thread services.
-- **Performance Plane**: budget governance, LOD policy, caching, and graceful degradation.
+### Module Dependency Sketch
 
-### Core Build Order
-
-Build these foundations before feature work:
-
-1. `WorldStateStore`
-2. `BudgetGovernor`
-3. `InferenceBackend`
-4. `CognitionService`
-
-## Repository Status
-
-This repository is currently specification-first:
-
-- `docs/DynamisAI_Master_Spec.docx`
-- `docs/DynamisAI_Spec_v1.1.docx`
-- `docs/DynamisAI_Architecture_NextSteps.docx`
-- `.java-version` (JDK `25`)
-
-## Planned Package Layout
-
-When implementation begins, use:
-
-- `src/main/java/com/dynamis/ai/core`
-- `src/main/java/com/dynamis/ai/cognition`
-- `src/main/java/com/dynamis/ai/planning`
-- `src/main/java/com/dynamis/ai/perception`
-- `src/main/java/com/dynamis/ai/navigation`
-- `src/main/java/com/dynamis/ai/voice`
-- `src/main/java/com/dynamis/ai/lod`
-- `src/test/java/...` (mirrored package structure)
-
-## Getting Started (Current)
-
-```bash
-java -version
-cat .java-version
-ls docs
+```text
+                           +----------------------+
+                           |  dynamis-ai-core     |
+                           +----------+-----------+
+                                      |
+          +---------------------------+----------------------------+
+          |                           |                            |
++---------v----------+     +----------v----------+      +----------v----------+
+| dynamis-ai-memory  |     | dynamis-ai-perception |    | dynamis-ai-planning |
++---------+----------+     +----------+----------+      +----------+----------+
+          |                           |                            |
++---------v----------+     +----------v----------+      +----------v----------+
+| dynamis-ai-cognition|     | dynamis-ai-crowd   |      | dynamis-ai-social   |
++---------+----------+     +----------+----------+      +----------+----------+
+          |                           |                            |
++---------v----------+     +----------v----------+      +----------v----------+
+| dynamis-ai-voice   |     | dynamis-ai-lod      |      | dynamis-ai-tools    |
++--------------------+     +---------------------+      +----------+----------+
+                                                                     |
+                                                          +----------v----------+
+                                                          |  dynamis-ai-demo    |
+                                                          +---------------------+
 ```
 
-## Next Implementation Steps
+## Module Map
 
-1. Initialize Java project structure and build tool wrapper.
-2. Implement immutable snapshot contracts in `WorldStateStore`.
-3. Add `BudgetGovernor` frame scheduler with ordered degradation ladder.
-4. Introduce pluggable `InferenceBackend` interface and deterministic config.
-5. Add bounded async `CognitionService` with hard timeouts and fallback behavior.
+| Module | Purpose | Tests |
+|---|---|---:|
+| [`dynamis-ai-core`](./dynamis-ai-core/README.md) | Deterministic engine facade, snapshots, budget governor, adapters. | 51 |
+| [`dynamis-ai-cognition`](./dynamis-ai-cognition/README.md) | Inference orchestration, affect, belief modeling, deterministic requests. | 67 |
+| [`dynamis-ai-perception`](./dynamis-ai-perception/README.md) | Simulated senses, saliency, influence map engine (SIMD). | 64 |
+| [`dynamis-ai-memory`](./dynamis-ai-memory/README.md) | Embeddings, vector stores, memory retrieval contracts. | 59 |
+| [`dynamis-ai-navigation`](./dynamis-ai-navigation/README.md) | Pathfinding and steering output generation. | 30 |
+| [`dynamis-ai-planning`](./dynamis-ai-planning/README.md) | HTN/GOAP/Utility/BT/MCTS planning and squad blackboard. | 115 |
+| [`dynamis-ai-crowd`](./dynamis-ai-crowd/README.md) | Crowd movement, LOD-aware crowd simulation support. | 32 |
+| [`dynamis-ai-voice`](./dynamis-ai-voice/README.md) | TTS pipeline, visemes, blendshape mapping outputs. | 82 |
+| [`dynamis-ai-social`](./dynamis-ai-social/README.md) | Reputation, rumor propagation, schedule engine, drama manager. | 126 |
+| [`dynamis-ai-tools`](./dynamis-ai-tools/README.md) | Debug snapshots, replay inspector, bake assertions and headless baking. | 91 |
+| [`dynamis-ai-lod`](./dynamis-ai-lod/README.md) | AI LOD policy, importance evaluation, tick scaling. | 20 |
+| [`dynamis-ai-demo`](./dynamis-ai-demo/README.md) | End-to-end demo harness integrating core subsystems. | 22 |
+| [`dynamis-ai-test-kit`](./dynamis-ai-test-kit/README.md) | SPI contract tests for external implementations. | 7 |
+| [`dynamisai-extensions`](./dynamisai-extensions/README.md) | Example SPI implementations for contributor onboarding. | 34 |
 
-## Milestones (First 4 Weeks)
+## Build And Run
 
-### Week 1: Project Bootstrap + Core Contracts
+### Prerequisites
+- Java 25
+- Maven 3.9+
 
-- Create Gradle or Maven wrapper and baseline CI checks.
-- Scaffold `com.dynamis.ai.core` with interfaces/records only.
-- Define deterministic seed utility and shared error/result types.
-- Deliverable: compiles clean with placeholder unit tests.
+### Full build
 
-### Week 2: WorldStateStore (Authoritative Snapshot Layer)
+```bash
+mvn clean install -DskipTests
+```
 
-- Implement immutable `WorldSnapshot` and `WorldChange` pipeline.
-- Add structural-sharing persistence strategy (no deep copies).
-- Add scoped query surface (`QueryScope`) and tick commit flow.
-- Deliverable: deterministic replay test for snapshot history.
+### Full tests
 
-### Week 3: BudgetGovernor (Frame Budget Control)
+```bash
+mvn clean test
+```
 
-- Implement `AITaskNode` registry, priority scheduling, and frame execution.
-- Implement ordered degradation ladder thresholds and fallback invocation.
-- Expose frame report metrics for inspector integration.
-- Deliverable: load test showing graceful degradation without frame overrun.
+### Run demo module tests only
 
-### Week 4: InferenceBackend + CognitionService
+```bash
+cd dynamis-ai-demo
+mvn clean test
+```
 
-- Add pluggable `InferenceBackend` contract and deterministic generation config.
-- Implement `CognitionService` with bounded virtual-thread concurrency.
-- Enforce timeout, cancellation, cache path, and mandatory fallback response.
-- Deliverable: async cognition tests proving non-blocking simulation behavior.
+## Contributing
 
-## Source of Truth
+1. Pick a module and read its local README first.
+2. Keep changes deterministic and budget-aware.
+3. Add tests with every behavior change.
+4. If adding or replacing an SPI implementation, validate against `dynamis-ai-test-kit` contract tests.
+5. Prefer module-boundary-safe integrations (avoid introducing JPMS/reactor cycles).
 
-For architecture and constraints, treat the docs in `docs/` as canonical until code-level ADRs and APIs are published.
+## License
+
+Licensed under the Apache License, Version 2.0.
+See [LICENSE](./LICENSE) and [NOTICE](./NOTICE).
