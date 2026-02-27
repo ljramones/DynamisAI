@@ -16,5 +16,6 @@
 
   <modules>
     <module>llm-npc</module>
+    <module>ashford-sim-world</module>
   </modules>
 </project>
