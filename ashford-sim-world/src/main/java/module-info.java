@@ -24,4 +24,5 @@ module org.dynamisai.ashfordsimworld {
     requires javafx.fxml;
 
     exports org.dynamisai.ashford;
+    exports org.dynamisai.ashford.model;
 }
