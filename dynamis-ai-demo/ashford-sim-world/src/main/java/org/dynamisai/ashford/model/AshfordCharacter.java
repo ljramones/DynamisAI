@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module org.dynamisai.ashfordsimworld {
-    requires io.vavr;
-    requires org.dynamisai.core;
-    requires org.dynamisai.social;
-    requires org.dynamisai.planning;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.perception;
-    requires org.dynamisai.tools;
-    requires javafx.controls;
-    requires javafx.fxml;
+package org.dynamisai.ashford.model;
 
-    exports org.dynamisai.ashford;
-    exports org.dynamisai.ashford.model;
+import org.dynamisai.core.EntityId;
+
+public record AshfordCharacter(
+    EntityId id,
+    String name,
+    AshfordConstants.Faction faction,
+    String role,
+    int tier,
+    boolean isWitness,
+    boolean isStranger
+) {
 }
