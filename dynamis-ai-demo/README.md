@@ -7,7 +7,6 @@
 
 ## Modules
 - [`llm-npc`](./llm-npc/README.md) — the original end-to-end NPC demo (moved from the previous single-module `dynamis-ai-demo`).
-- [`ashford-sim-world`](./ashford-sim-world/README.md) — scaffolded independent demo module for the Ashford simulation world.
 
 ## Build
 From repo root:
