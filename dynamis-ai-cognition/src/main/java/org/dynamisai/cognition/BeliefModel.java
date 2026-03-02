@@ -1,6 +1,7 @@
 package org.dynamisai.cognition;
 
 import org.dynamis.core.entity.EntityId;
+import org.dynamisai.core.BeliefSource;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,11 +26,15 @@ public final class BeliefModel {
     }
 
     public void assertBelief(String key, Object value, float confidence, long tick) {
+        assertBelief(key, value, confidence, tick, BeliefSource.INFERRED);
+    }
+
+    private void assertBelief(String key, Object value, float confidence, long tick, BeliefSource source) {
         firstOrder.compute(key, (k, existing) -> {
             if (existing == null) {
-                return new Belief(k, value, clamp01(confidence), tick, tick, owner);
+                return new Belief(k, value, clamp01(confidence), tick, tick, source, owner);
             }
-            return new Belief(k, value, clamp01(confidence), existing.formedAtTick(), tick, owner);
+            return new Belief(k, value, clamp01(confidence), existing.formedAtTick(), tick, source, owner);
         });
     }
 
@@ -110,9 +115,19 @@ public final class BeliefModel {
                 String stimulus = String.valueOf(invoke(percept, "stimulusType"));
 
                 if ("VISUAL".equals(stimulus)) {
-                    assertBelief("entity." + source.id() + ".visible", location, intensity, tick);
+                    assertBelief(
+                        "entity." + source.id() + ".visible",
+                        location,
+                        intensity,
+                        tick,
+                        BeliefSource.PERCEPT);
                 } else if ("AUDITORY".equals(stimulus)) {
-                    assertBelief("entity." + source.id() + ".audible", location, intensity, tick);
+                    assertBelief(
+                        "entity." + source.id() + ".audible",
+                        location,
+                        intensity,
+                        tick,
+                        BeliefSource.PERCEPT);
                 }
             }
         } catch (ReflectiveOperationException ignored) {
