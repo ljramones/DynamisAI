@@ -6,8 +6,7 @@ import ai.djl.ndarray.NDList;
 import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.DataType;
 import ai.djl.ndarray.types.Shape;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 /**
  * Primary speech synthesis engine using Chatterbox (MIT licence).
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class ChatterboxEngine {
 
-    private static final Logger log = LoggerFactory.getLogger(ChatterboxEngine.class);
+    private static final DynamisLogger log = DynamisLogger.get(ChatterboxEngine.class);
 
     private final OnnxTtsSession session;
     private final TextTokenizer tokenizer;
@@ -53,8 +52,7 @@ public final class ChatterboxEngine {
 
             NDArray audioBatch = output.get(0).squeeze();
             float[] pcm = audioBatch.toFloatArray();
-            log.debug("Chatterbox synthesized {} samples for '{}...'",
-                pcm.length, text.substring(0, Math.min(20, text.length())));
+            log.debug(String.format("Chatterbox synthesized %s samples for '%s...'", pcm.length, text.substring(0, Math.min(20, text.length()))));
             return pcm;
         } catch (Exception e) {
             throw new TtsEngineException(

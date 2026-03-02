@@ -1,10 +1,9 @@
 package org.dynamisai.crowd;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.navigation.NavPoint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DefaultCrowdSystem implements CrowdSystem {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultCrowdSystem.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultCrowdSystem.class);
 
     private static final float AGENT_MAX_SPEED = 4.0f;
     private static final float ARRIVAL_EPSILON = 0.05f;
@@ -44,7 +43,7 @@ public final class DefaultCrowdSystem implements CrowdSystem {
     public GroupId createGroup(FormationType formation) {
         GroupId id = GroupId.next();
         groups.put(id, new CrowdGroup(id, formation));
-        log.debug("CrowdGroup {} created ({})", id, formation);
+        log.debug(String.format("CrowdGroup %s created (%s)", id, formation));
         return id;
     }
 
@@ -52,7 +51,7 @@ public final class DefaultCrowdSystem implements CrowdSystem {
     public void addToGroup(GroupId groupId, EntityId entity, Location position) {
         CrowdGroup group = groups.get(groupId);
         if (group == null) {
-            log.warn("addToGroup: unknown group {}", groupId);
+            log.warn(String.format("addToGroup: unknown group %s", groupId));
             return;
         }
         removeFromGroup(entity);
@@ -80,7 +79,7 @@ public final class DefaultCrowdSystem implements CrowdSystem {
         synchronized (group) {
             group.agents().forEach(a -> entityToGroup.remove(a.id()));
         }
-        log.debug("CrowdGroup {} dissolved", groupId);
+        log.debug(String.format("CrowdGroup %s dissolved", groupId));
     }
 
     @Override

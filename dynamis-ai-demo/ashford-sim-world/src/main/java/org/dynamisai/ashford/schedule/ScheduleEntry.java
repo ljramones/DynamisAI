@@ -18,7 +18,7 @@ package org.dynamisai.ashford.schedule;
 import io.vavr.collection.Map;
 import java.util.Objects;
 import org.dynamisai.ashford.model.AshfordConstants;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 public record ScheduleEntry(
     EntityId characterId,

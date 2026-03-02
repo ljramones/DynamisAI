@@ -1,7 +1,6 @@
 package org.dynamisai.planning;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.Map;
 
 public final class DefaultHtnPlanner implements HtnPlanner {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultHtnPlanner.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultHtnPlanner.class);
 
     @Override
     public Plan plan(HtnTask rootTask, WorldState state, PlanningBudget budget) {
@@ -23,9 +22,8 @@ public final class DefaultHtnPlanner implements HtnPlanner {
         float totalCost = (float) result.stream().mapToDouble(HtnTask.PrimitiveTask::cost).sum();
 
         if (!ctx.complete) {
-            log.debug("Planning incomplete for {} - nodeCount={} elapsed={}ms",
-                rootTask.taskId(), ctx.nodeCount,
-                (System.nanoTime() - startNanos) / 1_000_000);
+            log.debug(String.format("Planning incomplete for %s - nodeCount=%s elapsed=%sms", rootTask.taskId(), ctx.nodeCount,
+                (System.nanoTime() - startNanos) / 1_000_000));
         }
 
         return new Plan(List.copyOf(result), totalCost, ctx.maxDepthReached, ctx.complete);
@@ -63,7 +61,7 @@ public final class DefaultHtnPlanner implements HtnPlanner {
             case HtnTask.CompoundTask compound -> {
                 var method = DecompositionMethod.firstApplicable(compound.methods(), state);
                 if (method.isEmpty()) {
-                    log.debug("No applicable method for compound task '{}'", compound.taskId());
+                    log.debug(String.format("No applicable method for compound task '%s'", compound.taskId()));
                     yield DecomposeOutcome.failed(state);
                 }
 

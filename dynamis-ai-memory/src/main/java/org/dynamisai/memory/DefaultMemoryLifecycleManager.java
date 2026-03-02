@@ -1,8 +1,7 @@
 package org.dynamisai.memory;
 
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +15,7 @@ import java.util.stream.Collectors;
 
 public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManager {
 
-    private static final Logger log =
-        LoggerFactory.getLogger(DefaultMemoryLifecycleManager.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultMemoryLifecycleManager.class);
 
     private final MemoryBudget defaultBudget;
     private final VectorMemoryStore archiveStore;
@@ -90,7 +88,7 @@ public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManag
             archiveStore.store(archived, InHeapVectorMemoryStore.keywordEmbedding(
                 archived.summary(), MockSentenceEncoder.DIM));
             records.remove(r.id());
-            log.debug("Archived memory {} for owner {}", r.id(), owner);
+            log.debug(String.format("Archived memory %s for owner %s", r.id(), owner));
         }
 
         // Prune each stage if over budget
@@ -108,7 +106,7 @@ public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManag
                 .toList();
             for (MemoryRecord r : archivedRecords) {
                 archiveStore.remove(r.id());
-                log.debug("Pruned archived memory {} for owner {}", r.id(), owner);
+                log.debug(String.format("Pruned archived memory %s for owner %s", r.id(), owner));
             }
         }
     }
@@ -148,7 +146,7 @@ public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManag
         activeRecords.remove(owner);
         archiveStore.getAllForOwner(owner)
             .forEach(r -> archiveStore.remove(r.id()));
-        log.debug("Purged all memories for owner {}", owner);
+        log.debug(String.format("Purged all memories for owner %s", owner));
     }
 
     @Override
@@ -181,8 +179,7 @@ public final class DefaultMemoryLifecycleManager implements MemoryLifecycleManag
         int excess = atStage.size() - limit;
         for (int i = 0; i < excess; i++) {
             records.remove(atStage.get(i).id());
-            log.debug("Pruned {} memory {} for owner {}",
-                stage, atStage.get(i).id(), owner);
+            log.debug(String.format("Pruned %s memory %s for owner %s", stage, atStage.get(i).id(), owner));
         }
     }
 

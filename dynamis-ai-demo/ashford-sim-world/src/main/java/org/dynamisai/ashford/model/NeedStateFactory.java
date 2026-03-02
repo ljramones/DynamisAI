@@ -16,7 +16,7 @@
 package org.dynamisai.ashford.model;
 
 import java.util.Objects;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 public final class NeedStateFactory {
 

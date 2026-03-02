@@ -1,6 +1,6 @@
 package org.dynamisai.memory;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 /**
  * Per-NPC memory statistics — fed to AffectiveStateDebugger and AIInspector.

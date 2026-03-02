@@ -6,7 +6,7 @@ import org.dynamisai.core.AITaskNode;
 import org.dynamisai.core.DefaultBudgetGovernor;
 import org.dynamisai.core.DefaultWorldStateStore;
 import org.dynamisai.core.DegradeMode;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.FrameBudgetReport;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.Priority;

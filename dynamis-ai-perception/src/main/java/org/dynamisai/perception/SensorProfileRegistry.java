@@ -1,6 +1,6 @@
 package org.dynamisai.perception;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;

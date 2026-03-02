@@ -2,7 +2,7 @@ package org.dynamisai.perception;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.core.DefaultWorldStateStore;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.ThreatLevel;

@@ -1,12 +1,11 @@
 package org.dynamisai.navigation;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.WorldChange;
 import org.dynamisai.core.WorldStateStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -21,8 +20,7 @@ import java.util.Map;
  */
 public final class MovementIntegrator {
 
-    private static final Logger log =
-        LoggerFactory.getLogger(MovementIntegrator.class);
+    private static final DynamisLogger log = DynamisLogger.get(MovementIntegrator.class);
 
     private final WorldStateStore store;
 
@@ -64,7 +62,7 @@ public final class MovementIntegrator {
                     }
                 }
             } catch (ReflectiveOperationException e) {
-                log.warn("MovementIntegrator: snapshot reflection failed: {}", e.getMessage());
+                log.warn(String.format("MovementIntegrator: snapshot reflection failed: %s", e.getMessage()));
             }
         }
 
@@ -74,7 +72,7 @@ public final class MovementIntegrator {
         }
 
         store.commitTick();
-        log.debug("MovementIntegrator: tick={} committed={}", tick, committed);
+        log.debug(String.format("MovementIntegrator: tick=%s committed=%s", tick, committed));
     }
 
     public static EntityState externalEntity(EntityId id, Location position,

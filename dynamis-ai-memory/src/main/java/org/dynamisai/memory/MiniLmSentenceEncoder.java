@@ -1,7 +1,6 @@
 package org.dynamisai.memory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,8 +13,7 @@ import java.nio.file.Path;
  */
 public final class MiniLmSentenceEncoder implements SentenceEncoder {
 
-    private static final Logger log =
-        LoggerFactory.getLogger(MiniLmSentenceEncoder.class);
+    private static final DynamisLogger log = DynamisLogger.get(MiniLmSentenceEncoder.class);
 
     public static final int DIM = 384;
 
@@ -46,11 +44,10 @@ public final class MiniLmSentenceEncoder implements SentenceEncoder {
         Path tokenizer = modelPath.resolve("tokenizer.json");
         if (Files.exists(onnx) && Files.exists(tokenizer)) {
             live = true;
-            log.info("MiniLmSentenceEncoder: model assets found at {}", modelPath);
+            log.info(String.format("MiniLmSentenceEncoder: model assets found at %s", modelPath));
         } else {
             live = false;
-            log.warn("MiniLmSentenceEncoder: model not found at {} — using fallback encoder",
-                modelPath);
+            log.warn(String.format("MiniLmSentenceEncoder: model not found at %s — using fallback encoder", modelPath));
         }
     }
 

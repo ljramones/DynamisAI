@@ -1,6 +1,6 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 /**
  * Social system interface — manages relationship graph, faction standings,

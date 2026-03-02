@@ -1,10 +1,9 @@
 package org.dynamisai.navigation;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.SteeringOutput;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class DefaultNavigationSystem implements NavigationSystem {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultNavigationSystem.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultNavigationSystem.class);
     private static final int MAX_NODES = 512;
 
     private final NavMesh mesh;
@@ -42,8 +41,7 @@ public final class DefaultNavigationSystem implements NavigationSystem {
         this.rvoSolver = new RvoSolver();
         this.executor = Executors.newThreadPerTaskExecutor(
             Thread.ofVirtual().name("nav-", 0).factory());
-        log.info("NavigationSystem ready — {} polys, {} clusters",
-            mesh.polyCount(), mesh.clusterCount());
+        log.info(String.format("NavigationSystem ready — %s polys, %s clusters", mesh.polyCount(), mesh.clusterCount()));
     }
 
     @Override
@@ -56,15 +54,13 @@ public final class DefaultNavigationSystem implements NavigationSystem {
 
             if (result instanceof PathResult.Found found) {
                 activePaths.put(request.requester(), found.path());
-                log.debug("Path found for {} — {} waypoints, cost={}",
-                    request.requester(),
+                log.debug(String.format("Path found for %s — %s waypoints, cost=%s", request.requester(),
                     found.path().waypoints().size(),
-                    found.path().totalCost());
+                    found.path().totalCost()));
             } else {
-                log.debug("Path {} for {}: {}",
-                    result.getClass().getSimpleName(),
+                log.debug(String.format("Path %s for %s: %s", result.getClass().getSimpleName(),
                     request.requester(),
-                    result instanceof PathResult.Unreachable u ? u.reason() : "");
+                    result instanceof PathResult.Unreachable u ? u.reason() : ""));
             }
             return result;
         }, executor);

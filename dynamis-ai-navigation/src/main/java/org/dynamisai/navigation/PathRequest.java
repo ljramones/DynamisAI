@@ -1,6 +1,6 @@
 package org.dynamisai.navigation;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 
 /**

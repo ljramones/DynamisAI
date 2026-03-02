@@ -1,7 +1,7 @@
 package org.dynamisai.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public final class DynamisAiEngine {
 
-    private static final Logger log = LoggerFactory.getLogger(DynamisAiEngine.class);
+    private static final DynamisLogger log = DynamisLogger.get(DynamisAiEngine.class);
 
     private final DefaultWorldStateStore worldStore;
     private final BudgetGovernor governor;
@@ -162,7 +162,7 @@ public final class DynamisAiEngine {
             Method record = activeInspector.getClass().getMethod("record", WorldSnapshot.class, Map.class);
             record.invoke(activeInspector, snapshot, Map.of());
         } catch (Exception e) {
-            log.warn("Inspector record hook failed: {}", e.getMessage());
+            log.warn(String.format("Inspector record hook failed: %s", e.getMessage()));
         }
     }
 

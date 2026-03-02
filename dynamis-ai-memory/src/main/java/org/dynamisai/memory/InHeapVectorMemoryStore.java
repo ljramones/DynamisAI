@@ -1,8 +1,7 @@
 package org.dynamisai.memory;
 
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public final class InHeapVectorMemoryStore implements VectorMemoryStore {
 
-    private static final Logger log = LoggerFactory.getLogger(InHeapVectorMemoryStore.class);
+    private static final DynamisLogger log = DynamisLogger.get(InHeapVectorMemoryStore.class);
 
     private final SentenceEncoder encoder;
     private final OffHeapVectorMemoryStore delegate;
@@ -29,8 +28,7 @@ public final class InHeapVectorMemoryStore implements VectorMemoryStore {
     public InHeapVectorMemoryStore(SentenceEncoder encoder) {
         this.encoder = encoder;
         this.delegate = new OffHeapVectorMemoryStore(encoder.dim(), 64);
-        log.info("InHeapVectorMemoryStore: encoder={} dim={} capacity=64",
-            encoder.getClass().getSimpleName(), encoder.dim());
+        log.info(String.format("InHeapVectorMemoryStore: encoder=%s dim=%s capacity=64", encoder.getClass().getSimpleName(), encoder.dim()));
     }
 
     /**

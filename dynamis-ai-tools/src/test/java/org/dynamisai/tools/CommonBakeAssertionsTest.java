@@ -3,7 +3,7 @@ package org.dynamisai.tools;
 import io.vavr.collection.HashMap;
 import org.dynamisai.core.AIOutputFrame;
 import org.dynamisai.core.DialogueEvent;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.FrameBudgetReport;
 import org.dynamisai.core.GlobalFacts;

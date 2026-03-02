@@ -20,7 +20,7 @@ import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.dynamisai.cognition.AffectVector;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GlobalFacts;

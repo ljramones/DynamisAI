@@ -20,5 +20,5 @@ public interface HpaPathfinder {
     PathResult findPath(NavMesh mesh, HpaGraph graph,
                         NavPoint start, NavPoint goal,
                         int maxNodes,
-                        org.dynamisai.core.EntityId requester);
+                        org.dynamis.core.entity.EntityId requester);
 }

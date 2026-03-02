@@ -2,7 +2,7 @@ package org.dynamisai.tools;
 
 import io.vavr.collection.HashMap;
 import org.dynamisai.core.DynamisAiEngine;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GameEngineContext;

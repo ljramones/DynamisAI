@@ -1,6 +1,6 @@
 package org.dynamisai.planning;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

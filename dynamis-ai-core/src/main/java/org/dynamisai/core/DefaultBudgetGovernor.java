@@ -1,7 +1,6 @@
 package org.dynamisai.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class DefaultBudgetGovernor implements BudgetGovernor {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultBudgetGovernor.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultBudgetGovernor.class);
 
     /** Total AI budget per frame in milliseconds. Default 8ms (leaves room for render). */
     private final int frameBudgetMs;
@@ -74,14 +73,14 @@ public final class DefaultBudgetGovernor implements BudgetGovernor {
             } else {
                 switch (node.degradeMode()) {
                     case SKIP -> {
-                        log.debug("SKIP {} — budget exceeded", node.taskId());
+                        log.debug(String.format("SKIP %s — budget exceeded", node.taskId()));
                         long elapsed = System.nanoTime() - taskStart;
                         records.add(new TaskExecutionRecord(
                             node.taskId(), node.priority(), QosLevel.SKIP, elapsed, true, true));
                         skipped++;
                     }
                     case CACHED, DEFER, FALLBACK -> {
-                        log.debug("{} {} — budget exceeded, running fallback", node.degradeMode(), node.taskId());
+                        log.debug(String.format("%s %s — budget exceeded, running fallback", node.degradeMode(), node.taskId()));
                         runSafely(node.taskId() + "[fallback]", node.fallback());
                         long elapsed = System.nanoTime() - taskStart;
                         QosLevel qos = switch (node.degradeMode()) {
@@ -125,7 +124,7 @@ public final class DefaultBudgetGovernor implements BudgetGovernor {
         try {
             r.run();
         } catch (Exception e) {
-            log.error("Task '{}' threw an exception — continuing frame", label, e);
+            log.error(String.format("Task '%s' threw an exception — continuing frame", label), e);
         }
     }
 }

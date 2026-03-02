@@ -6,8 +6,7 @@ import ai.djl.ndarray.NDList;
 import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.DataType;
 import ai.djl.ndarray.types.Shape;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public final class BarkEngine {
 
-    private static final Logger log = LoggerFactory.getLogger(BarkEngine.class);
+    private static final DynamisLogger log = DynamisLogger.get(BarkEngine.class);
 
     private final OnnxTtsSession session;
     private final TextTokenizer tokenizer;
@@ -48,7 +47,7 @@ public final class BarkEngine {
                 .toType(DataType.INT32, false);
             NDList output = predictor.predict(new NDList(input));
             float[] pcm = output.get(0).squeeze().toFloatArray();
-            log.debug("Bark synthesized {} samples for nonverbal: {}", pcm.length, taggedPrompt);
+            log.debug(String.format("Bark synthesized %s samples for nonverbal: %s", pcm.length, taggedPrompt));
             return pcm;
         } catch (Exception e) {
             throw new TtsEngineException("Bark synthesis failed: " + e.getMessage(), e);

@@ -1,6 +1,6 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public final class FactionRegistry {
 
     /** All factions this entity has any standing with. */
     public List<FactionStanding> standingsFor(EntityId entity) {
-        String prefix = entity.value() + ":";
+        String prefix = entity.id() + ":";
         List<FactionStanding> result = new ArrayList<>();
         for (Map.Entry<String, FactionStanding> entry : standings.entrySet()) {
             if (entry.getKey().startsWith(prefix)) {
@@ -65,7 +65,7 @@ public final class FactionRegistry {
 
     /** Remove all faction standings for an entity — call on despawn. */
     public void removeEntity(EntityId entity) {
-        String prefix = entity.value() + ":";
+        String prefix = entity.id() + ":";
         standings.keySet().removeIf(k -> k.startsWith(prefix));
     }
 
@@ -73,6 +73,6 @@ public final class FactionRegistry {
     public int size() { return standings.size(); }
 
     private static String key(EntityId entity, FactionId faction) {
-        return entity.value() + ":" + faction.name();
+        return entity.id() + ":" + faction.name();
     }
 }

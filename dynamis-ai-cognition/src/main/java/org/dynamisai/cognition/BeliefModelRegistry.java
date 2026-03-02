@@ -1,6 +1,6 @@
 package org.dynamisai.cognition;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;

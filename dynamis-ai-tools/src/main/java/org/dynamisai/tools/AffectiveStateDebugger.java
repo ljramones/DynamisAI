@@ -4,7 +4,7 @@ import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.Belief;
 import org.dynamisai.cognition.BeliefModel;
 import org.dynamisai.cognition.CognitionService;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.WorldSnapshot;

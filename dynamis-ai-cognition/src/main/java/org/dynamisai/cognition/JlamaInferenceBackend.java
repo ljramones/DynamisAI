@@ -5,8 +5,7 @@ import com.github.tjake.jlama.model.ModelSupport;
 import com.github.tjake.jlama.model.functions.Generator;
 import com.github.tjake.jlama.safetensors.DType;
 import com.github.tjake.jlama.safetensors.prompt.PromptContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -27,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class JlamaInferenceBackend implements InferenceBackend {
 
-    private static final Logger log = LoggerFactory.getLogger(JlamaInferenceBackend.class);
+    private static final DynamisLogger log = DynamisLogger.get(JlamaInferenceBackend.class);
 
     private final String modelPath;
     private final DType workingDType;
@@ -61,7 +60,7 @@ public final class JlamaInferenceBackend implements InferenceBackend {
             return;
         }
         try {
-            log.info("Loading Jlama model from: {}", modelPath);
+            log.info(String.format("Loading Jlama model from: %s", modelPath));
             long start = System.currentTimeMillis();
             model = ModelSupport.loadModel(
                 new File(modelPath),
@@ -69,7 +68,7 @@ public final class JlamaInferenceBackend implements InferenceBackend {
                 workingDType
             );
             long elapsed = System.currentTimeMillis() - start;
-            log.info("Jlama model loaded in {}ms", elapsed);
+            log.info(String.format("Jlama model loaded in %sms", elapsed));
             initialized = true;
         } catch (Exception e) {
             throw new InferenceException(

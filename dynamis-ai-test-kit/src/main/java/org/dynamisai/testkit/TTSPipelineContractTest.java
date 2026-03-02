@@ -2,7 +2,7 @@ package org.dynamisai.testkit;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueResponse;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.voice.PhysicalVoiceContext;
 import org.dynamisai.voice.TTSPipeline;
 import org.dynamisai.voice.VoiceRenderJob;

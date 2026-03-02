@@ -1,7 +1,6 @@
 package org.dynamisai.cognition;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class OllamaInferenceBackend implements InferenceBackend {
 
-    private static final Logger log = LoggerFactory.getLogger(OllamaInferenceBackend.class);
+    private static final DynamisLogger log = DynamisLogger.get(OllamaInferenceBackend.class);
 
     private final String baseUrl;
     private final String model;

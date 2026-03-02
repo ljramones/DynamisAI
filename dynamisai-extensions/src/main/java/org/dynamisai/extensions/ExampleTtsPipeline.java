@@ -2,7 +2,7 @@ package org.dynamisai.extensions;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueResponse;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.voice.AudioStream;
 import org.dynamisai.voice.BarkType;
 import org.dynamisai.voice.PhysicalVoiceContext;

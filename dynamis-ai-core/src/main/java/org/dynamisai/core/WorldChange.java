@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 public sealed interface WorldChange
     permits WorldChange.EntityStateChange,
             WorldChange.FactChange,

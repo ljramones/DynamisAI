@@ -2,9 +2,8 @@ package org.dynamisai.voice;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueResponse;
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.time.Duration;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class DjlTtsPipeline implements TTSPipeline {
 
-    private static final Logger log = LoggerFactory.getLogger(DjlTtsPipeline.class);
+    private static final DynamisLogger log = DynamisLogger.get(DjlTtsPipeline.class);
 
     private final ChatterboxEngine chatterbox;
     private final BarkEngine bark;
@@ -129,7 +128,7 @@ public final class DjlTtsPipeline implements TTSPipeline {
                 List<BlendshapeFrame> blendshapeFrames = blendshapeMapper.map(visemes, affect);
                 return new SynthesisResult(audio, visemes, blendshapeFrames);
             } catch (TtsEngineException e) {
-                log.warn("Chatterbox failed — falling back to Kokoro: {}", e.getMessage());
+                log.warn(String.format("Chatterbox failed — falling back to Kokoro: %s", e.getMessage()));
             }
         }
         if (kokoro.isAvailable()) {
@@ -142,7 +141,7 @@ public final class DjlTtsPipeline implements TTSPipeline {
                 List<BlendshapeFrame> blendshapeFrames = blendshapeMapper.map(visemes, affect);
                 return new SynthesisResult(audio, visemes, blendshapeFrames);
             } catch (TtsEngineException e) {
-                log.warn("Kokoro failed — returning empty stream: {}", e.getMessage());
+                log.warn(String.format("Kokoro failed — returning empty stream: %s", e.getMessage()));
             }
         }
         AudioStream audio = AudioStream.empty("primary-speech-fallback");
@@ -162,7 +161,7 @@ public final class DjlTtsPipeline implements TTSPipeline {
                 return AudioStream.fromPcmFloats("nonverbal-bark", pcm,
                     bark.sampleRateHz());
             } catch (TtsEngineException e) {
-                log.debug("Bark nonverbal failed — skipping: {}", e.getMessage());
+                log.debug(String.format("Bark nonverbal failed — skipping: %s", e.getMessage()));
             }
         }
         return AudioStream.empty("nonverbal-empty");
@@ -172,7 +171,7 @@ public final class DjlTtsPipeline implements TTSPipeline {
         try {
             init.run();
         } catch (TtsEngineException e) {
-            log.info("{} engine not available — will use fallback: {}", name, e.getMessage());
+            log.info(String.format("%s engine not available — will use fallback: %s", name, e.getMessage()));
         }
     }
 

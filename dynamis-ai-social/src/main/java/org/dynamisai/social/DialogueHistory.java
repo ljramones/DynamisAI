@@ -1,6 +1,6 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -82,8 +82,8 @@ public final class DialogueHistory {
     }
 
     private static String pairKey(EntityId a, EntityId b) {
-        long lo = Math.min(a.value(), b.value());
-        long hi = Math.max(a.value(), b.value());
+        long lo = Math.min(a.id(), b.id());
+        long hi = Math.max(a.id(), b.id());
         return lo + ":" + hi;
     }
 }

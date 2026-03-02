@@ -1,9 +1,8 @@
 package org.dynamisai.voice;
 
 import org.dynamisai.cognition.AffectVector;
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public final class DefaultAnimisBridge implements AnimisBridge {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultAnimisBridge.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultAnimisBridge.class);
 
     private final Map<EntityId, ConcurrentLinkedQueue<AnimisBridgeEvent>> eventQueues =
         new ConcurrentHashMap<>();
@@ -28,15 +27,13 @@ public final class DefaultAnimisBridge implements AnimisBridge {
     @Override
     public void submitVoiceJob(VoiceRenderJob job) {
         enqueue(job.speaker(), new AnimisBridgeEvent.VoiceJobEvent(job.speaker(), job));
-        log.debug("VoiceJob submitted for agent {} — {} visemes, duration {}ms",
-            job.speaker(), job.visemes().size(), job.estimatedDuration().toMillis());
+        log.debug(String.format("VoiceJob submitted for agent %s — %s visemes, duration %sms", job.speaker(), job.visemes().size(), job.estimatedDuration().toMillis()));
     }
 
     @Override
     public void submitIntentSignal(EntityId agent, IntentSignal intent, Duration anticipateBy) {
         enqueue(agent, new AnimisBridgeEvent.IntentEvent(agent, intent, anticipateBy));
-        log.debug("IntentSignal {} (confidence={}) for agent {} — anticipate {}ms",
-            intent.type(), intent.confidence(), agent, anticipateBy.toMillis());
+        log.debug(String.format("IntentSignal %s (confidence=%s) for agent %s — anticipate %sms", intent.type(), intent.confidence(), agent, anticipateBy.toMillis()));
     }
 
     @Override

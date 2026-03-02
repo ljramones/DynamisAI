@@ -7,8 +7,7 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +20,7 @@ import java.nio.file.Paths;
  */
 public final class OnnxTtsSession implements AutoCloseable {
 
-    private static final Logger log = LoggerFactory.getLogger(OnnxTtsSession.class);
+    private static final DynamisLogger log = DynamisLogger.get(OnnxTtsSession.class);
 
     private final TtsModelConfig config;
     private NDManager manager;
@@ -39,7 +38,7 @@ public final class OnnxTtsSession implements AutoCloseable {
     public synchronized void initialize() throws TtsEngineException {
         if (initialized) return;
         Path modelPath = Paths.get(config.modelPath());
-        log.info("Loading {} TTS model from: {}", config.label(), modelPath);
+        log.info(String.format("Loading %s TTS model from: %s", config.label(), modelPath));
         try {
             manager = NDManager.newBaseManager();
             Criteria<NDList, NDList> criteria = Criteria.builder()
@@ -49,7 +48,7 @@ public final class OnnxTtsSession implements AutoCloseable {
                 .build();
             model = criteria.loadModel();
             initialized = true;
-            log.info("{} TTS model loaded", config.label());
+            log.info(String.format("%s TTS model loaded", config.label()));
         } catch (ModelNotFoundException | MalformedModelException | IOException e) {
             if (manager != null) {
                 manager.close();

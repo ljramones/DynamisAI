@@ -1,7 +1,7 @@
 package org.dynamisai.lod;
 
 import io.vavr.collection.HashMap;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GlobalFacts;
@@ -96,7 +96,7 @@ class DefaultImportanceEvaluatorTest {
 
     private static EntityState state(float x, float z, ThreatLevel threat, boolean dialogue) {
         return new EntityState(
-            EntityId.of(-1L),
+            EntityId.NONE,
             new Location(x, 0, z),
             Map.of("threatLevel", threat, "dialogueInFlight", dialogue));
     }

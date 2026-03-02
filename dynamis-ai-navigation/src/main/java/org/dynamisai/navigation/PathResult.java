@@ -1,6 +1,6 @@
 package org.dynamisai.navigation;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 /**
  * Sealed result of a pathfinding request.

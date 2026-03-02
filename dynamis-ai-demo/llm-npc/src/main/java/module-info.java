@@ -1,4 +1,5 @@
 module org.dynamisai.demo {
+    requires dynamis.core;
     requires org.dynamisai.core;
     requires org.dynamisai.cognition;
     requires org.dynamisai.perception;
@@ -13,7 +14,6 @@ module org.dynamisai.demo {
     requires dynamis.audio.core;
     requires dynamis.audio.designer;
     requires dynamis.audio.dsp;
-    requires org.slf4j;
     requires jdk.incubator.vector;
     requires jlama.core;
     requires javafx.controls;

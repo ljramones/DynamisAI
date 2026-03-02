@@ -1,8 +1,7 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public final class DefaultSocialSystem implements SocialSystem {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultSocialSystem.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultSocialSystem.class);
 
     /** Small affinity bump applied on any positive dialogue. */
     private static final float DIALOGUE_AFFINITY_NUDGE = 0.02f;
@@ -108,8 +107,7 @@ public final class DefaultSocialSystem implements SocialSystem {
                 DIALOGUE_AFFINITY_PENALTY * sentiment);
         }
 
-        log.debug("Dialogue recorded: {}→{} topic={} sentiment={}",
-            speaker, listener, topic, sentiment);
+        log.debug(String.format("Dialogue recorded: %s→%s topic=%s sentiment=%s", speaker, listener, topic, sentiment));
     }
 
     @Override
@@ -147,7 +145,7 @@ public final class DefaultSocialSystem implements SocialSystem {
     public void removeEntity(EntityId entity) {
         socialGraph.removeEntity(entity);
         factionRegistry.removeEntity(entity);
-        log.debug("Social state removed for entity {}", entity);
+        log.debug(String.format("Social state removed for entity %s", entity));
     }
 
     @Override public SocialGraph graph() { return socialGraph; }

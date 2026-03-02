@@ -1,6 +1,6 @@
 module org.dynamisai.navigation {
+    requires dynamis.core;
     requires org.dynamisai.core;
     requires org.dynamisai.perception;
-    requires org.slf4j;
     exports org.dynamisai.navigation;
 }

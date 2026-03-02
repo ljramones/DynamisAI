@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 module org.dynamisai.ashfordsimworld {
+    requires dynamis.core;
     requires io.vavr;
     requires org.dynamisai.core;
     requires org.dynamisai.social;

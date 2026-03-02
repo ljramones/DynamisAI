@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 /**
  * Deterministic seed derivation utilities.
  * Pure static functions with no mutable state.
@@ -21,7 +23,7 @@ public final class DeterminismSeedManager {
     public static long seedFor(EntityId entityId, long snapshotTick) {
         long hash = FNV_OFFSET_BASIS_64;
         hash = mix(hash, ENTITY_DOMAIN);
-        hash = mix(hash, entityId.value());
+        hash = mix(hash, entityId.id());
         hash = mix(hash, snapshotTick);
         return hash;
     }
@@ -42,4 +44,3 @@ public final class DeterminismSeedManager {
         return hash;
     }
 }
-

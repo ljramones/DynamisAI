@@ -1,7 +1,6 @@
 package org.dynamisai.cognition;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public final class ResponseParser {
 
-    private static final Logger log = LoggerFactory.getLogger(ResponseParser.class);
+    private static final DynamisLogger log = DynamisLogger.get(ResponseParser.class);
 
     public DialogueResponse parse(String json) {
         if (json == null || json.isBlank()) {
@@ -27,8 +26,7 @@ public final class ResponseParser {
             List<BehaviorHint> hints = List.of();
             return new DialogueResponse(text, affect, tags, hints, false);
         } catch (Exception e) {
-            log.warn("ResponseParser failed to parse LLM output — fallback. Input: {}",
-                json.length() > 100 ? json.substring(0, 100) + "..." : json);
+            log.warn(String.format("ResponseParser failed to parse LLM output — fallback. Input: %s", json.length() > 100 ? json.substring(0, 100) + "..." : json));
             return DialogueResponse.fallback("...");
         }
     }

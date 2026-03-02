@@ -3,7 +3,7 @@ package org.dynamisai.tools;
 import io.dynamis.audio.api.EmitterImportance;
 import io.dynamis.audio.core.LogicalEmitter;
 import io.dynamis.audio.core.VoiceManager;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.voice.VoiceRenderJob;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public final class DynamisAudioBridge {
         // Replace any existing emitter for this NPC.
         destroyEmitters(job.speaker());
 
-        LogicalEmitter emitter = new LogicalEmitter("npc-" + job.speaker().value(), EmitterImportance.NORMAL);
+        LogicalEmitter emitter = new LogicalEmitter("npc-" + job.speaker().id(), EmitterImportance.NORMAL);
         emitter.setPosition(x, y, z);
 
         // Materialize an audio asset so bridge code exercises stream conversion path.

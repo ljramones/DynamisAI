@@ -1,7 +1,7 @@
 package org.dynamisai.demo;
 
 import org.dynamisai.cognition.AffectVector;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.ThreatLevel;
 
@@ -57,6 +57,6 @@ public final class DemoNpc {
 
     @Override
     public String toString() {
-        return name + "[" + id.value() + "]";
+        return name + "[" + id.id() + "]";
     }
 }

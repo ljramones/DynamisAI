@@ -3,7 +3,7 @@ package org.dynamisai.tools;
 import io.dynamis.audio.core.VoiceManager;
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueResponse;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.voice.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

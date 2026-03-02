@@ -415,7 +415,7 @@ public final class ShowcaseGui {
         return worldZ * SCALE;
     }
 
-    private Color lodColor(CrowdSnapshot snap, org.dynamisai.core.EntityId id) {
+    private Color lodColor(CrowdSnapshot snap, org.dynamis.core.entity.EntityId id) {
         return snap.groupOf(id)
             .map(g -> switch (g.lod()) {
                 case FULL -> Color.web("#22cc44");

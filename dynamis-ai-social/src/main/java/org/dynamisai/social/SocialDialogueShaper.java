@@ -2,7 +2,7 @@ package org.dynamisai.social;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueRequest;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 /**
  * Shapes a DialogueRequest using SocialInfluence derived from SocialContext.

@@ -1,6 +1,6 @@
 package org.dynamisai.perception;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ class SensorProfileRegistryTest {
         ExecutorService exec = Executors.newFixedThreadPool(4);
         try {
             List<Future<?>> futures = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
+            for (int i = 1; i <= 100; i++) {
                 final int n = i;
                 futures.add(exec.submit(() -> {
                     EntityId id = EntityId.of(n);

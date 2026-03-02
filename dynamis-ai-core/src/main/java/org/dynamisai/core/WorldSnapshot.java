@@ -1,5 +1,6 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
 import io.vavr.collection.HashMap;
 
 public record WorldSnapshot(

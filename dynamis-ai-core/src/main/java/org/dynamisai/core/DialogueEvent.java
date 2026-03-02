@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 /**
  * Dialogue output event for one NPC utterance.
  */

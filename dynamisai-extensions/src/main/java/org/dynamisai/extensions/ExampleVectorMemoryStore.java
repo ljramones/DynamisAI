@@ -1,6 +1,6 @@
 package org.dynamisai.extensions;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.memory.EmbeddingVector;
 import org.dynamisai.memory.MemoryRecord;
 import org.dynamisai.memory.SimilarityResult;

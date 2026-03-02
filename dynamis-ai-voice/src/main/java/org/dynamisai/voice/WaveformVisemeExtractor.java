@@ -6,8 +6,7 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.Shape;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public final class WaveformVisemeExtractor implements VisemeExtractor {
 
-    private static final Logger log = LoggerFactory.getLogger(WaveformVisemeExtractor.class);
+    private static final DynamisLogger log = DynamisLogger.get(WaveformVisemeExtractor.class);
     private static final Path DEFAULT_MODEL_PATH = Path.of(
         System.getProperty("user.home"),
         ".dynamisai", "models", "wav2vec2-base", "wav2vec2-base.onnx");
@@ -64,14 +63,14 @@ public final class WaveformVisemeExtractor implements VisemeExtractor {
             float[] activations = reduceFrameActivation(features);
             return toVisemes(activations, audio.durationSeconds());
         } catch (Exception e) {
-            log.warn("WaveformVisemeExtractor inference failed ({}), using fallback", e.getMessage());
+            log.warn(String.format("WaveformVisemeExtractor inference failed (%s), using fallback", e.getMessage()));
             return fallback.extract(audio, transcript);
         }
     }
 
     private void initialize() {
         if (!Files.exists(modelPath)) {
-            log.warn("WaveformVisemeExtractor model not found at {} - using RuleBasedVisemeExtractor", modelPath);
+            log.warn(String.format("WaveformVisemeExtractor model not found at %s - using RuleBasedVisemeExtractor", modelPath));
             return;
         }
         try {
@@ -83,9 +82,9 @@ public final class WaveformVisemeExtractor implements VisemeExtractor {
                 .build();
             model = criteria.loadModel();
             live = true;
-            log.info("WaveformVisemeExtractor loaded model from {}", modelPath);
+            log.info(String.format("WaveformVisemeExtractor loaded model from %s", modelPath));
         } catch (Exception e) {
-            log.warn("WaveformVisemeExtractor failed to load model ({}), using fallback", e.getMessage());
+            log.warn(String.format("WaveformVisemeExtractor failed to load model (%s), using fallback", e.getMessage()));
             live = false;
         }
     }

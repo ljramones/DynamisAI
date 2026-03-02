@@ -1,5 +1,5 @@
 module org.dynamisai.core {
+    requires dynamis.core;
     requires io.vavr;
-    requires org.slf4j;
     exports org.dynamisai.core;
 }

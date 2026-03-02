@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 /**
  * Player action payload submitted by a game engine each tick.
  */

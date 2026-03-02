@@ -16,7 +16,7 @@
 package org.dynamisai.ashford.model;
 
 import io.vavr.collection.List;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 public final class AshfordCharacters {
 

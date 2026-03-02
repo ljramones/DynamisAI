@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 /**
  * Bridge contract consumed by BudgetGovernor for LOD-gated execution.
  */

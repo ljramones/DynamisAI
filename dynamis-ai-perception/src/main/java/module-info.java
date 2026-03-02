@@ -1,8 +1,8 @@
 module org.dynamisai.perception {
+    requires dynamis.core;
     requires org.dynamisai.core;
     requires org.dynamisai.cognition;
     requires jdk.incubator.vector;
     requires io.vavr;
-    requires org.slf4j;
     exports org.dynamisai.perception;
 }

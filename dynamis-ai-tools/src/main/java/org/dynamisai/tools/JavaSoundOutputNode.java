@@ -3,8 +3,7 @@ package org.dynamisai.tools;
 import io.dynamis.audio.api.AcousticConstants;
 import io.dynamis.audio.dsp.device.AudioDevice;
 import io.dynamis.audio.dsp.device.AudioDeviceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -22,8 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class JavaSoundOutputNode implements AudioDevice {
 
-    private static final Logger log =
-        LoggerFactory.getLogger(JavaSoundOutputNode.class);
+    private static final DynamisLogger log = DynamisLogger.get(JavaSoundOutputNode.class);
 
     private static final int RING_BLOCKS = 10;
 
@@ -84,8 +82,7 @@ public final class JavaSoundOutputNode implements AudioDevice {
         ioThread = Thread.ofVirtual().name("dynamisai-audio-out").start(this::ioLoop);
 
         long ringMs = (ringCapacity / channels) * 1000L / sampleRate;
-        log.info("JavaSoundOutputNode open: {}Hz {}ch block={} ring={}ms",
-            sampleRate, channels, blockSize, ringMs);
+        log.info(String.format("JavaSoundOutputNode open: %sHz %sch block=%s ring=%sms", sampleRate, channels, blockSize, ringMs));
     }
 
     @Override
@@ -98,7 +95,7 @@ public final class JavaSoundOutputNode implements AudioDevice {
         synchronized (ringLock) {
             int available = ringCapacity - used();
             if (available < floats) {
-                log.warn("JavaSoundOutputNode: ring full, dropping {} frames", frameCount);
+                log.warn(String.format("JavaSoundOutputNode: ring full, dropping %s frames", frameCount));
                 return;
             }
             for (int i = 0; i < floats; i++) {

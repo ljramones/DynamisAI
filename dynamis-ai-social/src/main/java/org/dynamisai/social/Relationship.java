@@ -1,6 +1,6 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.time.Instant;
 import java.util.EnumSet;

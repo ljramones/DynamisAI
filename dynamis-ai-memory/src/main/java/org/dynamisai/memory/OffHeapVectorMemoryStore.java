@@ -3,9 +3,8 @@ package org.dynamisai.memory;
 import jdk.incubator.vector.FloatVector;
 import jdk.incubator.vector.VectorOperators;
 import jdk.incubator.vector.VectorSpecies;
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -34,7 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public final class OffHeapVectorMemoryStore implements VectorMemoryStore {
 
-    private static final Logger log = LoggerFactory.getLogger(OffHeapVectorMemoryStore.class);
+    private static final DynamisLogger log = DynamisLogger.get(OffHeapVectorMemoryStore.class);
     private static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED;
 
     private final int dim;
@@ -71,9 +70,8 @@ public final class OffHeapVectorMemoryStore implements VectorMemoryStore {
         this.arena = Arena.ofShared();
         this.segment = allocateSegment(arena, (long) capacity * floatsPerVec);
 
-        log.info("OffHeapVectorMemoryStore: dim={}, floatsPerVec={}, capacity={}, segment={}B, SIMD lanes={}",
-            dim, floatsPerVec, capacity,
-            (long) capacity * floatsPerVec * Float.BYTES, lane);
+        log.info(String.format("OffHeapVectorMemoryStore: dim=%s, floatsPerVec=%s, capacity=%s, segment=%sB, SIMD lanes=%s", dim, floatsPerVec, capacity,
+            (long) capacity * floatsPerVec * Float.BYTES, lane));
     }
 
     public OffHeapVectorMemoryStore(int dim) {
@@ -317,7 +315,7 @@ public final class OffHeapVectorMemoryStore implements VectorMemoryStore {
 
     private void ensureCapacity() {
         int newCapacity = capacity * 2;
-        log.info("OffHeapVectorMemoryStore: resizing {} -> {} vectors", capacity, newCapacity);
+        log.info(String.format("OffHeapVectorMemoryStore: resizing %s -> %s vectors", capacity, newCapacity));
 
         MemorySegment newSegment = allocateSegment(arena, (long) newCapacity * floatsPerVec);
         long copyBytes = (long) capacity * floatsPerVec * Float.BYTES;

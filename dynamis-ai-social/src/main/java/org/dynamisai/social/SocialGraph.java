@@ -1,6 +1,6 @@
 package org.dynamisai.social;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -94,17 +94,18 @@ public final class SocialGraph {
     /** Remove all edges for an entity — call on despawn. */
     public void removeEntity(EntityId entity) {
         edges.keySet().removeIf(k ->
-            k.startsWith(entity.value() + ":") ||
-            k.endsWith(":" + entity.value()));
+            k.startsWith(entity.id() + ":") ||
+            k.endsWith(":" + entity.id()));
     }
 
     /** All entities that have at least one outgoing edge from the given entity. */
     public List<EntityId> knownEntities(EntityId from) {
-        String prefix = from.value() + ":";
+        String prefix = from.id() + ":";
         List<EntityId> result = new ArrayList<>();
         for (String key : edges.keySet()) {
             if (key.startsWith(prefix)) {
                 long toId = Long.parseLong(key.substring(prefix.length()));
+                // TODO: validate toId > 0 before construction — DynamisCore EntityId.of() throws on non-positive
                 result.add(EntityId.of(toId));
             }
         }
@@ -115,6 +116,6 @@ public final class SocialGraph {
     public int edgeCount() { return edges.size(); }
 
     private static String edgeKey(EntityId from, EntityId to) {
-        return from.value() + ":" + to.value();
+        return from.id() + ":" + to.id();
     }
 }

@@ -2,7 +2,7 @@ package org.dynamisai.voice;
 
 import org.dynamisai.cognition.AffectVector;
 import org.dynamisai.cognition.DialogueResponse;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.time.Duration;
 import java.util.List;

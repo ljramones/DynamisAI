@@ -1,6 +1,6 @@
 package org.dynamisai.memory;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;

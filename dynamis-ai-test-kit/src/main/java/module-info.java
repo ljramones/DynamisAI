@@ -1,4 +1,5 @@
 module org.dynamisai.testkit {
+    requires dynamis.core;
     requires org.dynamisai.core;
     requires org.dynamisai.cognition;
     requires org.dynamisai.memory;

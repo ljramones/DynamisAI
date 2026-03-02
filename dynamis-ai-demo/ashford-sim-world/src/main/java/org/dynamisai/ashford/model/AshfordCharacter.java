@@ -15,7 +15,7 @@
  */
 package org.dynamisai.ashford.model;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 public record AshfordCharacter(
     EntityId id,

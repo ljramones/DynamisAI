@@ -9,7 +9,7 @@ import org.dynamisai.core.AITaskNode;
 import org.dynamisai.core.DefaultBudgetGovernor;
 import org.dynamisai.core.DefaultWorldStateStore;
 import org.dynamisai.core.DegradeMode;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.Priority;
@@ -42,8 +42,7 @@ import org.dynamisai.voice.IntentType;
 import org.dynamisai.voice.MockTTSPipeline;
 import org.dynamisai.voice.PhysicalVoiceContext;
 import org.dynamisai.voice.VoiceRenderJob;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class SingleNpcDemoReel {
 
-    private static final Logger log = LoggerFactory.getLogger(SingleNpcDemoReel.class);
+    private static final DynamisLogger log = DynamisLogger.get(SingleNpcDemoReel.class);
 
     private final int tickCount;
     private final String[] playerInputs;
@@ -209,10 +208,9 @@ public final class SingleNpcDemoReel {
                 frameBudgetMs
             ));
 
-            log.info("Tick {} - percepts={} threat={} dialogue='{}' memTotal={}",
-                tick, percepts.percepts().size(), percepts.aggregateThreat(),
+            log.info(String.format("Tick %s - percepts=%s threat=%s dialogue='%s' memTotal=%s", tick, percepts.percepts().size(), percepts.aggregateThreat(),
                 dialogue.text().substring(0, Math.min(30, dialogue.text().length())),
-                stats.totalCount());
+                stats.totalCount()));
         }
 
         cognition.shutdown();
@@ -221,7 +219,7 @@ public final class SingleNpcDemoReel {
         }
 
         return new DemoReelReport(
-            "npc-" + npc.value(),
+            "npc-" + npc.id(),
             tickCount,
             successDialogue,
             fallbackDialogue,

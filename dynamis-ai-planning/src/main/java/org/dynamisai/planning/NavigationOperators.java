@@ -1,18 +1,17 @@
 package org.dynamisai.planning;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.navigation.NavigationSystem;
 import org.dynamisai.navigation.PathRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 /**
  * Factory for Runnable operators that delegate to NavigationSystem.
  */
 public final class NavigationOperators {
 
-    private static final Logger log = LoggerFactory.getLogger(NavigationOperators.class);
+    private static final DynamisLogger log = DynamisLogger.get(NavigationOperators.class);
 
     private NavigationOperators() {}
 
@@ -27,7 +26,7 @@ public final class NavigationOperators {
             nav.requestPath(PathRequest.of(agent,
                 new Location(0, 0, 0),
                 goal));
-            log.debug("moveTo operator fired for {} -> {}", agent, goal);
+            log.debug(String.format("moveTo operator fired for %s -> %s", agent, goal));
         };
     }
 
@@ -53,7 +52,7 @@ public final class NavigationOperators {
                     agentPos.z() + (dz / len) * fleeDistance
                 );
             nav.requestPath(PathRequest.of(agent, agentPos, fleeGoal));
-            log.debug("fleeFrom operator fired for {} away from {}", agent, threatPos);
+            log.debug(String.format("fleeFrom operator fired for %s away from %s", agent, threatPos));
         };
     }
 
@@ -63,7 +62,7 @@ public final class NavigationOperators {
     public static Runnable stop(NavigationSystem nav, EntityId agent) {
         return () -> {
             nav.removeAgent(agent);
-            log.debug("stop operator fired for {}", agent);
+            log.debug(String.format("stop operator fired for %s", agent));
         };
     }
 }

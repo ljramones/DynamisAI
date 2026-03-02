@@ -1,6 +1,6 @@
 package org.dynamisai.crowd;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.navigation.NavPoint;
 import org.junit.jupiter.api.BeforeEach;

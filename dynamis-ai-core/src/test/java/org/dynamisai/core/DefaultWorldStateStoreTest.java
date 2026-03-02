@@ -1,5 +1,6 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -100,7 +101,7 @@ class DefaultWorldStateStoreTest {
             new EntityState(farAway, new Location(200, 0, 0), Map.of())));
         store.commitTick();
 
-        EntityId agent = EntityId.of(0L);
+        EntityId agent = EntityId.NONE;
         QueryScope scope = QueryScope.perception(new Location(0, 0, 0));
         WorldFacts facts = store.query(agent, scope);
 
@@ -114,7 +115,7 @@ class DefaultWorldStateStoreTest {
         store.enqueueChange(new WorldChange.NarrativeRailsChange(rails));
         store.commitTick();
 
-        EntityId agent = EntityId.of(0L);
+        EntityId agent = EntityId.NONE;
         WorldFacts facts = store.query(agent, QueryScope.dialogue(new Location(0, 0, 0)));
         assertNotNull(facts.rails());
         assertEquals("ACT_1", facts.rails().questStage());
@@ -126,7 +127,7 @@ class DefaultWorldStateStoreTest {
         store.enqueueChange(new WorldChange.NarrativeRailsChange(rails));
         store.commitTick();
 
-        EntityId agent = EntityId.of(0L);
+        EntityId agent = EntityId.NONE;
         WorldFacts facts = store.query(agent, QueryScope.perception(new Location(0, 0, 0)));
         assertNull(facts.rails());
     }
@@ -162,7 +163,7 @@ class DefaultWorldStateStoreTest {
         CountDownLatch latch = new CountDownLatch(1);
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
-        for (int i = 0; i < threadCount; i++) {
+        for (int i = 1; i <= threadCount; i++) {
             final long entityId = i;
             executor.submit(() -> {
                 try {

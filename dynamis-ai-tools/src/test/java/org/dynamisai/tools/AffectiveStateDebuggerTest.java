@@ -8,7 +8,7 @@ import org.dynamisai.cognition.CognitionService;
 import org.dynamisai.cognition.DialogueRequest;
 import org.dynamisai.cognition.DialogueResponse;
 import org.dynamisai.cognition.BeliefDecayPolicy;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GlobalFacts;

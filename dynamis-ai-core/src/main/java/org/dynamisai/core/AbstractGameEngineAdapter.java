@@ -1,15 +1,13 @@
 package org.dynamisai.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 /**
  * Base implementation for engine adapters.
  */
 public abstract class AbstractGameEngineAdapter implements GameEngineAdapter {
 
-    private static final Logger log =
-        LoggerFactory.getLogger(AbstractGameEngineAdapter.class);
+    private static final DynamisLogger log = DynamisLogger.get(AbstractGameEngineAdapter.class);
 
     protected DynamisAiEngine engine;
 
@@ -18,7 +16,7 @@ public abstract class AbstractGameEngineAdapter implements GameEngineAdapter {
         this.engine = engine;
         engine.initialize();
         onInitialize(engine);
-        log.info("{} initialized", getClass().getSimpleName());
+        log.info(String.format("%s initialized", getClass().getSimpleName()));
     }
 
     @Override
@@ -38,7 +36,7 @@ public abstract class AbstractGameEngineAdapter implements GameEngineAdapter {
         if (engine != null) {
             engine.shutdown();
         }
-        log.info("{} shutdown", getClass().getSimpleName());
+        log.info(String.format("%s shutdown", getClass().getSimpleName()));
     }
 
     protected abstract void onInitialize(DynamisAiEngine engine);

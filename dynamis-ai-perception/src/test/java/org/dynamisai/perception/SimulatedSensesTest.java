@@ -1,7 +1,7 @@
 package org.dynamisai.perception;
 
 import io.vavr.collection.HashMap;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GlobalFacts;
@@ -163,6 +163,6 @@ class SimulatedSensesTest {
     }
 
     private static EntityState state(float x, float z) {
-        return new EntityState(EntityId.of(-1L), new Location(x, 0f, z), Map.of());
+        return new EntityState(EntityId.NONE, new Location(x, 0f, z), Map.of());
     }
 }

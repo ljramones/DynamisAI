@@ -2,7 +2,7 @@ package org.dynamisai.tools;
 
 import org.dynamisai.core.AIOutputFrame;
 import org.dynamisai.core.DialogueEvent;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.SteeringOutput;
 

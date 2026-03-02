@@ -18,7 +18,7 @@ import org.dynamisai.core.AITaskNode;
 import org.dynamisai.core.DefaultBudgetGovernor;
 import org.dynamisai.core.DefaultWorldStateStore;
 import org.dynamisai.core.DegradeMode;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.Priority;
 import org.dynamisai.core.ThreatLevel;
@@ -50,8 +50,7 @@ import org.dynamisai.tools.JavaSoundOutputNode;
 import org.dynamisai.voice.DefaultAnimisBridge;
 import org.dynamisai.voice.MockTTSPipeline;
 import org.dynamisai.voice.PhysicalVoiceContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public final class DemoWorld {
 
-    private static final Logger log = LoggerFactory.getLogger(DemoWorld.class);
+    private static final DynamisLogger log = DynamisLogger.get(DemoWorld.class);
 
     private static final float DIALOGUE_RANGE = 8f;
     private static final float PERCEPTION_RANGE = 12f;
@@ -192,7 +191,7 @@ public final class DemoWorld {
 
         pushWorldState(0L);
 
-        log.info("DemoWorld initialized - 3 entities, NavMesh 16x16, {} clusters", mesh.clusterCount());
+        log.info(String.format("DemoWorld initialized - 3 entities, NavMesh 16x16, %s clusters", mesh.clusterCount()));
     }
 
     /**
@@ -396,15 +395,15 @@ public final class DemoWorld {
 
         if (Files.exists(modelDir)) {
             try {
-                log.info("Jlama model found at {} - using live inference", modelDir);
+                log.info(String.format("Jlama model found at %s - using live inference", modelDir));
                 JlamaInferenceBackend jlama = new JlamaInferenceBackend(modelDir.toString());
                 jlama.initialize();
                 return jlama;
             } catch (Exception e) {
-                log.warn("Jlama init failed ({}), falling back to Mock", e.getMessage());
+                log.warn(String.format("Jlama init failed (%s), falling back to Mock", e.getMessage()));
             }
         } else {
-            log.info("No Jlama model found at {} - using MockInferenceBackend", modelDir);
+            log.info(String.format("No Jlama model found at %s - using MockInferenceBackend", modelDir));
             log.info("Run scripts/setup-models.sh to enable live inference");
         }
         return new MockInferenceBackend();
@@ -443,7 +442,7 @@ public final class DemoWorld {
             });
             log.info("Audio hardware wired: 48kHz stereo -> JavaSoundOutputNode");
         } catch (AudioDeviceException e) {
-            log.warn("Audio hardware unavailable ({}), running silent", e.getMessage());
+            log.warn(String.format("Audio hardware unavailable (%s), running silent", e.getMessage()));
             audioOutputNode = null;
             softwareMixer = null;
             dspRenderThread = null;

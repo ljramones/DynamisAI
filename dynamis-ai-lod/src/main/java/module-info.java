@@ -1,4 +1,5 @@
 module org.dynamisai.lod {
+    requires dynamis.core;
     requires org.dynamisai.core;
     requires org.dynamisai.crowd;
     requires io.vavr;

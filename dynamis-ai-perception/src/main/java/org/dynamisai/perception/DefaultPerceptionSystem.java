@@ -1,20 +1,19 @@
 package org.dynamisai.perception;
 
 import org.dynamisai.cognition.AffectVector;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.QueryScope;
 import org.dynamisai.core.WorldFacts;
 import org.dynamisai.core.WorldStateStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class DefaultPerceptionSystem implements PerceptionSystem {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultPerceptionSystem.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultPerceptionSystem.class);
 
     private final SaliencyFilter filter;
     private final Map<EntityId, PerceptionSnapshot> lastSnapshots = new ConcurrentHashMap<>();
@@ -40,8 +39,7 @@ public final class DefaultPerceptionSystem implements PerceptionSystem {
             store.getCurrentTick());
         lastSnapshots.put(owner, snapshot);
 
-        log.debug("Perception tick for {} — {} percepts, threat={}",
-            owner, snapshot.percepts().size(), snapshot.aggregateThreat());
+        log.debug(String.format("Perception tick for %s — %s percepts, threat=%s", owner, snapshot.percepts().size(), snapshot.aggregateThreat()));
 
         return snapshot;
     }

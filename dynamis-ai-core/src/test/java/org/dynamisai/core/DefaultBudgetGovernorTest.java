@@ -1,5 +1,6 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 package org.dynamisai.lod;
 
 import io.vavr.collection.HashMap;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.EntityState;
 import org.dynamisai.core.EnvironmentState;
 import org.dynamisai.core.GlobalFacts;
@@ -103,7 +103,7 @@ class AILODPolicyTest {
     private static WorldSnapshot snapshot(long tick, EntityId... ids) {
         HashMap<EntityId, EntityState> map = HashMap.empty();
         for (EntityId id : ids) {
-            map = map.put(id, new EntityState(id, new Location(id.value(), 0, id.value()), Map.of()));
+            map = map.put(id, new EntityState(id, new Location(id.id(), 0, id.id()), Map.of()));
         }
         return new WorldSnapshot(
             tick,

@@ -1,5 +1,6 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -51,10 +52,9 @@ class DeterminismSeedManagerTest {
     void seedDistributionForHundredEntitiesHasNoDuplicates() {
         Set<Long> seeds = new HashSet<>();
         long tick = 1000L;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i <= 100; i++) {
             seeds.add(DeterminismSeedManager.seedFor(EntityId.of(i), tick));
         }
         assertEquals(100, seeds.size());
     }
 }
-

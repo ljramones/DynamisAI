@@ -1,8 +1,8 @@
 package org.dynamisai.core;
 
 import io.vavr.collection.HashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public final class DefaultWorldStateStore implements WorldStateStore {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultWorldStateStore.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultWorldStateStore.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 300;
 
@@ -75,7 +75,7 @@ public final class DefaultWorldStateStore implements WorldStateStore {
                     EntityState existing = entities.get(c.a()).getOrNull();
                     if (existing != null) {
                         java.util.Map<String, Object> props = new java.util.HashMap<>(existing.properties());
-                        props.put("rel:" + c.b().value() + ":" + c.relationshipKey(), c.value());
+                        props.put("rel:" + c.b().id() + ":" + c.relationshipKey(), c.value());
                         entities = entities.put(c.a(), new EntityState(c.a(), existing.position(), Collections.unmodifiableMap(props)));
                     }
                 }
@@ -93,7 +93,7 @@ public final class DefaultWorldStateStore implements WorldStateStore {
         );
         current = next;
         storeInBuffer(next);
-        log.trace("Committed world snapshot tick={}", newTick);
+        log.trace(String.format("Committed world snapshot tick=%s", newTick));
     }
 
     /**

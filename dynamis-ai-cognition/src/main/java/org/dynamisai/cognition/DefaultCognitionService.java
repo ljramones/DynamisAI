@@ -1,8 +1,7 @@
 package org.dynamisai.cognition;
 
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public final class DefaultCognitionService implements CognitionService {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultCognitionService.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultCognitionService.class);
 
     /** Hard deadline — LLM must respond within this window or fallback is served. */
     private static final int DEFAULT_DEADLINE_MS = 300;
@@ -105,7 +104,7 @@ public final class DefaultCognitionService implements CognitionService {
 
         if (!concurrencyLimit.tryAcquire()) {
             queueDepth.decrementAndGet();
-            log.debug("Concurrency limit reached for {} — serving fallback", request.speaker());
+            log.debug(String.format("Concurrency limit reached for %s — serving fallback", request.speaker()));
             return CompletableFuture.completedFuture(getFallback(request.speaker()));
         }
 
@@ -125,8 +124,7 @@ public final class DefaultCognitionService implements CognitionService {
                     cache.put(request.speaker(), response);
                     return response;
                 } catch (InferenceException e) {
-                    log.warn("Inference failed for {} — serving fallback: {}",
-                        request.speaker(), e.getMessage());
+                    log.warn(String.format("Inference failed for %s — serving fallback: %s", request.speaker(), e.getMessage()));
                     return getFallback(request.speaker());
                 }
             }, executor)
@@ -134,10 +132,9 @@ public final class DefaultCognitionService implements CognitionService {
             .exceptionally(ex -> {
                 if (!(ex instanceof TimeoutException)) {
                     Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-                    log.warn("Dialogue request failed for {} — fallback: {}",
-                        request.speaker(), cause.getMessage());
+                    log.warn(String.format("Dialogue request failed for %s — fallback: %s", request.speaker(), cause.getMessage()));
                 } else {
-                    log.warn("Dialogue request timed out for {} — fallback", request.speaker());
+                    log.warn(String.format("Dialogue request timed out for %s — fallback", request.speaker()));
                 }
                 return getFallback(request.speaker());
             });

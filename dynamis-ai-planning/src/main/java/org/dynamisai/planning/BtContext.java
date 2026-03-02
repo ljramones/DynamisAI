@@ -1,6 +1,6 @@
 package org.dynamisai.planning;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 public record BtContext(
     EntityId agent,

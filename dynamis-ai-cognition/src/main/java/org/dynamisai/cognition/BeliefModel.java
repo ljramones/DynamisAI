@@ -1,6 +1,6 @@
 package org.dynamisai.cognition;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -110,9 +110,9 @@ public final class BeliefModel {
                 String stimulus = String.valueOf(invoke(percept, "stimulusType"));
 
                 if ("VISUAL".equals(stimulus)) {
-                    assertBelief("entity." + source.value() + ".visible", location, intensity, tick);
+                    assertBelief("entity." + source.id() + ".visible", location, intensity, tick);
                 } else if ("AUDITORY".equals(stimulus)) {
-                    assertBelief("entity." + source.value() + ".audible", location, intensity, tick);
+                    assertBelief("entity." + source.id() + ".audible", location, intensity, tick);
                 }
             }
         } catch (ReflectiveOperationException ignored) {

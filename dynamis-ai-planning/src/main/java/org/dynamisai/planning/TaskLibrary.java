@@ -1,6 +1,6 @@
 package org.dynamisai.planning;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.ThreatLevel;
 import org.dynamisai.navigation.NavigationSystem;

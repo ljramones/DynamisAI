@@ -1,6 +1,6 @@
 package org.dynamisai.extensions;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.SteeringOutput;
 import org.dynamisai.navigation.NavPath;

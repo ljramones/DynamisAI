@@ -64,7 +64,7 @@ class AshfordWorldStateFactoryTest {
         assertFalse(snap.entities().isEmpty());
     }
 
-    private static String locationName(WorldSnapshot snapshot, org.dynamisai.core.EntityId id) {
+    private static String locationName(WorldSnapshot snapshot, org.dynamis.core.entity.EntityId id) {
         var state = snapshot.entities().get(id).getOrNull();
         assertNotNull(state);
         Object location = state.properties().get("location");

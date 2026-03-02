@@ -1,5 +1,7 @@
 package org.dynamisai.core;
 
+import org.dynamis.core.entity.EntityId;
+
 public interface WorldStateStore {
     WorldSnapshot getCurrentSnapshot();
     WorldFacts query(EntityId agent, QueryScope scope);

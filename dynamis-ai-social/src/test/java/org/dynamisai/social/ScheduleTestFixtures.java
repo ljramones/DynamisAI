@@ -1,7 +1,7 @@
 package org.dynamisai.social;
 
 import org.dynamisai.cognition.AffectVector;
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.dynamisai.core.ThreatLevel;
 import org.dynamisai.memory.MemoryStats;

@@ -1,8 +1,7 @@
 package org.dynamisai.navigation;
 
-import org.dynamisai.core.EntityId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.entity.EntityId;
+import org.dynamis.core.logging.DynamisLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +26,7 @@ import java.util.Set;
  */
 public final class DefaultHpaPathfinder implements HpaPathfinder {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultHpaPathfinder.class);
+    private static final DynamisLogger log = DynamisLogger.get(DefaultHpaPathfinder.class);
 
     @Override
     public PathResult findPath(NavMesh mesh, HpaGraph graph,
@@ -91,7 +90,7 @@ public final class DefaultHpaPathfinder implements HpaPathfinder {
             totalCost, !truncated);
 
         if (truncated) {
-            log.debug("Path for {} truncated at node cap {}", requester, maxNodes);
+            log.debug(String.format("Path for %s truncated at node cap %s", requester, maxNodes));
             return new PathResult.Partial(requester, path, "Node cap reached");
         }
         return new PathResult.Found(requester, path);

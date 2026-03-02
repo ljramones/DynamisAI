@@ -7,8 +7,7 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.DataType;
 import ai.djl.ndarray.types.Shape;
 import org.dynamisai.cognition.AffectVector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dynamis.core.logging.DynamisLogger;
 
 /**
  * Fast fallback TTS engine using Kokoro-82M (Apache 2.0).
@@ -18,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class KokoroEngine {
 
-    private static final Logger log = LoggerFactory.getLogger(KokoroEngine.class);
+    private static final DynamisLogger log = DynamisLogger.get(KokoroEngine.class);
 
     private final OnnxTtsSession session;
     private final TextTokenizer tokenizer;
@@ -49,7 +48,7 @@ public final class KokoroEngine {
                 .toType(DataType.INT32, false);
             NDList output = predictor.predict(new NDList(input));
             float[] pcm = output.get(0).squeeze().toFloatArray();
-            log.debug("Kokoro synthesized {} samples", pcm.length);
+            log.debug(String.format("Kokoro synthesized %s samples", pcm.length));
             return pcm;
         } catch (Exception e) {
             throw new TtsEngineException("Kokoro synthesis failed: " + e.getMessage(), e);

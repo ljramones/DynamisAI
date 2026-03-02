@@ -1,6 +1,6 @@
 package org.dynamisai.perception;
 
-import org.dynamisai.core.EntityId;
+import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.Location;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class SoundEventTest {
             StimulusType.AUDITORY,
             10L);
 
-        assertEquals(1L, event.sourceEntityId().value());
+        assertEquals(1L, event.sourceEntityId().id());
         assertEquals(0.7f, event.intensity(), 0.0001f);
         assertEquals(StimulusType.AUDITORY, event.type());
     }
