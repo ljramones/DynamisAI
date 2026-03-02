@@ -142,6 +142,7 @@ class AffectiveStateDebuggerTest {
         @Override public void warmCache(EntityId speaker, DialogueResponse response) {}
         @Override public int getQueueDepth() { return 0; }
         @Override public BeliefModel beliefsFor(EntityId entityId) { return registry.getOrCreate(entityId); }
+        @Override public BeliefModelRegistry beliefRegistry() { return registry; }
         @Override public void setCanonTimeSource(Supplier<CanonTime> source) {}
         @Override public void shutdown() {}
     }

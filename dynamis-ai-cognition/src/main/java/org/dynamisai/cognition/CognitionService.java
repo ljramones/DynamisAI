@@ -35,6 +35,9 @@ public interface CognitionService {
     /** Returns the belief model for an entity, creating one if absent. */
     BeliefModel beliefsFor(EntityId entityId);
 
+    /** Returns the registry of agent belief models. */
+    BeliefModelRegistry beliefRegistry();
+
     /** Sets the live CanonTime source. Called by runtime wiring after construction. */
     void setCanonTimeSource(Supplier<CanonTime> source);
 

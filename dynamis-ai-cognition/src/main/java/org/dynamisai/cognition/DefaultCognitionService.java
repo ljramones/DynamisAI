@@ -230,6 +230,11 @@ public final class DefaultCognitionService implements CognitionService {
     }
 
     @Override
+    public BeliefModelRegistry beliefRegistry() {
+        return beliefRegistry;
+    }
+
+    @Override
     public void shutdown() {
         executor.shutdown();
         try {

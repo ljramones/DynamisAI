@@ -1,5 +1,6 @@
 module org.dynamisai.tools {
     requires dynamis.core;
+    requires dynamis.event;
     requires org.dynamisai.core;
     requires org.dynamisai.cognition;
     requires org.dynamisai.voice;
@@ -9,6 +10,8 @@ module org.dynamisai.tools {
     requires org.dynamisai.navigation;
     requires org.dynamisai.social;
     requires org.dynamisai.crowd;
+    requires org.dynamisai.lod;
+    requires org.dynamisscripting.api;
     requires io.vavr;
     requires java.desktop;
     requires dynamis.audio.api;

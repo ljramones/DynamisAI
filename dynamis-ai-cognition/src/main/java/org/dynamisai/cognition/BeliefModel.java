@@ -2,6 +2,7 @@ package org.dynamisai.cognition;
 
 import org.dynamis.core.entity.EntityId;
 import org.dynamisai.core.BeliefSource;
+import org.dynamisscripting.api.value.Percept;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -137,6 +138,22 @@ public final class BeliefModel {
         } catch (ReflectiveOperationException ignored) {
             // Ignore incompatible snapshot objects.
         }
+    }
+
+    /**
+     * Ingests a single scripting-api Percept as a PERCEPT-sourced belief.
+     * Only this method and updateFromPerception may produce BeliefSource.PERCEPT beliefs.
+     *
+     * @param percept the percept delivered from PerceptBus
+     */
+    public void updateFromPercept(Percept percept) {
+        String key = "percept." + percept.perceptType().toLowerCase().replace('.', '_');
+        assertBelief(
+            key,
+            percept.payload(),
+            (float) percept.fidelity(),
+            percept.sourceCommitId(),
+            BeliefSource.PERCEPT);
     }
 
     public EntityId owner() {
