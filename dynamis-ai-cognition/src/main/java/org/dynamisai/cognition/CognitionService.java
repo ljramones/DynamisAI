@@ -1,8 +1,10 @@
 package org.dynamisai.cognition;
 
 import org.dynamis.core.entity.EntityId;
+import org.dynamisscripting.api.value.CanonTime;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public interface CognitionService {
 
@@ -32,6 +34,9 @@ public interface CognitionService {
 
     /** Returns the belief model for an entity, creating one if absent. */
     BeliefModel beliefsFor(EntityId entityId);
+
+    /** Sets the live CanonTime source. Called by runtime wiring after construction. */
+    void setCanonTimeSource(Supplier<CanonTime> source);
 
     /** Shut down the virtual thread executor cleanly. */
     void shutdown();

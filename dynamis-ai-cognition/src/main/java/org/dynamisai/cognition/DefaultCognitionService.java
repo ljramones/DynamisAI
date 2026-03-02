@@ -2,8 +2,10 @@ package org.dynamisai.cognition;
 
 import org.dynamis.core.entity.EntityId;
 import org.dynamis.core.logging.DynamisLogger;
+import org.dynamisscripting.api.value.CanonTime;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +16,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public final class DefaultCognitionService implements CognitionService {
 
@@ -21,6 +25,9 @@ public final class DefaultCognitionService implements CognitionService {
 
     /** Hard deadline — LLM must respond within this window or fallback is served. */
     private static final int DEFAULT_DEADLINE_MS = 300;
+
+    /** LLM results older than this many ticks are discarded as stale. */
+    private static final long MAX_STALE_TICKS = 10L;
 
     /** Max concurrent in-flight inference requests. */
     private static final int MAX_CONCURRENT = 16;
@@ -35,12 +42,13 @@ public final class DefaultCognitionService implements CognitionService {
     private final AtomicInteger queueDepth = new AtomicInteger(0);
     private final BeliefModelRegistry beliefRegistry;
     private final AtomicLong deliberativeTickCounter = new AtomicLong(0L);
+    private final AtomicReference<Supplier<CanonTime>> canonTimeSource;
 
     public DefaultCognitionService(InferenceBackend backend,
                                    ResponseParser parser,
                                    ResponseCache cache,
                                    Map<EntityId, String> fallbackLines) {
-        this(backend, parser, cache, fallbackLines, DEFAULT_DEADLINE_MS);
+        this(backend, parser, cache, fallbackLines, DEFAULT_DEADLINE_MS, () -> CanonTime.ZERO);
     }
 
     public DefaultCognitionService(InferenceBackend backend,
@@ -48,6 +56,15 @@ public final class DefaultCognitionService implements CognitionService {
                                    ResponseCache cache,
                                    Map<EntityId, String> fallbackLines,
                                    int inferenceDeadlineMs) {
+        this(backend, parser, cache, fallbackLines, inferenceDeadlineMs, () -> CanonTime.ZERO);
+    }
+
+    public DefaultCognitionService(InferenceBackend backend,
+                                   ResponseParser parser,
+                                   ResponseCache cache,
+                                   Map<EntityId, String> fallbackLines,
+                                   int inferenceDeadlineMs,
+                                   Supplier<CanonTime> canonTimeSource) {
         this.backend = backend;
         this.parser = parser;
         this.cache = cache;
@@ -57,6 +74,8 @@ public final class DefaultCognitionService implements CognitionService {
             Thread.ofVirtual().name("cognition-", 0).factory());
         this.concurrencyLimit = new Semaphore(MAX_CONCURRENT);
         this.beliefRegistry = new BeliefModelRegistry(BeliefDecayPolicy.defaultPolicy());
+        this.canonTimeSource = new AtomicReference<>(
+            Objects.requireNonNull(canonTimeSource, "canonTimeSource"));
     }
 
     /** Existing constructor — default deadline. */
@@ -72,7 +91,8 @@ public final class DefaultCognitionService implements CognitionService {
         this(backend, parser,
             new ResponseCache(256),
             new ConcurrentHashMap<>(),
-            inferenceDeadlineMs);
+            inferenceDeadlineMs,
+            () -> CanonTime.ZERO);
     }
 
     /** Convenience constructor with defaults. */
@@ -107,6 +127,7 @@ public final class DefaultCognitionService implements CognitionService {
             log.debug(String.format("Concurrency limit reached for %s — serving fallback", request.speaker()));
             return CompletableFuture.completedFuture(getFallback(request.speaker()));
         }
+        final long requestTick = currentTick();
 
         AtomicBoolean released = new AtomicBoolean(false);
         CompletableFuture<DialogueResponse> future = CompletableFuture
@@ -120,23 +141,34 @@ public final class DefaultCognitionService implements CognitionService {
                         : GenerationConfig.creative(seed);
 
                     String json = backend.generate(inferenceRequest, config);
-                    DialogueResponse response = parser.parse(json);
-                    cache.put(request.speaker(), response);
-                    return response;
+                    return parser.parse(json);
                 } catch (InferenceException e) {
                     log.warn(String.format("Inference failed for %s — serving fallback: %s", request.speaker(), e.getMessage()));
                     return getFallback(request.speaker());
                 }
             }, executor)
             .orTimeout(inferenceDeadlineMs, TimeUnit.MILLISECONDS)
-            .exceptionally(ex -> {
-                if (!(ex instanceof TimeoutException)) {
-                    Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-                    log.warn(String.format("Dialogue request failed for %s — fallback: %s", request.speaker(), cause.getMessage()));
-                } else {
-                    log.warn(String.format("Dialogue request timed out for %s — fallback", request.speaker()));
+            .handle((result, ex) -> {
+                if (ex != null) {
+                    if (isTimeout(ex)) {
+                        log.warn(String.format("Dialogue request timed out for %s — fallback", request.speaker()));
+                    } else {
+                        Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                        log.warn(String.format("Dialogue request failed for %s — fallback: %s", request.speaker(), cause.getMessage()));
+                    }
+                    return getFallback(request.speaker());
                 }
-                return getFallback(request.speaker());
+
+                long elapsedTicks = currentTick() - requestTick;
+                if (elapsedTicks > MAX_STALE_TICKS) {
+                    log.debug(String.format(
+                        "Stale LLM result discarded for %s — %d ticks elapsed (max %d)",
+                        request.speaker(), elapsedTicks, MAX_STALE_TICKS));
+                    return getFallback(request.speaker());
+                }
+
+                cache.put(request.speaker(), result);
+                return result;
             });
 
         return future.whenComplete((r, ex) -> {
@@ -145,6 +177,30 @@ public final class DefaultCognitionService implements CognitionService {
                 queueDepth.decrementAndGet();
             }
         });
+    }
+
+    private long currentTick() {
+        CanonTime canonTime = canonTimeSource.get().get();
+        return canonTime == null ? CanonTime.ZERO.tick() : canonTime.tick();
+    }
+
+    private static boolean isTimeout(Throwable ex) {
+        if (ex instanceof TimeoutException) {
+            return true;
+        }
+        Throwable cause = ex.getCause();
+        while (cause != null) {
+            if (cause instanceof TimeoutException) {
+                return true;
+            }
+            cause = cause.getCause();
+        }
+        return false;
+    }
+
+    @Override
+    public void setCanonTimeSource(Supplier<CanonTime> source) {
+        canonTimeSource.set(Objects.requireNonNull(source, "source"));
     }
 
     @Override

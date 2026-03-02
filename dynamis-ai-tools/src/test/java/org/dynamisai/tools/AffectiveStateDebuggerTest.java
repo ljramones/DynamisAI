@@ -18,12 +18,14 @@ import org.dynamisai.core.WorldSnapshot;
 import org.dynamisai.perception.PerceptionSnapshot;
 import org.dynamisai.planning.HtnTask;
 import org.dynamisai.planning.Plan;
+import org.dynamisscripting.api.value.CanonTime;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -140,6 +142,7 @@ class AffectiveStateDebuggerTest {
         @Override public void warmCache(EntityId speaker, DialogueResponse response) {}
         @Override public int getQueueDepth() { return 0; }
         @Override public BeliefModel beliefsFor(EntityId entityId) { return registry.getOrCreate(entityId); }
+        @Override public void setCanonTimeSource(Supplier<CanonTime> source) {}
         @Override public void shutdown() {}
     }
 }
