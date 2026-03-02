@@ -35,6 +35,10 @@
             <groupId>org.dynamis</groupId>
             <artifactId>dynamis-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.dynamisscripting</groupId>
+            <artifactId>dynamis-scripting-api</artifactId>
+        </dependency>
 <dependency>
             <groupId>org.dynamisai</groupId>
             <artifactId>dynamis-ai-core</artifactId>
