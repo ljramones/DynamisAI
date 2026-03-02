@@ -34,13 +34,13 @@ public final class MockInferenceBackend implements InferenceBackend {
     }
 
     @Override
-    public String generate(InferenceRequest request, GenerationConfig config) throws InferenceException {
+    public String generate(InferenceRequest request, GenerationConfig config) {
         // Mock backend intentionally ignores explicit deterministic seed.
         return generate(request.dialogue().inputSpeech(), config);
     }
 
     @Override
-    public String generate(String prompt, GenerationConfig config) throws InferenceException {
+    public String generate(String prompt, GenerationConfig config) {
         callCount.incrementAndGet();
         if (simulatedLatencyMs > 0) {
             try { Thread.sleep(simulatedLatencyMs); }

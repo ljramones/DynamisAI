@@ -14,7 +14,7 @@ public interface InferenceBackend {
      * request.deterministicSeed() when request.seedingEnabled() is true.
      */
     default String generate(InferenceRequest request,
-                            GenerationConfig config) throws InferenceException {
+                            GenerationConfig config) {
         return generate(request.dialogue().inputSpeech(), config);
     }
 
@@ -27,7 +27,7 @@ public interface InferenceBackend {
      * @return         Raw response string — always non-null, never empty
      * @throws InferenceException if the backend fails and cannot produce output
      */
-    String generate(String prompt, GenerationConfig config) throws InferenceException;
+    String generate(String prompt, GenerationConfig config);
 
     /** Whether this backend can currently accept requests. */
     boolean isAvailable();

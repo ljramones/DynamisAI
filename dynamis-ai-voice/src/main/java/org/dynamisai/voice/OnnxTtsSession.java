@@ -35,7 +35,7 @@ public final class OnnxTtsSession implements AutoCloseable {
      * Load the ONNX model. Blocks until weights are mapped.
      * Throws TtsEngineException if the model path does not exist or is malformed.
      */
-    public synchronized void initialize() throws TtsEngineException {
+    public synchronized void initialize() {
         if (initialized) return;
         Path modelPath = Paths.get(config.modelPath());
         log.info(String.format("Loading %s TTS model from: %s", config.label(), modelPath));
@@ -63,13 +63,13 @@ public final class OnnxTtsSession implements AutoCloseable {
      * Create a new Predictor for one inference call.
      * Caller is responsible for closing the returned Predictor.
      */
-    public Predictor<NDList, NDList> newPredictor() throws TtsEngineException {
+    public Predictor<NDList, NDList> newPredictor() {
         if (!initialized || model == null)
             throw new TtsEngineException(config.label() + " session not initialized");
         return model.newPredictor();
     }
 
-    public NDManager getManager() throws TtsEngineException {
+    public NDManager getManager() {
         if (!initialized || manager == null)
             throw new TtsEngineException(config.label() + " session not initialized");
         return manager;

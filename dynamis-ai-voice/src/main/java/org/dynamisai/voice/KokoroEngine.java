@@ -27,14 +27,14 @@ public final class KokoroEngine {
         this.tokenizer = new TextTokenizer();
     }
 
-    public void initialize() throws TtsEngineException { session.initialize(); }
+    public void initialize() { session.initialize(); }
     public boolean isAvailable() { return session.isInitialized(); }
 
-    public float[] synthesize(String text) throws TtsEngineException {
+    public float[] synthesize(String text) {
         return synthesize(text, null);
     }
 
-    public float[] synthesize(String text, AffectVector affect) throws TtsEngineException {
+    public float[] synthesize(String text, AffectVector affect) {
         if (!isAvailable())
             throw new TtsEngineException("KokoroEngine not initialized");
 

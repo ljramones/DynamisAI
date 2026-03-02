@@ -177,6 +177,6 @@ public final class DjlTtsPipeline implements TTSPipeline {
 
     @FunctionalInterface
     private interface TtsInitRunnable {
-        void run() throws TtsEngineException;
+        void run();
     }
 }

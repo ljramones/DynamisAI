@@ -18,7 +18,7 @@ public final class ExampleInferenceBackend implements InferenceBackend {
     private final AtomicInteger calls = new AtomicInteger();
 
     @Override
-    public String generate(String prompt, GenerationConfig config) throws InferenceException {
+    public String generate(String prompt, GenerationConfig config) {
         calls.incrementAndGet();
         return "[ExampleInferenceBackend response]";
     }

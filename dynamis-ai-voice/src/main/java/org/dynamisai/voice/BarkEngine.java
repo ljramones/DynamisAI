@@ -28,13 +28,13 @@ public final class BarkEngine {
         this.tokenizer = new TextTokenizer();
     }
 
-    public void initialize() throws TtsEngineException { session.initialize(); }
+    public void initialize() { session.initialize(); }
     public boolean isAvailable() { return session.isInitialized(); }
 
     /**
      * Synthesize nonverbal audio from a tagged prompt.
      */
-    public float[] synthesizeNonverbal(String taggedPrompt) throws TtsEngineException {
+    public float[] synthesizeNonverbal(String taggedPrompt) {
         if (!isAvailable())
             throw new TtsEngineException("BarkEngine not initialized");
 

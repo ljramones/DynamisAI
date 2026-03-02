@@ -55,7 +55,7 @@ public final class JlamaInferenceBackend implements InferenceBackend {
      * Load model weights. Must be called before first generate().
      * Blocks until weights are mapped — typically 2-30s depending on model size.
      */
-    public synchronized void initialize() throws InferenceException {
+    public synchronized void initialize() {
         if (initialized) {
             return;
         }
@@ -78,7 +78,7 @@ public final class JlamaInferenceBackend implements InferenceBackend {
 
     @Override
     public synchronized String generate(InferenceRequest request,
-                                        GenerationConfig config) throws InferenceException {
+                                        GenerationConfig config) {
         GenerationConfig effective = config;
         if (request.seedingEnabled()) {
             effective = GenerationConfig.deterministic(request.deterministicSeed());
@@ -88,7 +88,7 @@ public final class JlamaInferenceBackend implements InferenceBackend {
 
     @Override
     public synchronized String generate(String prompt,
-                                        GenerationConfig config) throws InferenceException {
+                                        GenerationConfig config) {
         if (!initialized || model == null) {
             throw new InferenceException(
                 "JlamaInferenceBackend not initialized — call initialize() first");

@@ -40,7 +40,7 @@ public final class OllamaInferenceBackend implements InferenceBackend {
     }
 
     @Override
-    public String generate(InferenceRequest request, GenerationConfig config) throws InferenceException {
+    public String generate(InferenceRequest request, GenerationConfig config) {
         GenerationConfig effective = config;
         if (request.seedingEnabled()) {
             effective = GenerationConfig.deterministic(request.deterministicSeed());
@@ -49,7 +49,7 @@ public final class OllamaInferenceBackend implements InferenceBackend {
     }
 
     @Override
-    public String generate(String prompt, GenerationConfig config) throws InferenceException {
+    public String generate(String prompt, GenerationConfig config) {
         callCount.incrementAndGet();
         long start = System.currentTimeMillis();
 

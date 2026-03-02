@@ -26,7 +26,7 @@ public final class ChatterboxEngine {
         this.tokenizer = new TextTokenizer();
     }
 
-    public void initialize() throws TtsEngineException {
+    public void initialize() {
         session.initialize();
     }
 
@@ -36,7 +36,7 @@ public final class ChatterboxEngine {
      * Synthesize speech from text.
      * Returns float[] PCM samples at config.sampleRateHz().
      */
-    public float[] synthesize(String text) throws TtsEngineException {
+    public float[] synthesize(String text) {
         if (!isAvailable())
             throw new TtsEngineException("ChatterboxEngine not initialized");
 
