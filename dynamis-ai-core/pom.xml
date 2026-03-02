@@ -5,7 +5,15 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.dynamisai</groupId>
+    
+    <parent>
+        <groupId>org.dynamisai</groupId>
+        <artifactId>dynamis-ai</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+<groupId>org.dynamisai</groupId>
     <artifactId>dynamis-ai-core</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -43,9 +51,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>
-                ${junit.version}
-            </version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -71,7 +76,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
                 <configuration>
                     <release>25</release>
                     <enablePreview>true</enablePreview>
@@ -84,7 +88,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.3.0</version>
                 <configuration>
                     <argLine>
                         --enable-preview
