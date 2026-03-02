@@ -29,6 +29,10 @@ public final class BeliefModel {
         assertBelief(key, value, confidence, tick, BeliefSource.INFERRED);
     }
 
+    public void updateBelief(String key, Object value, float confidence, long tick, BeliefSource source) {
+        assertBelief(key, value, confidence, tick, source);
+    }
+
     private void assertBelief(String key, Object value, float confidence, long tick, BeliefSource source) {
         firstOrder.compute(key, (k, existing) -> {
             if (existing == null) {

@@ -49,6 +49,14 @@ public interface SocialSystem {
     /** Remove all social data for an entity — call on despawn. */
     void removeEntity(EntityId entity);
 
+    /**
+     * Advance social simulation by one tick.
+     * Drives rumor propagation.
+     *
+     * @param currentTick current simulation tick
+     */
+    void tick(long currentTick);
+
     /** Expose the underlying SocialGraph — for diagnostics and tools. */
     SocialGraph graph();
 

@@ -148,6 +148,12 @@ public final class DefaultSocialSystem implements SocialSystem {
         log.debug(String.format("Social state removed for entity %s", entity));
     }
 
+    @Override
+    public void tick(long currentTick) {
+        rumorPropagator.propagate(socialGraph, currentTick);
+        // scheduleEngine.tick deferred - no tick contract yet.
+    }
+
     @Override public SocialGraph graph() { return socialGraph; }
     @Override public FactionRegistry factions() { return factionRegistry; }
     @Override public DialogueHistory history() { return dialogueHistory; }

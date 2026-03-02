@@ -15,6 +15,7 @@ public final class RumorPropagator {
 
     private final ReputationEngine reputationEngine;
     private final Map<EntityId, RumorQueue> queues = new ConcurrentHashMap<>();
+    private volatile RumorDeliveryCallback deliveryCallback;
 
     public RumorPropagator(ReputationEngine reputationEngine) {
         this.reputationEngine = reputationEngine;
@@ -31,6 +32,10 @@ public final class RumorPropagator {
 
     public void unregisterQueue(EntityId entityId) {
         queues.remove(entityId);
+    }
+
+    public void setDeliveryCallback(RumorDeliveryCallback callback) {
+        this.deliveryCallback = callback;
     }
 
     public void propagate(SocialGraph graph, long currentTick) {
@@ -71,7 +76,13 @@ public final class RumorPropagator {
                     if (q == null) {
                         continue;
                     }
-                    q.enqueue(rumor.propagateTo(neighbor, currentTick));
+                    Rumor delivered = rumor.propagateTo(neighbor, currentTick);
+                    q.enqueue(delivered);
+                    RumorDeliveryCallback callback = deliveryCallback;
+                    if (callback != null) {
+                        float senderTrust = graph.get(holder, neighbor).trust();
+                        callback.onDelivered(neighbor, delivered, senderTrust);
+                    }
                 }
             }
         }
