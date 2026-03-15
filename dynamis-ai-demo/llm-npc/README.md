@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>llm-npc</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -28,7 +28,7 @@
 ### Code Examples
 // Scenario: run demo world from CLI entrypoint.
 ```java
-import org.dynamisai.demo.DemoCli;
+import org.dynamisengine.ai.demo.DemoCli;
 
 DemoCli.main(new String[] {"--ticks", "120"});
 ```

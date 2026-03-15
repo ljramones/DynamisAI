@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module org.dynamisai.ashfordsimworld {
-    requires dynamis.core;
+module org.dynamisengine.ai.ashfordsimworld {
+    requires org.dynamisengine.core;
     requires io.vavr;
-    requires org.dynamisai.core;
-    requires org.dynamisai.social;
-    requires org.dynamisai.planning;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.perception;
-    requires org.dynamisai.tools;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.social;
+    requires org.dynamisengine.ai.planning;
+    requires org.dynamisengine.ai.cognition;
+    requires org.dynamisengine.ai.perception;
+    requires org.dynamisengine.ai.tools;
     requires javafx.controls;
     requires javafx.fxml;
 
-    exports org.dynamisai.ashford;
-    exports org.dynamisai.ashford.model;
-    exports org.dynamisai.ashford.schedule;
+    exports org.dynamisengine.ai.ashford;
+    exports org.dynamisengine.ai.ashford.model;
+    exports org.dynamisengine.ai.ashford.schedule;
 }

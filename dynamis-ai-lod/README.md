@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-lod</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -19,7 +19,7 @@
 ### Key Classes
 | Class | Role | Notes |
 |---|---|---|
-| `AILODPolicy` | Tier assignment and cached evaluation coordinator. | Implements core `org.dynamisai.core.AILODPolicy`. |
+| `AILODPolicy` | Tier assignment and cached evaluation coordinator. | Implements core `org.dynamisengine.ai.core.AILODPolicy`. |
 | `ImportanceEvaluator` | SPI for per-entity importance scoring. | Default evaluator provided. |
 | `DefaultImportanceEvaluator` | Distance/threat/dialogue-based scorer. | Outputs `ImportanceScore` + mapped `LodTier`. |
 | `TickScaler` | Tick-rate scaling helper by `LodTier`. | Also answers per-tick `shouldTick`. |
@@ -28,8 +28,8 @@
 ### Code Examples
 // Scenario: evaluate tiers and check whether an entity should tick.
 ```java
-import org.dynamisai.lod.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.lod.*;
+import org.dynamisengine.ai.core.*;
 
 AILODPolicy policy = new AILODPolicy(new DefaultImportanceEvaluator());
 WorldSnapshot snapshot = new DefaultWorldStateStore().getCurrentSnapshot();
@@ -41,8 +41,8 @@ System.out.println(run);
 
 // Scenario: scale base rate for each LOD tier.
 ```java
-import org.dynamisai.lod.TickScaler;
-import org.dynamisai.core.LodTier;
+import org.dynamisengine.ai.lod.TickScaler;
+import org.dynamisengine.ai.core.LodTier;
 
 double baseHz = 60.0;
 System.out.println(TickScaler.scaleRate(baseHz, LodTier.TIER_0));

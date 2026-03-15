@@ -1,9 +1,9 @@
-module org.dynamisai.perception {
-    requires dynamis.core;
-    requires org.dynamisscripting.api;
-    requires org.dynamisai.core;
-    requires org.dynamisai.cognition;
+module org.dynamisengine.ai.perception {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.scripting.api;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.cognition;
     requires jdk.incubator.vector;
     requires io.vavr;
-    exports org.dynamisai.perception;
+    exports org.dynamisengine.ai.perception;
 }

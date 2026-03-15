@@ -1,6 +1,6 @@
-module org.dynamisai.memory {
-    requires dynamis.core;
-    requires org.dynamisai.core;
+module org.dynamisengine.ai.memory {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.ai.core;
     requires jdk.incubator.vector;
-    exports org.dynamisai.memory;
+    exports org.dynamisengine.ai.memory;
 }

@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-voice</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -33,9 +33,9 @@
 ### Code Examples
 // Scenario: synthesize dialogue with the default DJL pipeline.
 ```java
-import org.dynamisai.voice.*;
-import org.dynamisai.cognition.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.voice.*;
+import org.dynamisengine.ai.cognition.*;
+import org.dynamisengine.ai.core.EntityId;
 
 TTSPipeline tts = new DjlTtsPipeline();
 DialogueResponse response = DialogueResponse.of("Hold your ground.", AffectVector.neutral());
@@ -45,7 +45,7 @@ System.out.println(job.primaryAudio().sampleRate());
 
 // Scenario: extract visemes from synthesized audio using fallback-safe extractor.
 ```java
-import org.dynamisai.voice.*;
+import org.dynamisengine.ai.voice.*;
 
 VisemeExtractor extractor = new WaveformVisemeExtractor();
 AudioBuffer audio = new AudioBuffer(new float[22050], 22050, 1);
@@ -55,8 +55,8 @@ System.out.println(visemes.size());
 
 // Scenario: map visemes and affect to blendshape frames.
 ```java
-import org.dynamisai.voice.*;
-import org.dynamisai.cognition.AffectVector;
+import org.dynamisengine.ai.voice.*;
+import org.dynamisengine.ai.cognition.AffectVector;
 
 BlendshapeMapper mapper = new BlendshapeMapper(BlendshapeTable.defaultHumanoid());
 var frames = mapper.map(
@@ -69,8 +69,8 @@ System.out.println(frames.getFirst().weights().get("jawOpen"));
 // Depends on sibling module: `dynamis-ai-core`
 // Scenario: submit rendered voice into bridge for runtime dispatch.
 ```java
-import org.dynamisai.voice.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.voice.*;
+import org.dynamisengine.ai.core.EntityId;
 
 AnimisBridge bridge = new DefaultAnimisBridge();
 VoiceRenderJob job = /* produced by TTSPipeline */ null;

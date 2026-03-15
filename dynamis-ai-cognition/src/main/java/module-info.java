@@ -1,9 +1,9 @@
-module org.dynamisai.cognition {
-    requires dynamis.core;
+module org.dynamisengine.ai.cognition {
+    requires org.dynamisengine.core;
     requires dynamis.event;
-    requires org.dynamisai.core;
-    requires org.dynamisscripting.api;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.scripting.api;
     requires java.net.http;
     requires jlama.core;
-    exports org.dynamisai.cognition;
+    exports org.dynamisengine.ai.cognition;
 }

@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-cognition</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -35,8 +35,8 @@
 ### Code Examples
 // Scenario: build cognition service with mock backend and request a line.
 ```java
-import org.dynamisai.cognition.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.cognition.*;
+import org.dynamisengine.ai.core.*;
 
 CognitionService cognition = new DefaultCognitionService(new MockInferenceBackend());
 DialogueRequest request = new DialogueRequest(
@@ -53,7 +53,7 @@ System.out.println(response.text());
 
 // Scenario: deterministic inference calls using an explicit seed.
 ```java
-import org.dynamisai.cognition.*;
+import org.dynamisengine.ai.cognition.*;
 
 CognitionService cognition = new DefaultCognitionService(new MockInferenceBackend());
 DialogueRequest req = /* build request */ null;
@@ -63,8 +63,8 @@ DialogueResponse b = cognition.inferDeterministic(req, 42L).join();
 
 // Scenario: update and query belief state for one NPC.
 ```java
-import org.dynamisai.cognition.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.cognition.*;
+import org.dynamisengine.ai.core.EntityId;
 
 BeliefModel model = new BeliefModel(EntityId.of(7), BeliefDecayPolicy.defaultPolicy());
 model.assertBelief("entity.player.visible", true, 0.9f, 100L);
@@ -76,8 +76,8 @@ System.out.println(model.getBelief("entity.player.visible").orElseThrow().confid
 // Depends on sibling module: `dynamis-ai-core`
 // Scenario: ground a request with core world facts and threat level.
 ```java
-import org.dynamisai.cognition.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.cognition.*;
+import org.dynamisengine.ai.core.*;
 
 WorldFacts facts = new WorldFacts(
     java.util.Map.of("weather", "fog"),

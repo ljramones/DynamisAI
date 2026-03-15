@@ -1,15 +1,15 @@
-module org.dynamisai.demo {
-    requires dynamis.core;
-    requires org.dynamisai.core;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.perception;
-    requires org.dynamisai.memory;
-    requires org.dynamisai.planning;
-    requires org.dynamisai.navigation;
-    requires org.dynamisai.voice;
-    requires org.dynamisai.social;
-    requires org.dynamisai.crowd;
-    requires org.dynamisai.tools;
+module org.dynamisengine.ai.demo {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.cognition;
+    requires org.dynamisengine.ai.perception;
+    requires org.dynamisengine.ai.memory;
+    requires org.dynamisengine.ai.planning;
+    requires org.dynamisengine.ai.navigation;
+    requires org.dynamisengine.ai.voice;
+    requires org.dynamisengine.ai.social;
+    requires org.dynamisengine.ai.crowd;
+    requires org.dynamisengine.ai.tools;
     requires dynamis.audio.api;
     requires dynamis.audio.core;
     requires dynamis.audio.designer;

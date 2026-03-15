@@ -1,10 +1,10 @@
-module org.dynamisai.planning {
-    requires dynamis.core;
-    requires org.dynamisscripting.api;
-    requires org.dynamisai.core;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.perception;
-    requires org.dynamisai.memory;
-    requires org.dynamisai.navigation;
-    exports org.dynamisai.planning;
+module org.dynamisengine.ai.planning {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.scripting.api;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.cognition;
+    requires org.dynamisengine.ai.perception;
+    requires org.dynamisengine.ai.memory;
+    requires org.dynamisengine.ai.navigation;
+    exports org.dynamisengine.ai.planning;
 }

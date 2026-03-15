@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-test-kit</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -29,8 +29,8 @@
 ### Code Examples
 // Scenario: validate a custom vector store implementation via inherited contract tests.
 ```java
-import org.dynamisai.testkit.VectorMemoryStoreContractTest;
-import org.dynamisai.memory.VectorMemoryStore;
+import org.dynamisengine.ai.testkit.VectorMemoryStoreContractTest;
+import org.dynamisengine.ai.memory.VectorMemoryStore;
 
 class MyStoreContractTest extends VectorMemoryStoreContractTest {
     @Override protected VectorMemoryStore createSubject() { return new MyStore(); }

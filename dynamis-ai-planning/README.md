@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-planning</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -35,7 +35,7 @@
 ### Code Examples
 // Scenario: decompose and execute an HTN plan candidate.
 ```java
-import org.dynamisai.planning.*;
+import org.dynamisengine.ai.planning.*;
 
 HtnPlanner planner = new DefaultHtnPlanner();
 WorldState state = new WorldState(java.util.Map.of("threat", "low"));
@@ -46,7 +46,7 @@ System.out.println(plan.tasks().size());
 
 // Scenario: resolve GOAP plan from dynamic goals.
 ```java
-import org.dynamisai.planning.*;
+import org.dynamisengine.ai.planning.*;
 
 GoapActionLibrary actions = new GoapActionLibrary();
 actions.register(CommonGoapActions.moveTo());
@@ -60,8 +60,8 @@ resolver.resolve(goal, state, PlanningBudget.defaultBudget());
 
 // Scenario: share tactical facts via squad blackboard propagation rules.
 ```java
-import org.dynamisai.planning.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.planning.*;
+import org.dynamisengine.ai.core.*;
 
 SquadBlackboard board = new SquadBlackboard("alpha");
 EntityId leader = EntityId.of(1);
@@ -75,9 +75,9 @@ System.out.println(enriched.has(SquadFacts.THREAT_POSITION));
 // Depends on sibling module: `dynamis-ai-perception`
 // Scenario: consult influence-map output to choose low-threat cover.
 ```java
-import org.dynamisai.planning.*;
-import org.dynamisai.perception.*;
-import org.dynamisai.core.Location;
+import org.dynamisengine.ai.planning.*;
+import org.dynamisengine.ai.perception.*;
+import org.dynamisengine.ai.core.Location;
 
 InfluenceMapSnapshot map = /* obtained from perception module */ null;
 Location cover = map.lowestCellNear(InfluenceLayer.THREAT, new Location(5,0,5), 15f);

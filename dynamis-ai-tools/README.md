@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-tools</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -32,10 +32,10 @@
 ### Code Examples
 // Scenario: capture and format one NPC debug snapshot.
 ```java
-import org.dynamisai.tools.*;
-import org.dynamisai.cognition.*;
-import org.dynamisai.core.*;
-import org.dynamisai.perception.*;
+import org.dynamisengine.ai.tools.*;
+import org.dynamisengine.ai.cognition.*;
+import org.dynamisengine.ai.core.*;
+import org.dynamisengine.ai.perception.*;
 
 CognitionService cognition = new DefaultCognitionService(new MockInferenceBackend());
 AffectiveStateDebugger debugger = new AffectiveStateDebugger(cognition);
@@ -53,8 +53,8 @@ System.out.println(AffectiveStateDebugger.format(snap));
 
 // Scenario: run a headless bake with built-in assertions.
 ```java
-import org.dynamisai.tools.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.tools.*;
+import org.dynamisengine.ai.core.*;
 
 SimulationBaker baker = new SimulationBaker(
     DynamisAiEngine.builder().build(),

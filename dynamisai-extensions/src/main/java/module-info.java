@@ -1,11 +1,11 @@
-module org.dynamisai.extensions {
-    requires dynamis.core;
-    requires org.dynamisai.core;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.perception;
-    requires org.dynamisai.memory;
-    requires org.dynamisai.navigation;
-    requires org.dynamisai.voice;
+module org.dynamisengine.ai.extensions {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.cognition;
+    requires org.dynamisengine.ai.perception;
+    requires org.dynamisengine.ai.memory;
+    requires org.dynamisengine.ai.navigation;
+    requires org.dynamisengine.ai.voice;
 
-    exports org.dynamisai.extensions;
+    exports org.dynamisengine.ai.extensions;
 }

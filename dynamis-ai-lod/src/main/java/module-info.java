@@ -1,7 +1,7 @@
-module org.dynamisai.lod {
-    requires dynamis.core;
-    requires org.dynamisai.core;
-    requires org.dynamisai.crowd;
+module org.dynamisengine.ai.lod {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.crowd;
     requires io.vavr;
-    exports org.dynamisai.lod;
+    exports org.dynamisengine.ai.lod;
 }

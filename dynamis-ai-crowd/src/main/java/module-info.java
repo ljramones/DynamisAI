@@ -1,6 +1,6 @@
-module org.dynamisai.crowd {
-    requires dynamis.core;
-    requires org.dynamisai.core;
-    requires org.dynamisai.navigation;
-    exports org.dynamisai.crowd;
+module org.dynamisengine.ai.crowd {
+    requires org.dynamisengine.core;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.navigation;
+    exports org.dynamisengine.ai.crowd;
 }

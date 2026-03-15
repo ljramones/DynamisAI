@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-core</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -35,7 +35,7 @@
 ### Code Examples
 // Scenario: create and tick a headless engine frame.
 ```java
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.core.*;
 
 DynamisAiEngine engine = DynamisAiEngine.builder().build();
 HeadlessGameEngineAdapter adapter = new HeadlessGameEngineAdapter();
@@ -51,7 +51,7 @@ System.out.println(frame.tick());
 
 // Scenario: queue world changes then commit one deterministic snapshot tick.
 ```java
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.core.*;
 
 DefaultWorldStateStore store = new DefaultWorldStateStore();
 EntityId npc = EntityId.of(10L);
@@ -68,7 +68,7 @@ System.out.println(s.tick() + " seed=" + s.deterministicSeed());
 
 // Scenario: register budgeted tasks with fallback behavior.
 ```java
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.core.*;
 
 DefaultBudgetGovernor governor = new DefaultBudgetGovernor(16);
 governor.register(new AITaskNode(
@@ -88,8 +88,8 @@ System.out.println(report.tick());
 // Depends on sibling module: `dynamis-ai-tools`
 // Scenario: attach tools inspector without creating a core->tools compile dependency.
 ```java
-import org.dynamisai.core.*;
-import org.dynamisai.tools.AIInspector;
+import org.dynamisengine.ai.core.*;
+import org.dynamisengine.ai.tools.AIInspector;
 
 DynamisAiEngine engine = DynamisAiEngine.builder().build();
 AIInspector inspector = new AIInspector();

@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-navigation</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -31,8 +31,8 @@
 ### Code Examples
 // Scenario: request a path and steer an agent.
 ```java
-import org.dynamisai.navigation.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.navigation.*;
+import org.dynamisengine.ai.core.*;
 
 NavigationSystem nav = new DefaultNavigationSystem(NavMeshBuilder.buildGrid(16, 16, 1f, 4));
 EntityId agent = EntityId.of(1);
@@ -45,8 +45,8 @@ System.out.println(out.desiredVelocity());
 // Depends on sibling module: `dynamis-ai-core`
 // Scenario: integrate navigation commits into world state.
 ```java
-import org.dynamisai.navigation.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.navigation.*;
+import org.dynamisengine.ai.core.*;
 
 DefaultWorldStateStore world = new DefaultWorldStateStore();
 NavigationSystem nav = new DefaultNavigationSystem(NavMeshBuilder.buildGrid(8, 8, 1f, 2));

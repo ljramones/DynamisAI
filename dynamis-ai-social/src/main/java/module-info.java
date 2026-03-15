@@ -1,8 +1,8 @@
-module org.dynamisai.social {
-    requires dynamis.core;
+module org.dynamisengine.ai.social {
+    requires org.dynamisengine.core;
     requires dynamis.event;
-    requires org.dynamisai.core;
-    requires org.dynamisai.cognition;
-    requires org.dynamisai.planning;
-    exports org.dynamisai.social;
+    requires org.dynamisengine.ai.core;
+    requires org.dynamisengine.ai.cognition;
+    requires org.dynamisengine.ai.planning;
+    exports org.dynamisengine.ai.social;
 }

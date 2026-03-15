@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-perception</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -32,8 +32,8 @@
 ### Code Examples
 // Scenario: generate a perception snapshot from simulated senses.
 ```java
-import org.dynamisai.perception.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.perception.*;
+import org.dynamisengine.ai.core.*;
 
 SensorProfileRegistry profiles = new SensorProfileRegistry();
 SoundEventQueue sounds = new SoundEventQueue();
@@ -49,8 +49,8 @@ System.out.println(ps.percepts().size());
 
 // Scenario: update and sample tactical influence layers.
 ```java
-import org.dynamisai.perception.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.perception.*;
+import org.dynamisengine.ai.core.*;
 
 InfluenceMapEngine engine = new InfluenceMapEngine(64, 64, 1f, new Location(0,0,0));
 engine.addCoverAt(new Location(10,0,10), 0.8f);

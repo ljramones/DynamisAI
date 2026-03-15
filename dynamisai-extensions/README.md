@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamisai-extensions</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -30,7 +30,7 @@
 ### Code Examples
 // Scenario: use extension stubs to wire a fast local integration prototype.
 ```java
-import org.dynamisai.extensions.*;
+import org.dynamisengine.ai.extensions.*;
 
 var backend = new ExampleInferenceBackend();
 var encoder = new ExampleSentenceEncoder();

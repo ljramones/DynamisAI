@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-memory</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -33,8 +33,8 @@
 ### Code Examples
 // Scenario: store and retrieve a memory vector hit.
 ```java
-import org.dynamisai.memory.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.memory.*;
+import org.dynamisengine.ai.core.EntityId;
 
 VectorMemoryStore store = new OffHeapVectorMemoryStore(384, 64);
 MemoryRecord rec = MemoryRecord.create(EntityId.of(1), "player entered tavern", "payload", 0.6f);
@@ -48,8 +48,8 @@ store.close();
 
 // Scenario: use encoder-backed in-heap convenience APIs.
 ```java
-import org.dynamisai.memory.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.memory.*;
+import org.dynamisengine.ai.core.EntityId;
 
 InHeapVectorMemoryStore store = new InHeapVectorMemoryStore(new MockSentenceEncoder());
 store.store(MemoryRecord.create(EntityId.of(1), "guard saw player", "...", 0.5f));

@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-crowd</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -29,8 +29,8 @@
 ### Code Examples
 // Scenario: create a group and tick crowd simulation.
 ```java
-import org.dynamisai.crowd.*;
-import org.dynamisai.core.*;
+import org.dynamisengine.ai.crowd.*;
+import org.dynamisengine.ai.core.*;
 
 DefaultCrowdSystem crowd = new DefaultCrowdSystem();
 GroupId group = crowd.createGroup(FormationType.LINE);

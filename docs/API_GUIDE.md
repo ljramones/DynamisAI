@@ -28,17 +28,17 @@ DynamisAI is a modular NPC AI engine. Modules are JPMS-separated and depend upwa
 
 ```xml
 <dependency>
-  <groupId>org.dynamisai</groupId>
+  <groupId>org.dynamisengine.ai</groupId>
   <artifactId>dynamis-ai-core</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>org.dynamisai</groupId>
+  <groupId>org.dynamisengine.ai</groupId>
   <artifactId>dynamis-ai-perception</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 <dependency>
-  <groupId>org.dynamisai</groupId>
+  <groupId>org.dynamisengine.ai</groupId>
   <artifactId>dynamis-ai-cognition</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>

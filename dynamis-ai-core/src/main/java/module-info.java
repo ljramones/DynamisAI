@@ -1,6 +1,6 @@
-module org.dynamisai.core {
-    requires dynamis.core;
+module org.dynamisengine.ai.core {
+    requires org.dynamisengine.core;
     requires dynamis.event;
     requires io.vavr;
-    exports org.dynamisai.core;
+    exports org.dynamisengine.ai.core;
 }

@@ -10,7 +10,7 @@
 ### Maven Dependency
 ```xml
 <dependency>
-    <groupId>org.dynamisai</groupId>
+    <groupId>org.dynamisengine.ai</groupId>
     <artifactId>dynamis-ai-social</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -35,8 +35,8 @@
 ### Code Examples
 // Scenario: apply reputation events to update relationship trust/affinity.
 ```java
-import org.dynamisai.social.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.social.*;
+import org.dynamisengine.ai.core.EntityId;
 
 SocialGraph graph = new SocialGraph();
 ReputationEngine rep = new ReputationEngine();
@@ -50,8 +50,8 @@ rep.apply(event, graph);
 
 // Scenario: seed and propagate a rumor through trusted links.
 ```java
-import org.dynamisai.social.*;
-import org.dynamisai.core.EntityId;
+import org.dynamisengine.ai.social.*;
+import org.dynamisengine.ai.core.EntityId;
 
 SocialGraph graph = new SocialGraph();
 RumorPropagator propagator = new RumorPropagator(new ReputationEngine());
@@ -66,9 +66,9 @@ propagator.propagate(graph, 60L);
 
 // Scenario: update schedules and produce planning patch keys.
 ```java
-import org.dynamisai.social.*;
-import org.dynamisai.core.*;
-import org.dynamisai.planning.WorldState;
+import org.dynamisengine.ai.social.*;
+import org.dynamisengine.ai.core.*;
+import org.dynamisengine.ai.planning.WorldState;
 
 ScheduleEngine schedules = new ScheduleEngine();
 EntityId npc = EntityId.of(7);
@@ -82,7 +82,7 @@ System.out.println(patch.get("schedule.currentActivity"));
 // Depends on sibling module: `dynamis-ai-core`
 // Scenario: evaluate drama beat and emit behavior modifier events.
 ```java
-import org.dynamisai.social.*;
+import org.dynamisengine.ai.social.*;
 
 DramaManager drama = new DramaManager(DramaManagerConfig.defaultConfig());
 EngagementMetrics metrics = EngagementMetrics.neutral(120L);

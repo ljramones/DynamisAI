@@ -25,15 +25,15 @@ DynamisAI must not own:
 Repository shape is a multi-module Maven project with 14 modules in `DynamisAI/pom.xml`.
 
 Major packages and runtime surfaces:
-- `dynamis-ai-core` (`org.dynamisai.core`): `DynamisAiEngine`, `DefaultBudgetGovernor`, `AIOutputFrame`, `WorldStateStore`, `DefaultWorldStateStore`, `WorldSnapshot`, `WorldChange`, `GameEngineContext`.
-- `dynamis-ai-perception` (`org.dynamisai.perception`): `PerceptionSystem`, `DefaultPerceptionSystem`, saliency and influence-map surfaces.
-- `dynamis-ai-cognition` (`org.dynamisai.cognition`): async `CognitionService`, `DefaultCognitionService`, belief models and inference backends.
-- `dynamis-ai-planning` (`org.dynamisai.planning`): `DefaultHtnPlanner`, `GOAPResolver`, BT/utility/HTN types, `SquadBlackboard`, `PlanToIntentAdapter`.
-- `dynamis-ai-navigation` (`org.dynamisai.navigation`): `NavigationSystem`, pathfinding/steering/RVO, plus `MovementIntegrator`.
-- `dynamis-ai-social` (`org.dynamisai.social`): relationship/reputation/scheduling/drama systems.
-- `dynamis-ai-crowd` (`org.dynamisai.crowd`): crowd grouping, LOD, formation simulation, `CrowdSnapshot`.
-- `dynamis-ai-voice` (`org.dynamisai.voice`): TTS surfaces and `AnimisBridge` contract.
-- `dynamis-ai-tools` (`org.dynamisai.tools`): wiring, replay, simulation baking, scripting/event buses via API contracts.
+- `dynamis-ai-core` (`org.dynamisengine.ai.core`): `DynamisAiEngine`, `DefaultBudgetGovernor`, `AIOutputFrame`, `WorldStateStore`, `DefaultWorldStateStore`, `WorldSnapshot`, `WorldChange`, `GameEngineContext`.
+- `dynamis-ai-perception` (`org.dynamisengine.ai.perception`): `PerceptionSystem`, `DefaultPerceptionSystem`, saliency and influence-map surfaces.
+- `dynamis-ai-cognition` (`org.dynamisengine.ai.cognition`): async `CognitionService`, `DefaultCognitionService`, belief models and inference backends.
+- `dynamis-ai-planning` (`org.dynamisengine.ai.planning`): `DefaultHtnPlanner`, `GOAPResolver`, BT/utility/HTN types, `SquadBlackboard`, `PlanToIntentAdapter`.
+- `dynamis-ai-navigation` (`org.dynamisengine.ai.navigation`): `NavigationSystem`, pathfinding/steering/RVO, plus `MovementIntegrator`.
+- `dynamis-ai-social` (`org.dynamisengine.ai.social`): relationship/reputation/scheduling/drama systems.
+- `dynamis-ai-crowd` (`org.dynamisengine.ai.crowd`): crowd grouping, LOD, formation simulation, `CrowdSnapshot`.
+- `dynamis-ai-voice` (`org.dynamisengine.ai.voice`): TTS surfaces and `AnimisBridge` contract.
+- `dynamis-ai-tools` (`org.dynamisengine.ai.tools`): wiring, replay, simulation baking, scripting/event buses via API contracts.
 
 Notable abstractions:
 - AI outputs are exposed as immutable `AIOutputFrame` with steering/dialogue/animation outputs.
@@ -99,7 +99,7 @@ Repo-grounded notes:
 Current public/internal boundary is not clean.
 
 Findings:
-- Each module exports a single broad package (`exports org.dynamisai.*`) containing both contract and implementation classes.
+- Each module exports a single broad package (`exports org.dynamisengine.ai.*`) containing both contract and implementation classes.
 - Internal implementation types are externally consumable by default (for example `Default*` implementations and integration helpers).
 - `dynamis-ai-navigation` publicly exposes `MovementIntegrator`, which performs state integration/mutation behavior and should be treated as integration-internal.
 - `dynamis-ai-tools` contains runtime wiring/orchestration surfaces that are useful, but public exposure is broad and unconstrained.
