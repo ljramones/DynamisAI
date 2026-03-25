@@ -40,6 +40,8 @@ public final class DefaultCognitionService implements CognitionService {
     private final ExecutorService executor;
     private final Semaphore concurrencyLimit;
     private final AtomicInteger queueDepth = new AtomicInteger(0);
+    private final AtomicLong completedCount = new AtomicLong(0);
+    private final AtomicLong timeoutCount = new AtomicLong(0);
     private final BeliefModelRegistry beliefRegistry;
     private final AtomicLong deliberativeTickCounter = new AtomicLong(0L);
     private final AtomicReference<Supplier<CanonTime>> canonTimeSource;
@@ -149,8 +151,10 @@ public final class DefaultCognitionService implements CognitionService {
             }, executor)
             .orTimeout(inferenceDeadlineMs, TimeUnit.MILLISECONDS)
             .handle((result, ex) -> {
+                completedCount.incrementAndGet();
                 if (ex != null) {
                     if (isTimeout(ex)) {
+                        timeoutCount.incrementAndGet();
                         log.warn(String.format("Dialogue request timed out for %s — fallback", request.speaker()));
                     } else {
                         Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
@@ -233,6 +237,12 @@ public final class DefaultCognitionService implements CognitionService {
     public BeliefModelRegistry beliefRegistry() {
         return beliefRegistry;
     }
+
+    /** Total completed inference requests (includes timeouts and successes). */
+    public long getCompletedCount() { return completedCount.get(); }
+
+    /** Total inference requests that timed out. */
+    public long getTimeoutCount() { return timeoutCount.get(); }
 
     @Override
     public void shutdown() {
